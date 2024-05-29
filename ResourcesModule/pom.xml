@@ -14,6 +14,7 @@
         <module>UserService</module>
         <module>ProductService</module>
         <module>CartService</module>
+        <module>OrderService</module>
     </modules>
 
     <groupId>org.example</groupId>
