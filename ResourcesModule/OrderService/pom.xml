@@ -4,24 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>me.inqu1sitor</groupId>
-        <artifactId>IntexSoftTrainee</artifactId>
+        <groupId>org.example</groupId>
+        <artifactId>ResourcesModule</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <packaging>pom</packaging>
 
-    <modules>
-        <module>UserService</module>
-        <module>ProductService</module>
-        <module>OrderService</module>
-    </modules>
-
-    <groupId>org.example</groupId>
-    <artifactId>ResourcesModule</artifactId>
+    <artifactId>OrderService</artifactId>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>20</maven.compiler.source>
+        <maven.compiler.target>20</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
