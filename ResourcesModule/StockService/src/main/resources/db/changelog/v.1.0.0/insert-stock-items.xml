@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="eugene-yuntsevich">
+        <sql>CREATE EXTENSION IF NOT EXISTS "uuid-ossp";</sql>
+    </changeSet>
+
+    <changeSet id="2" author="eugene-yuntsevich">
+        <insert tableName="stock">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="name" value="Super new boots"/>
+            <column name="type" value="BOOTS"/>
+            <column name="color" value="RED"/>
+            <column name="size" value="SIZE_42"/>
+            <column name="brand" value="GOOCHI"/>
+            <column name="amount" value="100"/>
+            <column name="currency" value="USD"/>
+            <column name="price" value="399.87"/>
+            <column name="status" value="AVAILABLE_IN_SHOP"/>
+        </insert>
+        <insert tableName="stock">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="name" value="Fashion sneakers"/>
+            <column name="type" value="SNEAKERS"/>
+            <column name="color" value="BLACK"/>
+            <column name="size" value="SIZE_39"/>
+            <column name="brand" value="MARCO"/>
+            <column name="amount" value="350"/>
+            <column name="currency" value="BYN"/>
+            <column name="price" value="599.97"/>
+            <column name="status" value="AVAILABLE_IN_STOCK"/>
+        </insert>
+    </changeSet>
+
+
+</databaseChangeLog>
