@@ -12,7 +12,7 @@
 
     <modules>
         <module>UserService</module>
-        <module>ProductService</module>
+        <module>StockService</module>
         <module>CartService</module>
         <module>OrderService</module>
     </modules>
