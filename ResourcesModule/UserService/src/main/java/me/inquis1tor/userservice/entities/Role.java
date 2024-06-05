@@ -1,10 +1,10 @@
-package me.inquis1tor.userservice.entities.role;
+package me.inquis1tor.userservice.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import me.inquis1tor.userservice.entities.account.Account;
+
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Role implements Title {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -24,8 +24,5 @@ public class Role implements Title {
     @OneToMany(mappedBy = "role")
     private List<Account> accounts;
 
-    @Override
-    public String getTitle() {
-        return null;
-    }
+    private String title;
 }
