@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="database-v1.0.0" author="iNQU1SITOR" failOnError="true">
+        <preConditions onFail="HALT"/>
+        <sqlFile path="sql/init-table-role.sql"
+                 relativeToChangelogFile="true"/>
+        <sqlFile path="sql/init-type-status.sql"
+                 relativeToChangelogFile="true"/>
+        <sqlFile path="sql/init-table-account.sql"
+                 relativeToChangelogFile="true"/>
+        <sqlFile path="sql/init-table-credentials.sql"
+                 relativeToChangelogFile="true"/>
+        <sqlFile path="sql/init-table-personal_info.sql"
+                 relativeToChangelogFile="true"/>
+    </changeSet>
+</databaseChangeLog>

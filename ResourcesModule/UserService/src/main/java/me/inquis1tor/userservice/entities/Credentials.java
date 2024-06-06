@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(indexes = @Index(columnList = "email", unique = true))
+@Table(name = "credentials", indexes = @Index(columnList = "email", unique = true))
 public class Credentials {
 
     @Id
@@ -23,9 +23,9 @@ public class Credentials {
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
-    @Column(nullable = false)
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 }

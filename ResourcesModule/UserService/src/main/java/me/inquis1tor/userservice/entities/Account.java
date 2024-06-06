@@ -12,11 +12,13 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(name = "account")
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @UuidGenerator
+    @Column(name = "id")
     private UUID id;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.REMOVE, optional = false)
@@ -32,6 +34,7 @@ public class Account {
     private Role role;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private Status status;
 
     public enum Status {

@@ -12,6 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Getter
 @Setter
+@Table(name = "personal_info")
 public class PersonalInfo {
 
     @Id
@@ -23,10 +24,15 @@ public class PersonalInfo {
     @JoinColumn(name = "account_id")
     private Account account;
 
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "surname")
     private String surname;
+
+    @Column(name = "patronymic")
     private String patronymic;
 
-    @Column(unique = true, nullable = false)
+    @Column(name = "phone_number", unique = true, nullable = false)
     private String phoneNumber;
 }
