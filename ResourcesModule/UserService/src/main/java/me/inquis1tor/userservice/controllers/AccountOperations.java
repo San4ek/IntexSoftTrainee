@@ -18,16 +18,16 @@ public interface AccountOperations {
     @Operation(summary = "Get account by its email")
     @ApiResponse(responseCode = "501")
     @ApiResponse(responseCode = "200")
-    @GetMapping
-    default ResponseEntity<?> get(@RequestParam String email) {
+    @GetMapping("/email/{email}")
+    default ResponseEntity<?> get(@PathVariable String email) {
         return DEFAULT_RESPONSE;
     }
 
     @Operation(summary = "Get account by its id")
     @ApiResponse(responseCode = "501")
     @ApiResponse(responseCode = "200")
-    @GetMapping
-    default ResponseEntity<?> get(@RequestParam UUID id) {
+    @GetMapping("/id/{id}")
+    default ResponseEntity<?> get(@PathVariable UUID id) {
         return DEFAULT_RESPONSE;
     }
 }
