@@ -18,8 +18,8 @@
                  relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="07.06.24-database-snapshot" author="iNQU1SITOR">
-        <tagDatabase tag="v1.0.0-snapshot"/>
+    <changeSet id="07.06.24-v.1.0.0-snapshot" author="iNQU1SITOR">
+        <tagDatabase tag="v.1.0.0-snapshot"/>
     </changeSet>
 
 </databaseChangeLog>
