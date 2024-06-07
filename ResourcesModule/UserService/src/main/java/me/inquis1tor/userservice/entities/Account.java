@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
@@ -13,7 +14,8 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Table(name = "account")
-public class Account {
+@SQLDelete(sql = "update account set deleted_at=now(),status='DELETED', deleted_by = ? where id = ?")
+public class Account extends Audit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -36,6 +38,12 @@ public class Account {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;
+
+    @Override
+    public void block(UUID id) {
+        this.setStatus(Status.BLOCKED);
+        super.block(id);
+    }
 
     public enum Status {
         ACTIVE,
