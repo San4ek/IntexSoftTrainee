@@ -14,12 +14,10 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Table(name = "account")
-@SQLDelete(sql = "update account set deleted_at=now(),status='DELETED', deleted_by = ? where id = ?")
+@SQLDelete(sql = "update account set deleted_at=now(),status='DELETED' where id = ?")
 public class Account extends Audit {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @UuidGenerator
     @Column(name = "id")
     private UUID id;
 
