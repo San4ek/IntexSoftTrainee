@@ -5,6 +5,10 @@ spring:
     password: Utermybest1
     driver-class-name: org.postgresql.Driver
 
+  test:
+    database:
+      replace: none
+
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
     default-schema: intexsofttrainee
@@ -14,6 +18,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         default_schema: intexsofttrainee
+        format_sql: true
     hibernate:
       ddl-auto: validate
 
