@@ -4,17 +4,22 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="database-v1.0.0" author="iNQU1SITOR" failOnError="true">
+    <changeSet id="07.06.24-init-database" author="iNQU1SITOR" failOnError="true">
         <preConditions onFail="HALT"/>
-        <sqlFile path="sql/init-table-role.sql"
+        <sqlFile path="sql/07.06.24-init-table-role.sql"
                  relativeToChangelogFile="true"/>
-        <sqlFile path="sql/init-type-status.sql"
+        <sqlFile path="sql/07.06.24-init-type-status.sql"
                  relativeToChangelogFile="true"/>
-        <sqlFile path="sql/init-table-account.sql"
+        <sqlFile path="sql/07.06.24-init-table-account.sql"
                  relativeToChangelogFile="true"/>
-        <sqlFile path="sql/init-table-credentials.sql"
+        <sqlFile path="sql/07.06.24-init-table-credentials.sql"
                  relativeToChangelogFile="true"/>
-        <sqlFile path="sql/init-table-personal_info.sql"
+        <sqlFile path="sql/07.06.24-init-table-personal_info.sql"
                  relativeToChangelogFile="true"/>
     </changeSet>
+
+    <changeSet id="07.06.24-database-snapshot" author="iNQU1SITOR">
+        <tagDatabase tag="v1.0.0-snapshot"/>
+    </changeSet>
+
 </databaseChangeLog>
