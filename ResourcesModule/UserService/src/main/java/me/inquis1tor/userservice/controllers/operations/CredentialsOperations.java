@@ -3,8 +3,10 @@ package me.inquis1tor.userservice.controllers.operations;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import me.inquis1tor.userservice.dtos.CredentialsAuthDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -18,7 +20,7 @@ public interface CredentialsOperations {
     @ApiResponse(responseCode = "200")
     @ApiResponse(responseCode = "501")
     @PutMapping("/update")
-    default ResponseEntity<?> update(@RequestParam UUID accountId/*, @RequestBody CredentialsRequestDTO credentials*/) {
+    default ResponseEntity<?> update(@RequestParam UUID accountId, @RequestBody CredentialsAuthDto credentials) {
         return DefaultResponses.NOT_IMPLEMENTED_RESPONSE.getResponse();
     }
 }

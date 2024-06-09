@@ -8,4 +8,4 @@ public record AccountDto(UUID id,
                          RoleDto role,
                          Account.Status status,
                          CredentialsDto credentials,
-                         PersonalInfoDto personalInfo){}
+                         PersonalInfoDto personalInfo) implements Responsable {}
