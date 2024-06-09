@@ -4,8 +4,8 @@ import me.inquis1tor.userservice.entities.Account;
 
 import java.util.UUID;
 
-public record AccountDTO(UUID id,
+public record AccountDto(UUID id,
                          RoleDto role,
                          Account.Status status,
-                         CredentialsDTO credentials,
-                         PersonalInfoDTO personalInfo){}
+                         CredentialsDto credentials,
+                         PersonalInfoDto personalInfo){}

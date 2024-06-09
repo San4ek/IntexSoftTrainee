@@ -2,6 +2,6 @@ package me.inquis1tor.userservice.DTOs;
 
 import java.util.UUID;
 
-public record AccountAuthDTO(UUID id,
+public record AccountAuthDto(UUID id,
                              RoleDto role,
-                             CredentialsAuthDTO credentials) {}
+                             CredentialsAuthDto credentials) {}
