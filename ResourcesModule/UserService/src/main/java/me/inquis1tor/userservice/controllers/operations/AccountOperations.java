@@ -1,4 +1,4 @@
-package me.inquis1tor.userservice.controllers;
+package me.inquis1tor.userservice.controllers.operations;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
