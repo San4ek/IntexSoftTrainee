@@ -33,6 +33,6 @@ public class PersonalInfo {
     @Column(name = "patronymic")
     private String patronymic;
 
-    @Column(name = "phone_number", unique = true, nullable = false)
+    @Column(name = "phone_number")
     private String phoneNumber;
 }
