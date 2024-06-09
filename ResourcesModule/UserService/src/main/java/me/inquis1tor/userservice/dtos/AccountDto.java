@@ -1,4 +1,4 @@
-package me.inquis1tor.userservice.DTOs;
+package me.inquis1tor.userservice.dtos;
 
 import me.inquis1tor.userservice.entities.Account;
 

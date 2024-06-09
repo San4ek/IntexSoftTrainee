@@ -1,6 +1,6 @@
 package me.inquis1tor.userservice.mappers;
 
-import me.inquis1tor.userservice.DTOs.AccountDto;
+import me.inquis1tor.userservice.dtos.AccountDto;
 import me.inquis1tor.userservice.entities.Account;
 import org.mapstruct.Mapper;
 

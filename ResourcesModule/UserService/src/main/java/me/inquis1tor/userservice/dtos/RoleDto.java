@@ -1,4 +1,4 @@
-package me.inquis1tor.userservice.DTOs;
+package me.inquis1tor.userservice.dtos;
 
 public record RoleDto(String title) {
 }

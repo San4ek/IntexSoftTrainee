@@ -1,6 +1,6 @@
 package me.inquis1tor.userservice.mappers;
 
-import me.inquis1tor.userservice.DTOs.PersonalInfoDto;
+import me.inquis1tor.userservice.dtos.PersonalInfoDto;
 import me.inquis1tor.userservice.entities.PersonalInfo;
 import org.mapstruct.Mapper;
 
