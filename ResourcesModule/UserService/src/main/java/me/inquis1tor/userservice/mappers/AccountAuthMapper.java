@@ -4,7 +4,9 @@ import me.inquis1tor.userservice.DTOs.AccountAuthDto;
 import me.inquis1tor.userservice.entities.Account;
 import org.mapstruct.Mapper;
 
-@Mapper
+import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
+
+@Mapper(componentModel = SPRING)
 public interface AccountAuthMapper {
     AccountAuthDto accountToAuthDto(Account account);
     Account authDtoToAccount(AccountAuthDto accountAuthDto);
