@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @Tag(name = "Account", description = "Account management APIs")
-@RequestMapping("/default")
+@RequestMapping("/default/account")
 public interface AccountOperations {
 
     @Operation(summary = "Get account by its email")
