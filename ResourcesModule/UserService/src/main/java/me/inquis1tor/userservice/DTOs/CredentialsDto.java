@@ -1,3 +1,8 @@
 package me.inquis1tor.userservice.DTOs;
 
-public record CredentialsDto(String email) {}
+import jakarta.validation.constraints.Email;
+
+public record CredentialsDto(
+        @Email
+        String email
+) {}
