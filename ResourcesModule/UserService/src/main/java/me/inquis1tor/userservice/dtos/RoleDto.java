@@ -1,4 +1,9 @@
 package me.inquis1tor.userservice.dtos;
 
-public record RoleDto(String title) {
-}
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "Account tole information")
+public record RoleDto(
+        @Schema(description = "Role title", example = "user")
+        String title
+) {}
