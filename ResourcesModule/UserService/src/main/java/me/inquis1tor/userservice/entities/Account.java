@@ -18,6 +18,8 @@ import java.util.UUID;
 public class Account extends Audit {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @UuidGenerator
     @Column(name = "id")
     private UUID id;
 
