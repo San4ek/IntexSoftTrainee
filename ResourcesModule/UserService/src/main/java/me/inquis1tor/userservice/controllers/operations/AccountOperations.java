@@ -14,14 +14,12 @@ import java.util.UUID;
 @RequestMapping("/default/account")
 public interface AccountOperations {
 
-    ResponseEntity<?> DEFAULT_RESPONSE=ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
-
     @Operation(summary = "Get account by its email")
     @ApiResponse(responseCode = "501")
     @ApiResponse(responseCode = "200")
     @GetMapping("/email/{email}")
     default ResponseEntity<?> get(@PathVariable String email) {
-        return DEFAULT_RESPONSE;
+        return DefaultResponses.NOT_IMPLEMENTED_RESPONSE.getResponse();
     }
 
     @Operation(summary = "Get account by its id")
@@ -29,7 +27,7 @@ public interface AccountOperations {
     @ApiResponse(responseCode = "200")
     @GetMapping("/id/{id}")
     default ResponseEntity<?> get(@PathVariable UUID id) {
-        return DEFAULT_RESPONSE;
+        return DefaultResponses.NOT_IMPLEMENTED_RESPONSE.getResponse();
     }
 
     @Operation(summary = "Delete account by ints id")
@@ -37,7 +35,7 @@ public interface AccountOperations {
     @ApiResponse(responseCode = "501")
     @DeleteMapping
     default ResponseEntity<?> delete(@RequestParam UUID id) {
-        return DEFAULT_RESPONSE;
+        return DefaultResponses.NOT_IMPLEMENTED_RESPONSE.getResponse();
     }
 
     @Operation(summary = "Register new account")
@@ -45,7 +43,7 @@ public interface AccountOperations {
     @ApiResponse(responseCode = "501")
     @PostMapping("/register")
     default ResponseEntity<?> register(/*@RequestBody CredentialsRequestDTO credentials*/) {
-        return DEFAULT_RESPONSE;
+        return DefaultResponses.NOT_IMPLEMENTED_RESPONSE.getResponse();
     }
 
     @Operation(summary = "Get all accounts")
@@ -53,7 +51,7 @@ public interface AccountOperations {
     @ApiResponse(responseCode = "501")
     @GetMapping("/all")
     default ResponseEntity<?> getAll() {
-        return DEFAULT_RESPONSE;
+        return DefaultResponses.NOT_IMPLEMENTED_RESPONSE.getResponse();
     }
 
     @Operation(summary = "Change account status by its id")
@@ -61,6 +59,6 @@ public interface AccountOperations {
     @ApiResponse(responseCode = "501")
     @PutMapping("/update")
     default ResponseEntity<?> changeStatus(@RequestParam UUID accountId, @RequestParam Account.Status status, @RequestParam UUID adminId) {
-        return DEFAULT_RESPONSE;
+        return DefaultResponses.NOT_IMPLEMENTED_RESPONSE.getResponse();
     }
 }
