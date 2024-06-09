@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @Tag(name = "Account", description = "Account management APIs")
-@RequestMapping("/default")
+@RequestMapping("/default/account")
 public interface AccountOperations {
 
     ResponseEntity<?> DEFAULT_RESPONSE=ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
