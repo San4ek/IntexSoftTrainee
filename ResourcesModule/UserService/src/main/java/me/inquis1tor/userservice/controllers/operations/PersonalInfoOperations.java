@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import me.inquis1tor.userservice.dtos.AccountDto;
 import me.inquis1tor.userservice.dtos.PersonalInfoDto;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

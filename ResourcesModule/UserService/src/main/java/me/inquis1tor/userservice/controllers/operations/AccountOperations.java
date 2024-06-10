@@ -21,7 +21,9 @@ import java.util.UUID;
 @RequestMapping("/default/account")
 public interface AccountOperations extends Responsable {
 
-    @Parameter(name ="email", description = "Account email", required = true)
+    @Parameter(name ="email",
+            description = "Account email",
+            required = true)
     @Operation(summary = "Get account by its email")
     @ApiResponse(responseCode = "501",
             content = @Content(schema = @Schema()),
@@ -35,7 +37,9 @@ public interface AccountOperations extends Responsable {
         return getDefaultResponse();
     }
 
-    @Parameter(name = "id", description = "Account id", required = true)
+    @Parameter(name = "id",
+            description = "Account id",
+            required = true)
     @Operation(summary = "Get account by its id")
     @ApiResponse(responseCode = "501",
             content = @Content(schema = @Schema()),
@@ -48,7 +52,9 @@ public interface AccountOperations extends Responsable {
         return getDefaultResponse();
     }
 
-    @Parameter(name = "id", description = "Account id", required = true)
+    @Parameter(name = "id",
+            description = "Account id",
+            required = true)
     @Operation(summary = "Delete account by ints id")
     @ApiResponse(responseCode = "200",
             content = @Content(schema = @Schema()))
@@ -60,7 +66,10 @@ public interface AccountOperations extends Responsable {
         return getDefaultResponse();
     }
 
-    @Parameter(name = "credentials", description = "Account credentials in JSON format", required = true)
+    @Parameter(name = "credentials",
+            description = "Account credentials in JSON format",
+            required = true,
+            schema = @Schema(implementation = AccountDto.class))
     @Operation(summary = "Register new account")
     @ApiResponse(responseCode = "200",
             content = @Content(schema = @Schema()))
@@ -84,9 +93,15 @@ public interface AccountOperations extends Responsable {
         return getDefaultResponse();
     }
 
-    @Parameter(name = "accountId", description = "Account id", required = true)
-    @Parameter(name = "status", description = "New account status", required = true)
-    @Parameter(name = "adminId", description = "Administrator id", required = true)
+    @Parameter(name = "accountId",
+            description = "Account id",
+            required = true)
+    @Parameter(name = "status",
+            description = "New account status",
+            required = true)
+    @Parameter(name = "adminId",
+            description = "Administrator id",
+            required = true)
     @Operation(summary = "Change account status by its id")
     @ApiResponse(responseCode = "200",
             content = {@Content(schema = @Schema(implementation = AccountDto.class),
