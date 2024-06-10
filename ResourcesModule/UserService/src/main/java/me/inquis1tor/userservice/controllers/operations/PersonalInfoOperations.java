@@ -21,8 +21,13 @@ import java.util.UUID;
 @RequestMapping("/userinfo/default")
 public interface PersonalInfoOperations extends Responsable {
 
-    @Parameter(name = "accountId", description = "Account id", required = true)
-    @Parameter(name = "personalInfo", description = "User personal info in JSON format", required = true)
+    @Parameter(name = "accountId",
+            description = "Account id",
+            required = true)
+    @Parameter(name = "personalInfo",
+            description = "User personal info in JSON format",
+            required = true,
+            schema = @Schema(implementation = PersonalInfoDto.class))
     @Operation(summary = "Update user personal info by account id")
     @ApiResponse(responseCode = "200",
             content = {@Content(schema = @Schema(implementation = PersonalInfoDto.class),
