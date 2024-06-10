@@ -19,15 +19,12 @@ public abstract class Audit {
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdDate;
 
     @Column(name = "deleted_at")
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime deletedDate;
 
     @Column(name = "blocked_at")
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime blockedDate;
 
     @Column(name = "blocked_by")
