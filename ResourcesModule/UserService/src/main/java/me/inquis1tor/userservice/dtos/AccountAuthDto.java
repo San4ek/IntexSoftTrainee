@@ -9,10 +9,10 @@ import java.util.UUID;
 public record AccountAuthDto(
         @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Account id")
         UUID id,
-        @Schema(description = "Account role", ref = "RoleDto")
+        @Schema(description = "Account role")
         RoleDto role,
         @Schema(description = "Account status", example = "ACTIVE")
         Account.Status status,
-        @Schema(description = "Account credentials for auth", ref = "CredentialsAuthDto")
+        @Schema(description = "Account credentials for auth")
         CredentialsAuthDto credentials
 ) {}
