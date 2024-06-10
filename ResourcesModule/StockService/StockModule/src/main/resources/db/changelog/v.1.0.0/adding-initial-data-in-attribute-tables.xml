@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="1" author="eugene-yuntsevich">
+        <sql>CREATE EXTENSION IF NOT EXISTS "uuid-ossp";</sql>
+    </changeSet>
+
+    <changeSet id="2" author="eugene-yuntsevich">
+        <insert tableName="ColorModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="colorName" value="RED"/>
+        </insert>
+        <insert tableName="ColorModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="colorName" value="BLACK"/>
+        </insert>
+        <insert tableName="ColorModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="colorName" value="WHITE"/>
+        </insert>
+        <insert tableName="ColorModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="colorName" value="BROWN"/>
+        </insert>
+        <insert tableName="ColorModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="colorName" value="BLUE"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="3" author="eugene-yuntsevich">
+        <insert tableName="BrandModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="brandName" value="GOOCHI"/>
+        </insert>
+        <insert tableName="BrandModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="brandName" value="ADIDAS"/>
+        </insert>
+        <insert tableName="BrandModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="brandName" value="MARCO"/>
+        </insert>
+        <insert tableName="BrandModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="brandName" value="SUPREME"/>
+        </insert>
+        <insert tableName="BrandModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="brandName" value="KUPALINKA"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="4" author="eugene-yuntsevich">
+        <insert tableName="SizeModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="sizeName" value="SIZE_39"/>
+        </insert>
+        <insert tableName="SizeModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="sizeName" value="SIZE_40"/>
+        </insert>
+        <insert tableName="SizeModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="sizeName" value="SIZE_41"/>
+        </insert>
+        <insert tableName="SizeModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="sizeName" value="SIZE_42"/>
+        </insert>
+        <insert tableName="SizeModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="sizeName" value="SIZE_43"/>
+        </insert>
+        <insert tableName="SizeModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="sizeName" value="SIZE_44"/>
+        </insert>
+        <insert tableName="SizeModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="sizeName" value="SIZE_45"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="5" author="eugene-yuntsevich">
+        <insert tableName="TypeModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="typeName" value="SNEAKERS"/>
+        </insert>
+        <insert tableName="TypeModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="typeName" value="BOOTS"/>
+        </insert>
+        <insert tableName="TypeModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="typeName" value="SHOES"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="6" author="eugene-yuntsevich">
+        <insert tableName="StatusModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="statusName" value="OUT_OF_STOCK"/>
+        </insert>
+        <insert tableName="StatusModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="statusName" value="AVAILABLE"/>
+        </insert>
+        <insert tableName="StatusModule">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="statusName" value="UNAVAILABLE"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

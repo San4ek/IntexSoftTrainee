@@ -1,5 +1,6 @@
-package entities;
+package org.example.entities;
 
+import entities.*;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "Stock")
+@Table(name = "StockModule")
 @Entity
 public class StockEntity {
     @Id
