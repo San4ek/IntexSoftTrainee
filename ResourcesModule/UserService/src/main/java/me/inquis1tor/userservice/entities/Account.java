@@ -40,9 +40,9 @@ public class Account extends Audit {
     private Status status;
 
     @Override
-    public void block(UUID id) {
+    public void block() {
         this.setStatus(Status.BLOCKED);
-        super.block(id);
+        super.block();
     }
 
     public enum Status {

@@ -3,6 +3,7 @@ package me.inquis1tor.userservice.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import me.inquis1tor.userservice.AdminIdHolder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -31,8 +32,8 @@ public abstract class Audit {
     @Column(name = "blocked_by")
     private UUID blockedBy;
 
-    public void block(UUID id) {
-        this.setBlockedBy(id);
+    public void block() {
+        this.setBlockedBy(AdminIdHolder.getAdminId());
         this.setBlockedDate(new Date());
     }
 }
