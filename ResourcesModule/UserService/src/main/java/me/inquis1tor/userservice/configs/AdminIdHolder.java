@@ -1,4 +1,4 @@
-package me.inquis1tor.userservice;
+package me.inquis1tor.userservice.configs;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
