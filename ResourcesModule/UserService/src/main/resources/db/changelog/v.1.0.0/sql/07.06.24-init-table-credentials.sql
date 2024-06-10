@@ -8,4 +8,5 @@ create table if not exists credentials
         unique (email),
     constraint credentials_account_fk
         foreign key (account_id) references account
+            on update cascade on delete restrict
 );

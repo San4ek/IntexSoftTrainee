@@ -8,4 +8,5 @@ create table if not exists personal_info
     primary key (account_id),
     constraint personal_info_account_fk
         foreign key (account_id) references account
+            on update cascade on delete restrict
 );

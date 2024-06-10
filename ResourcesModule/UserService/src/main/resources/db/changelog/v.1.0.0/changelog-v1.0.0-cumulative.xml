@@ -8,8 +8,6 @@
         <preConditions onFail="HALT"/>
         <sqlFile path="sql/07.06.24-init-table-role.sql"
                  relativeToChangelogFile="true"/>
-        <sqlFile path="sql/07.06.24-init-type-status.sql"
-                 relativeToChangelogFile="true"/>
         <sqlFile path="sql/07.06.24-init-table-account.sql"
                  relativeToChangelogFile="true"/>
         <sqlFile path="sql/07.06.24-init-table-credentials.sql"
