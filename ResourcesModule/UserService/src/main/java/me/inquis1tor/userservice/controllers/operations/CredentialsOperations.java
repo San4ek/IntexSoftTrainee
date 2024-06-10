@@ -20,7 +20,7 @@ public interface CredentialsOperations extends Responsable {
     @ApiResponse(responseCode = "200")
     @ApiResponse(responseCode = "501")
     @PutMapping("/update")
-    default ResponseEntity<?> update(@RequestParam UUID accountId, @RequestBody CredentialsAuthDto credentials) {
+    default ResponseEntity<Void> update(@RequestParam UUID accountId, @RequestBody CredentialsAuthDto credentials) {
         return getDefaultResponse();
     }
 }
