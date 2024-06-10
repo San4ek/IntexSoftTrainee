@@ -17,4 +17,4 @@ public record AccountDto(
         CredentialsDto credentials,
         @Schema(description = "User personal info", ref = "PersonalInfoDto")
         PersonalInfoDto personalInfo
-) implements Responsable {}
+) {}

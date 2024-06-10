@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.UUID;
 
 @RequestMapping("/userinfo/default")
-public interface UserInfoOperations {
+public interface UserInfoOperations extends Responsable {
 
     @Operation(summary = "Update personal info by account id")
     @ApiResponse(responseCode = "200")
     @ApiResponse(responseCode = "501")
     @PutMapping("/update")
     default ResponseEntity<?> add(@RequestParam UUID accountId/*, @RequestBody UserInfoRequestDTO userInfo*/) {
-        return DefaultResponses.NOT_IMPLEMENTED_RESPONSE.getResponse();
+        return getDefaultResponse();
     }
 }

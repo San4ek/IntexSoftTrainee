@@ -14,13 +14,13 @@ import java.util.UUID;
 
 @Tag(name = "Credentials", description = "Credentials management APIs")
 @RequestMapping("/default/credentials")
-public interface CredentialsOperations {
+public interface CredentialsOperations extends Responsable {
 
     @Operation(summary = "Change account credentials")
     @ApiResponse(responseCode = "200")
     @ApiResponse(responseCode = "501")
     @PutMapping("/update")
     default ResponseEntity<?> update(@RequestParam UUID accountId, @RequestBody CredentialsAuthDto credentials) {
-        return DefaultResponses.NOT_IMPLEMENTED_RESPONSE.getResponse();
+        return getDefaultResponse();
     }
 }

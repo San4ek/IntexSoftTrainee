@@ -1,4 +1,4 @@
-package me.inquis1tor.userservice.dtos;
+package me.inquis1tor.userservice.controllers.operations;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

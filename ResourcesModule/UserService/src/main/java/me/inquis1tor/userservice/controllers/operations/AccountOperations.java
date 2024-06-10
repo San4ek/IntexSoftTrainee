@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import me.inquis1tor.userservice.dtos.AccountAuthDto;
 import me.inquis1tor.userservice.dtos.AccountDto;
 import me.inquis1tor.userservice.dtos.CredentialsAuthDto;
-import me.inquis1tor.userservice.dtos.Responsable;
 import me.inquis1tor.userservice.entities.Account;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
