@@ -19,7 +19,7 @@ public class Account extends Audit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @UuidGenerator
+    @UuidGenerator(style = UuidGenerator.Style.TIME)
     @Column(name = "id")
     private UUID id;
 

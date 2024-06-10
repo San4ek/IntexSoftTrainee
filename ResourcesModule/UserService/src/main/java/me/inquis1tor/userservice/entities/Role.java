@@ -17,7 +17,7 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @UuidGenerator
+    @UuidGenerator(style = UuidGenerator.Style.TIME)
     @Column(name = "id")
     private UUID id;
 
