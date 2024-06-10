@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public record PersonalInfoDto(
         @Schema(description = "User name", example = "Alexander")
         String name,
-        @Schema(description = "User surname", example = "Vadimovich")
+        @Schema(description = "User surname", example = "Sankevich")
         String surname,
         @Schema(description = "User patronymic", example = "Vadimovich")
         String patronymic,
