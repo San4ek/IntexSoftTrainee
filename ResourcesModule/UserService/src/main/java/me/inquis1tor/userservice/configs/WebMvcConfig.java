@@ -8,6 +8,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AdminIdInterceptor()).addPathPatterns("/default/account/update");
+        registry.addInterceptor(new AdminIdInterceptor()).addPathPatterns("/default/account/block", "/default/account/unblock");
     }
 }

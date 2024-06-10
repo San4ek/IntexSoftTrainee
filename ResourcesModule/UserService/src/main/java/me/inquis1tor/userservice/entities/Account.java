@@ -45,6 +45,12 @@ public class Account extends Audit {
         super.block();
     }
 
+    @Override
+    public void unblock() {
+        this.setStatus(Status.ACTIVE);
+        super.unblock();
+    }
+
     public enum Status {
         ACTIVE,
         BLOCKED,

@@ -2,6 +2,7 @@ package me.inquis1tor.userservice.controllers.operations;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -99,23 +100,40 @@ public interface AccountOperations extends Responsable {
     @Parameter(name = "accountId",
             description = "Account id",
             required = true)
-    @Parameter(name = "status",
-            description = "New account status",
-            required = true)
-    @Parameter(name = "adminId",
+    @Parameter(name = "Administrator",
+            in = ParameterIn.HEADER,
             description = "Administrator id",
+            schema = @Schema(implementation = UUID.class),
             required = true)
-    @Operation(summary = "Change account status by its id")
+    @Operation(summary = "Block account by its id")
     @ApiResponse(responseCode = "200",
             content = @Content(schema = @Schema(implementation = AccountDto.class),
                             mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ApiResponse(responseCode = "501",
             content = @Content,
             description = "Endpoint not implemented")
-    @PutMapping("/update")
-    default ResponseEntity<AccountDto> changeStatus(@RequestParam UUID accountId,
-                                                    @RequestParam Account.Status status,
-                                                    @RequestParam UUID adminId) {
+    @PutMapping("/block")
+    default ResponseEntity<AccountDto> block(@RequestParam UUID accountId) {
+        return getDefaultResponse();
+    }
+
+    @Parameter(name = "accountId",
+            description = "Account id",
+            required = true)
+    @Parameter(name = "Administrator",
+            in = ParameterIn.HEADER,
+            description = "Administrator id",
+            schema = @Schema(implementation = UUID.class),
+            required = true)
+    @Operation(summary = "Unblock account by its id")
+    @ApiResponse(responseCode = "200",
+            content = @Content(schema = @Schema(implementation = AccountDto.class),
+                    mediaType = MediaType.APPLICATION_JSON_VALUE))
+    @ApiResponse(responseCode = "501",
+            content = @Content,
+            description = "Endpoint not implemented")
+    @PutMapping("/unblock")
+    default ResponseEntity<AccountDto> unblock(@RequestParam UUID accountId) {
         return getDefaultResponse();
     }
 }
