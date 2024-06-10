@@ -1,5 +1,6 @@
-package entities;
+package org.example.entities;
 
+import entities.*;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
@@ -16,10 +17,9 @@ import java.util.UUID;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "Stock")
 @Entity
-public class StockEntity {
+public class StockEntity extends Audit {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
@@ -29,19 +29,19 @@ public class StockEntity {
     private String name;
 
     @JoinColumn(name = "type", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private TypeEntity type;
 
     @JoinColumn(name = "color", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private ColorEntity color;
 
     @JoinColumn(name = "size", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private SizeEntity size;
 
     @JoinColumn(name = "brand", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private BrandEntity brand;
 
     @Column(name = "amount")
@@ -54,28 +54,7 @@ public class StockEntity {
     private float price;
 
     @JoinColumn(name = "status", referencedColumnName = "id")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private StatusEntity status;
 
-    @Column(name = "createdAt")
-    @CreatedDate
-    private LocalDateTime createdAt;
-
-    @Column(name = "editedAt")
-    @LastModifiedDate
-    private LocalDateTime editedAt;
-
-    @Column(name = "deletedAt")
-    private LocalDateTime deletedAt;
-
-    @Column(name = "createdBy")
-    @CreatedBy
-    private String createdBy;
-
-    @Column(name = "editedBy")
-    @LastModifiedBy
-    private String editedBy;
-
-    @Column(name = "deletedBy")
-    private String deletedBy;
 }
