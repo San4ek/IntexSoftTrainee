@@ -2,6 +2,7 @@ package me.inquis1tor.userservice.controllers.operations;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -31,6 +32,7 @@ public interface AccountOperations extends Responsable {
                     mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @GetMapping
     default ResponseEntity<AccountDto> get(@RequestParam String email) {
+        /*throw new UnsupportedOperationException();*/
         return getDefaultResponse();
     }
 
@@ -73,7 +75,7 @@ public interface AccountOperations extends Responsable {
 
     @Operation(summary = "Get all accounts")
     @ApiResponse(responseCode = "200",
-            content = {@Content(schema = @Schema(/*implementation = Iterable<AccountAuthDto>.class*/),
+            content = {@Content(array = @ArraySchema(schema = @Schema(implementation = AccountDto.class)),
                             mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @ApiResponse(responseCode = "501",
             content = @Content(schema = @Schema()),
