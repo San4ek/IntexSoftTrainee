@@ -8,6 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.IOException;
 import java.util.UUID;
 
+//TODO: replace 'return false' by throwing exception
 public class AdminIdInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
