@@ -23,19 +23,17 @@ public interface PersonalInfoOperations extends Responsable {
     @Parameter(name = "accountId",
             description = "Account id",
             required = true)
-    @Parameter(name = "personalInfo",
-            description = "User personal info in JSON format",
-            required = true,
-            schema = @Schema(implementation = PersonalInfoDto.class))
     @Operation(summary = "Update user personal info by account id")
     @ApiResponse(responseCode = "200",
             content = {@Content(schema = @Schema(implementation = PersonalInfoDto.class),
                     mediaType = MediaType.APPLICATION_JSON_VALUE)})
     @ApiResponse(responseCode = "501",
-            content = @Content(schema = @Schema()),
+            content = @Content,
             description = "Endpoint not implemented")
     @PutMapping("/update")
-    default ResponseEntity<PersonalInfoDto> add(@RequestParam UUID accountId, @RequestBody PersonalInfoDto personalInfo) {
+    default ResponseEntity<PersonalInfoDto> add(@RequestParam UUID accountId,
+                                                @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "User personal info", useParameterTypeSchema = true)
+                                                @RequestBody PersonalInfoDto personalInfo) {
         return getDefaultResponse();
     }
 }
