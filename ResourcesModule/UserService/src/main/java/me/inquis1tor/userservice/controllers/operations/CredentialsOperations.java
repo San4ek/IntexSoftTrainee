@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import me.inquis1tor.userservice.dtos.CredentialsAuthDto;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public interface CredentialsOperations extends Responsable {
     @PutMapping("/update")
     default ResponseEntity<Void> update(@RequestParam UUID accountId,
                                         @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Account credentials", useParameterTypeSchema = true)
-                                        @RequestBody CredentialsAuthDto credentials) {
+                                        @Valid @RequestBody CredentialsAuthDto credentials) {
         return getDefaultResponse();
     }
 }

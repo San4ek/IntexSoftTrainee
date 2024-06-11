@@ -8,10 +8,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import me.inquis1tor.userservice.dtos.AccountAuthDto;
 import me.inquis1tor.userservice.dtos.AccountDto;
 import me.inquis1tor.userservice.dtos.CredentialsAuthDto;
-import me.inquis1tor.userservice.entities.Account;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -81,7 +81,7 @@ public interface AccountOperations extends Responsable {
     default ResponseEntity<Void> register(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Account credentials",
                     useParameterTypeSchema = true)
-            @RequestBody CredentialsAuthDto credentials) {
+            @Valid @RequestBody CredentialsAuthDto credentials) {
         return getDefaultResponse();
     }
 
