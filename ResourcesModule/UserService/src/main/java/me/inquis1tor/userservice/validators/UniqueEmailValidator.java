@@ -9,7 +9,7 @@ import me.inquis1tor.userservice.services.CredentialsService;
 import org.springframework.transaction.annotation.Transactional;
 
 @AllArgsConstructor
-public class UniqueCredentialsValidator implements ConstraintValidator<UniqueEmail, Credentials> {
+public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, Credentials> {
 
     private CredentialsService credentialsService;
 
