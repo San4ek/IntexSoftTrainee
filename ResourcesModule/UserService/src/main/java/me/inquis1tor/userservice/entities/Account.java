@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.UuidGenerator;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -14,25 +14,25 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Table(name = "account")
-@SQLDelete(sql = "update account set deleted_at=now(),status='DELETED' where id = ?")
+@SQLDelete(sql = "update account set deleted_at=now(), status='DELETED' where id = ?")
+//@SQLInsert()
 public class Account extends Audit {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @UuidGenerator(style = UuidGenerator.Style.TIME)
-    @Column(name = "id")
+    @Column(name = "credentials_id")
     private UUID id;
 
-    @OneToOne(mappedBy = "account", cascade = CascadeType.REMOVE, optional = false)
-    @PrimaryKeyJoinColumn
+    @OneToOne(optional = false)
+    @MapsId
+    @JoinColumn(name = "credentials_id", nullable = false, unique = true)
     private Credentials credentials;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.REMOVE, optional = false)
     @PrimaryKeyJoinColumn
     private PersonalInfo personalInfo;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "role_id", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
     private Role role;
 
     @Enumerated(EnumType.STRING)
@@ -45,6 +45,7 @@ public class Account extends Audit {
         super.block();
     }
 
+    @Transactional
     @Override
     public void unblock() {
         this.setStatus(Status.ACTIVE);
@@ -55,5 +56,11 @@ public class Account extends Audit {
         ACTIVE,
         BLOCKED,
         DELETED
+    }
+
+    public enum Role {
+        USER,
+        ADMIN,
+        MODER
     }
 }

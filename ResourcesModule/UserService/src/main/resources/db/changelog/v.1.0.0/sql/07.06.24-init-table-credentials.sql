@@ -1,12 +1,9 @@
 create table if not exists credentials
 (
-    account_id uuid         not null,
+    id         uuid         not null,
     email      varchar(320) not null,
     password   varchar(255) not null,
-    primary key (account_id),
+    primary key (id),
     constraint email_unique
-        unique (email),
-    constraint credentials_account_fk
-        foreign key (account_id) references account
-            on update cascade on delete restrict
+        unique (email)
 );

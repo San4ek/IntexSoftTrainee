@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
@@ -15,12 +16,13 @@ import java.util.UUID;
 public class Credentials {
 
     @Id
-    @Column(name = "account_id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @UuidGenerator(style = UuidGenerator.Style.TIME)
+    @Column(name = "id")
     private UUID id;
 
-    @OneToOne(optional = false)
-    @MapsId
-    @JoinColumn(name = "account_id", nullable = false)
+    @OneToOne(mappedBy = "credentials", cascade = CascadeType.REMOVE, optional = false)
+    @PrimaryKeyJoinColumn
     private Account account;
 
     @Column(name = "email", nullable = false)

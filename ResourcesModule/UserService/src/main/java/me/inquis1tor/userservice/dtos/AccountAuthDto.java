@@ -10,7 +10,7 @@ public record AccountAuthDto(
         @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Account id")
         UUID id,
         @Schema(description = "Account role")
-        RoleDto role,
+        Account.Role role,
         @Schema(description = "Account status", example = "ACTIVE")
         Account.Status status,
         @Schema(description = "Account credentials for auth")

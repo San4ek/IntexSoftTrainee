@@ -16,7 +16,7 @@ import java.util.UUID;
 public class PersonalInfo {
 
     @Id
-    @Column(name = "account_id")
+    @Column(name = "account_id", nullable = false)
     private UUID id;
 
     @OneToOne

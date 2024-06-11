@@ -10,8 +10,6 @@
     </changeSet>
 
     <changeSet id="07.06.24-alter-tables" author="iNQU1SITOR">
-        <sqlFile path="sql/07.06.24-alter-table-role.sql"
-                 relativeToChangelogFile="true"/>
         <sqlFile path="sql/07.06.24-alter-table-account.sql"
                  relativeToChangelogFile="true"/>
     </changeSet>

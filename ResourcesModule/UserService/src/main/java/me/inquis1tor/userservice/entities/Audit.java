@@ -18,7 +18,7 @@ import java.util.UUID;
 public abstract class Audit {
 
     @CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false)
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdDate;
 
     @Column(name = "deleted_at")
