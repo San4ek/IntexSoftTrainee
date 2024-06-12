@@ -35,6 +35,8 @@ public class ExistsUuidValidator implements ConstraintValidator<ExistsUuid, UUID
          if (!accountService.existsByIdAndStatusAndRole(value, status, role))
              throw new AccountNotExistsException(parameter,message);
 
+         System.out.println("work");
+
          return true;
     }
 }

@@ -3,16 +3,17 @@ package me.inquis1tor.userservice.validators;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import me.inquis1tor.userservice.annotations.UniqueCredentials;
 import me.inquis1tor.userservice.entities.Credentials;
 import me.inquis1tor.userservice.exceptions.EmailAlreadyExistsException;
 import me.inquis1tor.userservice.services.CredentialsService;
 import org.springframework.transaction.annotation.Transactional;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UniqueCredentialsValidator implements ConstraintValidator<UniqueCredentials, Credentials> {
 
-    private CredentialsService credentialsService;
+    private final CredentialsService credentialsService;
 
     private String parameter;
     private String message;

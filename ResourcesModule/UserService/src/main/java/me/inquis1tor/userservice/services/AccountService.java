@@ -21,10 +21,13 @@ public class AccountService {
     private PersonalInfoService personalInfoService;
     private AccountRepository accountRepository;
 
+    @Transactional
     public boolean existsByIdAndStatusAndRole(UUID id, Account.Status status, Account.Role[] role) {
-        return accountRepository.existsByIdAndStatusAndRoleIn(id,status,role);
+        System.out.println("work");
+        return accountRepository.existsByIdAndStatusAndRoleIn(id,status,List.of(role));
     }
 
+    //work all
     @Transactional
     public void createAccount(@UniqueCredentials Credentials credentials) {
         Account account=new Account();

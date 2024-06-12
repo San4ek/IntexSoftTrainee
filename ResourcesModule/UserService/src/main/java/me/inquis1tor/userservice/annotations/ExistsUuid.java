@@ -17,7 +17,7 @@ public @interface ExistsUuid {
     Account.Status status();
     Account.Role[] role();
     String parameter() default "";
-    String message() default "Account not exists";
+    String message() default "";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 

@@ -14,8 +14,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Table(name = "account")
-@SQLDelete(sql = "update account set deleted_at=now(), status='DELETED' where id = ?")
-//@SQLInsert()
+@SQLDelete(sql = "update account set deleted_at=now(), status='DELETED' where credentials_id = ?")
 public class Account extends Audit {
 
     @Id

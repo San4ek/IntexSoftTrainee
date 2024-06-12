@@ -6,13 +6,14 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, UUID> {
     Optional<Account> findByCredentials_Email(String email);
-    boolean existsByIdAndStatusAndRoleIn(UUID id, Account.Status status, Account.Role[] role);
+    boolean existsByIdAndStatusAndRoleIn(UUID id, Account.Status status, List<Account.Role> role);
     void deleteById(UUID accountId);
 
     @Modifying
