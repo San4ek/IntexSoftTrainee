@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = UniqueCredentialsValidator.class)
 public @interface UniqueCredentials {
-    String parameter() default "email";
+    String parameter() default "";
     String message() default "Email already registered";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

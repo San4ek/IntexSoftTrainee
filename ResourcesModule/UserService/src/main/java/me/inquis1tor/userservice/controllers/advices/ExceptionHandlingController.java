@@ -7,15 +7,14 @@ import me.inquis1tor.userservice.exceptions.AdminRequiredException;
 import me.inquis1tor.userservice.exceptions.EmailAlreadyExistsException;
 import me.inquis1tor.userservice.exceptions.EndpointNotImplementedException;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ExceptionHandlingController {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -45,13 +44,20 @@ public class ExceptionHandlingController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
     public @ResponseBody List<ErrorDto> onConstraintViolationsException(ConstraintViolationException e) {
-        return e.getConstraintViolations().stream().map(val ->
-                new ErrorDto(val.getPropertyPath().toString(), val.getMessage())).toList();
+        System.out.println(e.getConstraintViolations().toString());
+        return e.getConstraintViolations().stream().map(val -> new ErrorDto(val.getPropertyPath().toString(), val.getMessage())).toList();
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(AdminRequiredException.class)
-    public @ResponseBody ErrorDto onConstraintViolationsException(AdminRequiredException e) {
+    @ExceptionHandler({AdminRequiredException.class, BindException.class})
+    public @ResponseBody ErrorDto onAdminRequiredException(AdminRequiredException e) {
         return new ErrorDto(e.getParameter(), e.getMessage());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody List<ErrorDto> onMethodArgumentNoValidException(MethodArgumentNotValidException e) {
+        return e.getBindingResult().getFieldErrors().stream().
+                map(val -> new ErrorDto(val.getField(), val.getDefaultMessage())).toList();
     }
 }
