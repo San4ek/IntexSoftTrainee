@@ -39,19 +39,6 @@ public class Account extends Audit {
     @Column(name = "status")
     private Status status;
 
-    @Override
-    public void block() {
-        this.setStatus(Status.BLOCKED);
-        super.block();
-    }
-
-    @Transactional
-    @Override
-    public void unblock() {
-        this.setStatus(Status.ACTIVE);
-        super.unblock();
-    }
-
     public enum Status {
         ACTIVE,
         BLOCKED,

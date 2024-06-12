@@ -29,14 +29,4 @@ public abstract class Audit {
 
     @Column(name = "blocked_by")
     private UUID blockedBy;
-
-    public void block() {
-        this.setBlockedBy(AdminIdHolder.getAdminId());
-        this.setBlockedDate(LocalDateTime.now());
-    }
-
-    public void unblock() {
-        this.setBlockedBy(null);
-        this.setBlockedDate(null);
-    }
 }

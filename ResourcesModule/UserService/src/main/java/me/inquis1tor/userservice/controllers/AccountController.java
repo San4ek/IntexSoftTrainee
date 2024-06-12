@@ -1,6 +1,7 @@
 package me.inquis1tor.userservice.controllers;
 
 import lombok.RequiredArgsConstructor;
+import me.inquis1tor.userservice.configs.AdminIdHolder;
 import me.inquis1tor.userservice.controllers.operations.AccountOperations;
 import me.inquis1tor.userservice.dtos.AccountAuthDto;
 import me.inquis1tor.userservice.dtos.AccountDto;
@@ -11,6 +12,7 @@ import me.inquis1tor.userservice.mappers.CredentialsAuthMapper;
 import me.inquis1tor.userservice.services.AccountService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -38,5 +40,23 @@ public class AccountController implements AccountOperations {
         accountService.createAccount(credentialsAuthMapper.authDtoToCredentials(credentials));
     }
 
+    @Override
+    public List<AccountDto> getAll() {
+        return accountMapper.accountListToDtoList(accountService.getAll());
+    }
 
+    @Override
+    public void delete(UUID accountId) {
+        accountService.delete(accountId);
+    }
+
+    @Override
+    public void block(UUID accountId) {
+        accountService.block(accountId, AdminIdHolder.getAdminId());
+    }
+
+    @Override
+    public void unblock(UUID accountId) {
+        accountService.unblock(accountId, AdminIdHolder.getAdminId());
+    }
 }

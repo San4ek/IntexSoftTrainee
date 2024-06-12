@@ -1,7 +1,7 @@
 package me.inquis1tor.userservice.services;
 
 import lombok.AllArgsConstructor;
-import me.inquis1tor.userservice.annotations.UniqueEmail;
+import me.inquis1tor.userservice.annotations.*;
 import me.inquis1tor.userservice.entities.Account;
 import me.inquis1tor.userservice.entities.Credentials;
 import me.inquis1tor.userservice.entities.PersonalInfo;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,8 +21,12 @@ public class AccountService {
     private PersonalInfoService personalInfoService;
     private AccountRepository accountRepository;
 
+    public boolean existsByIdAndStatusAndRole(UUID id, Account.Status status, Account.Role[] role) {
+        return accountRepository.existsByIdAndStatusAndRoleIn(id,status,role);
+    }
+
     @Transactional
-    public void createAccount(@UniqueEmail Credentials credentials) {
+    public void createAccount(@UniqueCredentials Credentials credentials) {
         Account account=new Account();
 
         account.setRole(Account.Role.USER);
@@ -42,5 +47,27 @@ public class AccountService {
     @Transactional
     public Account get(String email) {
         return accountRepository.findByCredentials_Email(email).orElseThrow();
+    }
+
+    @Transactional
+    public List<Account> getAll() {
+        return accountRepository.findAll();
+    }
+
+    @Transactional
+    public void delete(@ActiveAccountUuid UUID accountId) {
+        accountRepository.deleteById(accountId);
+    }
+
+    @Transactional
+    public void block(@ActiveAccountUuid UUID accountId,
+                      @ActiveAdminUuid UUID adminId) {
+        accountRepository.blockById(accountId,adminId);
+    }
+
+    @Transactional
+    public void unblock(@BlockedAccountUuid UUID accountId,
+                        @ActiveAdminUuid UUID adminId) {
+        accountRepository.unblockById(accountId);
     }
 }

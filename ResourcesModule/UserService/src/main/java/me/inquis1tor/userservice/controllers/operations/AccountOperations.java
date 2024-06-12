@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import lombok.SneakyThrows;
 import me.inquis1tor.userservice.dtos.AccountAuthDto;
 import me.inquis1tor.userservice.dtos.AccountDto;
@@ -16,11 +17,12 @@ import me.inquis1tor.userservice.dtos.CredentialsAuthDto;
 import me.inquis1tor.userservice.exceptions.EndpointNotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+@Validated
 @Tag(name = "Account", description = "Account management APIs")
 @RequestMapping("/default/account")
 public interface AccountOperations extends Responsable {
@@ -38,7 +40,9 @@ public interface AccountOperations extends Responsable {
                     mediaType = MediaType.APPLICATION_JSON_VALUE))
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    default @ResponseBody AccountAuthDto get(@RequestParam String email) {
+    default @ResponseBody AccountAuthDto get(@RequestParam
+                                                 @Email(message = "Email format required")
+                                                 String email) {
         throw new EndpointNotImplementedException();
     }
 
@@ -60,7 +64,7 @@ public interface AccountOperations extends Responsable {
     }
 
     @SneakyThrows
-    @Parameter(name = "id",
+    @Parameter(name = "accountId",
             description = "Account id",
             required = true)
     @Operation(summary = "Delete account by ints id")
@@ -71,7 +75,7 @@ public interface AccountOperations extends Responsable {
             description = "Endpoint not implemented")
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping
-    default void delete(@RequestParam UUID id) {
+    default void delete(@RequestParam UUID accountId) {
         throw new EndpointNotImplementedException();
     }
 
@@ -123,7 +127,7 @@ public interface AccountOperations extends Responsable {
             description = "Endpoint not implemented")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/block")
-    default @ResponseBody AccountDto block(@RequestParam UUID accountId) {
+    default void block(@RequestParam UUID accountId) {
         throw new EndpointNotImplementedException();
     }
 
@@ -145,7 +149,7 @@ public interface AccountOperations extends Responsable {
             description = "Endpoint not implemented")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/unblock")
-    default @ResponseBody AccountDto unblock(@RequestParam UUID accountId) {
+    default void unblock(@RequestParam UUID accountId) {
         throw new EndpointNotImplementedException();
     }
 }
