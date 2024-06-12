@@ -2,22 +2,20 @@ package me.inquis1tor.userservice.configs;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import me.inquis1tor.userservice.exceptions.AdminRequiredException;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.UUID;
 
-//TODO: replace 'return false' by throwing exception
 public class AdminIdInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         String adminId = request.getHeader("Administrator");
 
         if (adminId==null) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Admin id required");
-            AdminIdHolder.clear();
-            return false;
+            throw new AdminRequiredException("Administrator", "Administrator id required in header");
         }
 
         AdminIdHolder.setAdminId(UUID.fromString(adminId));
