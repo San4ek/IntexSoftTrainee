@@ -20,7 +20,7 @@ public interface AccountRepository extends JpaRepository<Account, UUID> {
     void blockById(UUID accountId, UUID adminId);
 
     @Modifying
-    @Query("UPDATE Account SET status='ACTIVE', blockedDate=null, blockedBy=null WHERE credentials.id=?1")
+    @Query("UPDATE Account SET status='ACTIVE', blockedDate=null, blockedBy=null WHERE id=?1")
     void unblockById(UUID accountId);
 }
 
