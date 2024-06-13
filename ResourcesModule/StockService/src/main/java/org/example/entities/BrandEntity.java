@@ -1,4 +1,4 @@
-package entities;
+package org.example.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,7 +11,7 @@ import java.util.UUID;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "BrandModule")
+@Table(name = "brand")
 @Entity
 public class BrandEntity {
 

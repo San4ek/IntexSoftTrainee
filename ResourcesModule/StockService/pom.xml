@@ -10,15 +10,6 @@
     </parent>
 
     <artifactId>StockService</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>ColorModule</module>
-        <module>BrandModule</module>
-        <module>SizeModule</module>
-        <module>TypeModule</module>
-        <module>StockModule</module>
-        <module>StatusModule</module>
-    </modules>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
