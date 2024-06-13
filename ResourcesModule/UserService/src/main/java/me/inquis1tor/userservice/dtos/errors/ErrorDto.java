@@ -8,10 +8,9 @@ public record ErrorDto(
         @Schema(description = "Error code", example = "1")
         int code,
 
-        @Schema(description = "Error name", example = "")
+        @Schema(description = "Error name", example = "Admin required")
         String name,
 
-        @Schema(description = "Error message", example = "")
+        @Schema(description = "Error message", example = "Administrator id is required in header")
         String message
-
 ) {}
