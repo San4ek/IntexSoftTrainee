@@ -15,12 +15,13 @@ import java.lang.annotation.Target;
 @ExistsUuid(role = {Account.Role.USER, Account.Role.MODER}, status = Account.Status.BLOCKED)
 @Constraint(validatedBy = {})
 public @interface BlockedAccountUuid {
-    @AliasFor(annotation = ExistsUuid.class, attribute = "parameter")
-    String parameter() default "accountId";
+
     @AliasFor(annotation = ExistsUuid.class, attribute = "message")
     String message() default "Account not exists or not blocked";
+
     @AliasFor(annotation = ExistsUuid.class, attribute = "groups")
     Class<?>[] groups() default {};
+
     @AliasFor(annotation = ExistsUuid.class, attribute = "payload")
     Class<? extends Payload>[] payload() default {};
 }

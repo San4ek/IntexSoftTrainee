@@ -5,8 +5,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 import me.inquis1tor.userservice.annotations.ExistsUuid;
 import me.inquis1tor.userservice.entities.Account;
-import me.inquis1tor.userservice.exceptions.AccountNotExistsException;
-import me.inquis1tor.userservice.services.AccountService;
+import me.inquis1tor.userservice.services.AccountServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
@@ -14,29 +13,20 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ExistsUuidValidator implements ConstraintValidator<ExistsUuid, UUID> {
 
-    private String message;
-    private String parameter;
     private Account.Status status;
     private Account.Role[] role;
 
-    private final AccountService accountService;
+    private final AccountServiceImpl accountServiceImpl;
 
     @Override
     public void initialize(ExistsUuid constraintAnnotation) {
         status=constraintAnnotation.status();
         role=constraintAnnotation.role();
-        message= constraintAnnotation.message();
-        parameter = constraintAnnotation.parameter();
     }
 
     @Override
     @Transactional
     public boolean isValid(UUID value, ConstraintValidatorContext context) {
-         if (!accountService.existsByIdAndStatusAndRole(value, status, role))
-             throw new AccountNotExistsException(parameter,message);
-
-         System.out.println("work");
-
-         return true;
+         return accountServiceImpl.existsByIdAndStatusAndRoles(value, status, role);
     }
 }

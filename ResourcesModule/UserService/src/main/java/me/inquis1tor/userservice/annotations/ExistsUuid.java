@@ -14,11 +14,14 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ExistsUuidValidator.class)
 public @interface ExistsUuid {
-    Account.Status status();
-    Account.Role[] role();
-    String parameter() default "";
-    String message() default "";
-    Class<?>[] groups() default {};
-    Class<? extends Payload>[] payload() default {};
 
+    Account.Status status();
+
+    Account.Role[] role();
+
+    String message() default "";
+
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
 }

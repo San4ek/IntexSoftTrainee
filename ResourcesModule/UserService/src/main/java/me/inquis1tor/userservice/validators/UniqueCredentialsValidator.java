@@ -15,21 +15,9 @@ public class UniqueCredentialsValidator implements ConstraintValidator<UniqueCre
 
     private final CredentialsService credentialsService;
 
-    private String parameter;
-    private String message;
-
-    @Override
-    public void initialize(UniqueCredentials constraintAnnotation) {
-        this.parameter=constraintAnnotation.parameter();
-        this.message=constraintAnnotation.message();
-    }
-
     @Override
     @Transactional
     public boolean isValid(Credentials value, ConstraintValidatorContext context) {
-        if (credentialsService.existsByEmail(value))
-            throw new EmailAlreadyExistsException(parameter, message);
-
-        return true;
+        return !credentialsService.existsByEmail(value);
     }
 }

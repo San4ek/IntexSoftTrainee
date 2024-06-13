@@ -3,12 +3,10 @@ package me.inquis1tor.userservice.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import me.inquis1tor.userservice.configs.AdminIdHolder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 @MappedSuperclass
