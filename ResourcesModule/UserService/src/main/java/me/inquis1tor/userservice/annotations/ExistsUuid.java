@@ -17,7 +17,7 @@ public @interface ExistsUuid {
 
     Account.Status status();
 
-    Account.Role[] role();
+    Account.Role[] roles();
 
     String message() default "";
 

@@ -12,16 +12,17 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@ExistsUuid(role = {Account.Role.USER, Account.Role.MODER}, status = Account.Status.BLOCKED, message = "Account not exists or not blocked")
+@ExistsUuid(roles = {Account.Role.USER, Account.Role.MODER},
+            status = Account.Status.BLOCKED,
+            message = "Account not exists or not blocked")
 @Constraint(validatedBy = {})
 public @interface BlockedAccountUuid {
-
-    @AliasFor(annotation = ExistsUuid.class, attribute = "message")
+    @AliasFor(annotation = ExistsUuid.class)
     String message() default "";
 
-    @AliasFor(annotation = ExistsUuid.class, attribute = "groups")
+    @AliasFor(annotation = ExistsUuid.class)
     Class<?>[] groups() default {};
 
-    @AliasFor(annotation = ExistsUuid.class, attribute = "payload")
+    @AliasFor(annotation = ExistsUuid.class)
     Class<? extends Payload>[] payload() default {};
 }

@@ -21,7 +21,7 @@ public class ExistsUuidValidator implements ConstraintValidator<ExistsUuid, UUID
     @Override
     public void initialize(ExistsUuid constraintAnnotation) {
         status=constraintAnnotation.status();
-        role=constraintAnnotation.role();
+        role=constraintAnnotation.roles();
     }
 
     @Override

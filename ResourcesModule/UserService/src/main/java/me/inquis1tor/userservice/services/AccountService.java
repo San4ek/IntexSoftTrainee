@@ -30,5 +30,5 @@ public interface AccountService {
                @ActiveAdminUuid UUID adminId);
 
     void unblock(@BlockedAccountUuid UUID accountId,
-                        @ActiveAdminUuid UUID adminId);
+                 @ActiveAdminUuid UUID adminId);
 }
