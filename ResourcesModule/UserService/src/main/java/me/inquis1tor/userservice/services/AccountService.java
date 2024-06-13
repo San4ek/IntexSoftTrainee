@@ -27,7 +27,7 @@ public interface AccountService {
     void delete(@ActiveAccountUuid UUID accountId);
 
     void block(@ActiveAccountUuid UUID accountId,
-                      @ActiveAdminUuid UUID adminId);
+               @ActiveAdminUuid UUID adminId);
 
     void unblock(@BlockedAccountUuid UUID accountId,
                         @ActiveAdminUuid UUID adminId);

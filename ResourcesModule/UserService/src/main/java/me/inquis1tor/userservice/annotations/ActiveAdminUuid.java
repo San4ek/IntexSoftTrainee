@@ -12,12 +12,12 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@ExistsUuid(role = Account.Role.ADMIN, status = Account.Status.ACTIVE)
+@ExistsUuid(role = Account.Role.ADMIN, status = Account.Status.ACTIVE, message = "Such admin not exists")
 @Constraint(validatedBy = {})
 public @interface ActiveAdminUuid {
 
     @AliasFor(annotation = ExistsUuid.class, attribute = "message")
-    String message() default "Such admin not exists";
+    String message() default "";
 
     @AliasFor(annotation = ExistsUuid.class, attribute = "groups")
     Class<?>[] groups() default {};
