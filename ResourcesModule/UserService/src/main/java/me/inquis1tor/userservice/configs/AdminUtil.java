@@ -1,18 +1,22 @@
 package me.inquis1tor.userservice.configs;
 
 import jakarta.annotation.Nullable;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.UUID;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Component
+@RequestScope
+@RequiredArgsConstructor
 public class AdminUtil {
+
+    private final HttpServletRequest httpServletRequest;
+
     @Nullable
-    public static UUID getAdminId() {
-        System.out.println("UUID "+(UUID) RequestContextHolder.getRequestAttributes().getAttribute("ADMIN_ID", RequestAttributes.SCOPE_REQUEST));
-        return (UUID) RequestContextHolder.getRequestAttributes().getAttribute("ADMIN_ID", RequestAttributes.SCOPE_REQUEST);
+    public UUID getAdminId() {
+        return UUID.fromString(httpServletRequest.getHeader("Administrator"));
     }
 }

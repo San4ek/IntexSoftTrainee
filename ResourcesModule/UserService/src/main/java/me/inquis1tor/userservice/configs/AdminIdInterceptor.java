@@ -18,14 +18,7 @@ public class AdminIdInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String adminId = request.getHeader("Administrator");
 
-        if (adminId==null) {
-            System.out.println("adminId is null");
-            throw new AdminRequiredException("Administrator id is required in header");
-        }
-
-        request.setAttribute("ADMIN_ID", adminId);
-
-        RequestContextHolder.getRequestAttributes().setAttribute("ADMIN_ID", UUID.fromString(adminId), RequestAttributes.SCOPE_REQUEST);
+        if (adminId==null) throw new AdminRequiredException("Administrator id is required in header");
 
         return true;
     }
