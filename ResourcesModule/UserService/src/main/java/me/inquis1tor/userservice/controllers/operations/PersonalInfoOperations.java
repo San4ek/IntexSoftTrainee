@@ -6,9 +6,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.SneakyThrows;
 import me.inquis1tor.userservice.dtos.PersonalInfoDto;
+import me.inquis1tor.userservice.exceptions.EndpointNotImplementedException;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +19,9 @@ import java.util.UUID;
 
 @Tag(name = "Personal info", description = "Personal info managements APIs")
 @RequestMapping("/userinfo/default")
-public interface PersonalInfoOperations extends Responsable {
+public interface PersonalInfoOperations {
 
+    @SneakyThrows
     @Parameter(name = "accountId",
             description = "Account id",
             required = true)
@@ -31,9 +33,9 @@ public interface PersonalInfoOperations extends Responsable {
             content = @Content,
             description = "Endpoint not implemented")
     @PutMapping("/update")
-    default ResponseEntity<PersonalInfoDto> add(@RequestParam UUID accountId,
-                                                @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "User personal info", useParameterTypeSchema = true)
+    default PersonalInfoDto update(@RequestParam UUID accountId,
+                                                   @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "User personal info", useParameterTypeSchema = true)
                                                 @RequestBody PersonalInfoDto personalInfo) {
-        return getDefaultResponse();
+        throw new EndpointNotImplementedException();
     }
 }

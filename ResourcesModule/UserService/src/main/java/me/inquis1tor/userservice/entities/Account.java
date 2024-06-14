@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -14,7 +13,6 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Table(name = "account")
-@SQLDelete(sql = "update account set deleted_at=now(), status='DELETED' where credentials_id = ?")
 public class Account extends Audit {
 
     @Id
@@ -26,7 +24,7 @@ public class Account extends Audit {
     @JoinColumn(name = "credentials_id", nullable = false, unique = true)
     private Credentials credentials;
 
-    @OneToOne(mappedBy = "account", cascade = CascadeType.REMOVE, optional = false)
+    @OneToOne(mappedBy = "account", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @PrimaryKeyJoinColumn
     private PersonalInfo personalInfo;
 

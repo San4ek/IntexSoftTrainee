@@ -6,6 +6,7 @@ import me.inquis1tor.userservice.controllers.operations.AccountOperations;
 import me.inquis1tor.userservice.dtos.AccountAuthDto;
 import me.inquis1tor.userservice.dtos.AccountDto;
 import me.inquis1tor.userservice.dtos.CredentialsAuthDto;
+import me.inquis1tor.userservice.entities.Account;
 import me.inquis1tor.userservice.mappers.AccountAuthMapper;
 import me.inquis1tor.userservice.mappers.AccountMapper;
 import me.inquis1tor.userservice.mappers.CredentialsAuthMapper;
@@ -52,12 +53,12 @@ public class AccountController implements AccountOperations {
     }
 
     @Override
-    public void block(UUID accountId) {
-        accountService.block(accountId, adminUtil.getAdminId());
+    public AccountDto block(UUID accountId) {
+        return accountMapper.accountToDto(accountService.block(accountId, adminUtil.getAdminId()));
     }
 
     @Override
-    public void unblock(UUID accountId) {
-        accountService.unblock(accountId, adminUtil.getAdminId());
+    public AccountDto unblock(UUID accountId) {
+        return accountMapper.accountToDto(accountService.unblock(accountId, adminUtil.getAdminId()));
     }
 }

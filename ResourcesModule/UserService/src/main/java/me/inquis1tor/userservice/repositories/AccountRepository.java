@@ -14,14 +14,16 @@ import java.util.UUID;
 public interface AccountRepository extends JpaRepository<Account, UUID> {
     Optional<Account> findByCredentials_Email(String email);
     boolean existsByIdAndStatusAndRoleIn(UUID id, Account.Status status, List<Account.Role> role);
+
+    @Modifying
+    @Query("update Account set deletedDate=current_timestamp, status='DELETED' where id = ?1")
     void deleteById(UUID accountId);
 
-    @Modifying
-    @Query("UPDATE Account SET status='BLOCKED', blockedDate=current_timestamp , blockedBy=?2 WHERE id=?1")
-    void blockById(UUID accountId, UUID adminId);
+    @Query(value = "UPDATE account SET status='BLOCKED', blocked_at=current_timestamp, blocked_by=?2 WHERE credentials_id=?1 returning *", nativeQuery = true)
+    Account blockById(UUID accountId, UUID adminId);
 
     @Modifying
-    @Query("UPDATE Account SET status='ACTIVE', blockedDate=null, blockedBy=null WHERE id=?1")
-    void unblockById(UUID accountId);
+    @Query(value = "UPDATE account SET status='ACTIVE', blocked_at=null, blocked_by=null WHERE credentials_id=?1", nativeQuery = true)
+    Account unblockById(UUID accountId);
 }
 

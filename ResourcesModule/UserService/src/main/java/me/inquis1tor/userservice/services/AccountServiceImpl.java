@@ -1,9 +1,8 @@
 package me.inquis1tor.userservice.services;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import me.inquis1tor.userservice.entities.Account;
 import me.inquis1tor.userservice.entities.Credentials;
-import me.inquis1tor.userservice.entities.PersonalInfo;
 import me.inquis1tor.userservice.repositories.AccountRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,11 +11,10 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
-    private PersonalInfoService personalInfoService;
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
     @Override
     @Transactional
@@ -33,10 +31,7 @@ public class AccountServiceImpl implements AccountService {
         account.setStatus(Account.Status.ACTIVE);
         account.setCredentials(credentials);
 
-        PersonalInfo personalInfo=new PersonalInfo();
-        personalInfo.setAccount(account);
-
-        personalInfoService.save(personalInfo);
+        accountRepository.saveAndFlush(account);
     }
 
     @Override
@@ -65,13 +60,13 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public void block(UUID accountId, UUID adminId) {
-        accountRepository.blockById(accountId,adminId);
+    public Account block(UUID accountId, UUID adminId) {
+        return accountRepository.blockById(accountId,adminId);
     }
 
     @Override
     @Transactional
-    public void unblock(UUID accountId, UUID adminId) {
-        accountRepository.unblockById(accountId);
+    public Account unblock(UUID accountId, UUID adminId) {
+        return accountRepository.unblockById(accountId);
     }
 }

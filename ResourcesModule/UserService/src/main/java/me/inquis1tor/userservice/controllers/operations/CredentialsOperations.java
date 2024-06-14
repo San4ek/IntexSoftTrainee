@@ -3,13 +3,12 @@ package me.inquis1tor.userservice.controllers.operations;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.SneakyThrows;
 import me.inquis1tor.userservice.dtos.CredentialsAuthDto;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import me.inquis1tor.userservice.exceptions.EndpointNotImplementedException;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,8 +18,9 @@ import java.util.UUID;
 
 @Tag(name = "Credentials", description = "Credentials management APIs")
 @RequestMapping("/default/credentials")
-public interface CredentialsOperations extends Responsable {
+public interface CredentialsOperations {
 
+    @SneakyThrows
     @Parameter(name = "accountId",
             description = "Account id",
             required = true)
@@ -31,9 +31,9 @@ public interface CredentialsOperations extends Responsable {
             content = @Content,
             description = "Endpoint not implemented")
     @PutMapping("/update")
-    default ResponseEntity<Void> update(@RequestParam UUID accountId,
+    default void update(@RequestParam UUID accountId,
                                         @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Account credentials", useParameterTypeSchema = true)
                                         @Valid @RequestBody CredentialsAuthDto credentials) {
-        return getDefaultResponse();
+        throw new EndpointNotImplementedException();
     }
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
 
 import java.util.UUID;
 
@@ -19,8 +20,7 @@ public class PersonalInfo {
     @Column(name = "account_id", nullable = false)
     private UUID id;
 
-    @OneToOne
-    @MapsId
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "account_id")
     private Account account;
 

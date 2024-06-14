@@ -25,7 +25,7 @@ import java.util.UUID;
 @Validated
 @Tag(name = "Account", description = "Account management APIs")
 @RequestMapping("/default/account")
-public interface AccountOperations extends Responsable {
+public interface AccountOperations {
 
     @SneakyThrows
     @Parameter(name ="email",
@@ -127,7 +127,7 @@ public interface AccountOperations extends Responsable {
             description = "Endpoint not implemented")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/block")
-    default void block(@RequestParam UUID accountId) {
+    default @ResponseBody AccountDto block(@RequestParam UUID accountId) {
         throw new EndpointNotImplementedException();
     }
 
@@ -149,7 +149,7 @@ public interface AccountOperations extends Responsable {
             description = "Endpoint not implemented")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/unblock")
-    default void unblock(@RequestParam UUID accountId) {
+    default @ResponseBody AccountDto unblock(@RequestParam UUID accountId) {
         throw new EndpointNotImplementedException();
     }
 }
