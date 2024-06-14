@@ -6,7 +6,6 @@ import me.inquis1tor.userservice.dtos.PersonalInfoDto;
 import me.inquis1tor.userservice.entities.PersonalInfo;
 import me.inquis1tor.userservice.mappers.PersonalInfoMapper;
 import me.inquis1tor.userservice.services.PersonalInfoService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
