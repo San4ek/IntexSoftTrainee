@@ -10,7 +10,9 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
 @Mapper(componentModel = SPRING)
 public interface AccountMapper {
+
     AccountDto accountToDto(Account account);
+
     Account dtoToAccount(AccountDto accountDto);
 
     List<AccountDto> accountListToDtoList(List<Account> employees);

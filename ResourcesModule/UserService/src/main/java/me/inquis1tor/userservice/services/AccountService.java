@@ -1,9 +1,8 @@
 package me.inquis1tor.userservice.services;
 
-import me.inquis1tor.userservice.annotations.ActiveAccountUuid;
-import me.inquis1tor.userservice.annotations.ActiveAdminUuid;
-import me.inquis1tor.userservice.annotations.BlockedAccountUuid;
-import me.inquis1tor.userservice.annotations.UniqueCredentials;
+import me.inquis1tor.userservice.annotations.validation.uuid.UserOrModerActiveUuid;
+import me.inquis1tor.userservice.annotations.validation.uuid.UserOrModerBlockedUuid;
+import me.inquis1tor.userservice.annotations.validation.credentials.UniqueCredentials;
 import me.inquis1tor.userservice.entities.Account;
 import me.inquis1tor.userservice.entities.Credentials;
 import org.springframework.validation.annotation.Validated;
@@ -24,11 +23,9 @@ public interface AccountService {
 
     List<Account> getAll();
 
-    void delete(@ActiveAccountUuid UUID accountId);
+    void delete(@UserOrModerActiveUuid UUID accountId);
 
-    Account block(@ActiveAccountUuid UUID accountId,
-               @ActiveAdminUuid UUID adminId);
+    Account block(@UserOrModerActiveUuid UUID accountId, UUID adminId);
 
-    Account unblock(@BlockedAccountUuid UUID accountId,
-                 @ActiveAdminUuid UUID adminId);
+    Account unblock(@UserOrModerBlockedUuid UUID accountId, UUID adminId);
 }

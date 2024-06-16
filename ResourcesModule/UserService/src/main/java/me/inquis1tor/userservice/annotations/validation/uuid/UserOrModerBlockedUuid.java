@@ -1,4 +1,4 @@
-package me.inquis1tor.userservice.annotations;
+package me.inquis1tor.userservice.annotations.validation.uuid;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -12,18 +12,18 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@ExistsUuid(roles = Account.Role.ADMIN,
-            status = Account.Status.ACTIVE,
-            message = "Such admin not exists")
+@ExistsUuidWithParams(roles = {Account.Role.USER, Account.Role.MODER},
+            status = Account.Status.BLOCKED,
+            message = "Account not exists or not blocked")
 @Constraint(validatedBy = {})
-public @interface ActiveAdminUuid {
+public @interface UserOrModerBlockedUuid {
 
-    @AliasFor(annotation = ExistsUuid.class)
+    @AliasFor(annotation = ExistsUuidWithParams.class)
     String message() default "";
 
-    @AliasFor(annotation = ExistsUuid.class)
+    @AliasFor(annotation = ExistsUuidWithParams.class)
     Class<?>[] groups() default {};
 
-    @AliasFor(annotation = ExistsUuid.class)
+    @AliasFor(annotation = ExistsUuidWithParams.class)
     Class<? extends Payload>[] payload() default {};
 }

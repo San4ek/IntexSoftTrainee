@@ -1,4 +1,4 @@
-package me.inquis1tor.userservice.annotations;
+package me.inquis1tor.userservice.annotations.validation.uuid;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.PARAMETER, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ExistsUuidValidator.class)
-public @interface ExistsUuid {
+public @interface ExistsUuidWithParams {
 
     Account.Status status();
 
