@@ -1,4 +1,4 @@
-package me.inquis1tor.userservice.annotations;
+package me.inquis1tor.userservice.annotations.validation.credentials;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -13,6 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = UniqueCredentialsValidator.class)
 public @interface UniqueCredentials {
+
     String message() default "Email already registered";
 
     Class<?>[] groups() default {};

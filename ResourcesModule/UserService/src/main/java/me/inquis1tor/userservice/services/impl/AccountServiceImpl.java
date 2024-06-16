@@ -1,9 +1,10 @@
-package me.inquis1tor.userservice.services;
+package me.inquis1tor.userservice.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import me.inquis1tor.userservice.entities.Account;
 import me.inquis1tor.userservice.entities.Credentials;
 import me.inquis1tor.userservice.repositories.AccountRepository;
+import me.inquis1tor.userservice.services.AccountService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,18 +20,16 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public boolean existsByIdAndStatusAndRoles(UUID id, Account.Status status, Account.Role[] role) {
-        return accountRepository.existsByIdAndStatusAndRoleIn(id,status,List.of(role));
+        return accountRepository.existsByIdAndStatusAndRoleIn(id, status, List.of(role));
     }
 
     @Override
     @Transactional
     public void createAccount(Credentials credentials) {
-        Account account=new Account();
-
+        Account account = new Account();
         account.setRole(Account.Role.USER);
         account.setStatus(Account.Status.ACTIVE);
         account.setCredentials(credentials);
-
         accountRepository.saveAndFlush(account);
     }
 

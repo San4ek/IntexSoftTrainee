@@ -10,5 +10,4 @@ import java.util.UUID;
 public interface CredentialsRepository extends JpaRepository<Credentials, UUID> {
 
     boolean existsByEmail(String email);
-
 }

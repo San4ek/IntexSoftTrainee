@@ -3,15 +3,15 @@ package me.inquis1tor.userservice.validators;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
-import me.inquis1tor.userservice.annotations.ExistsUuid;
+import me.inquis1tor.userservice.annotations.validation.uuid.ExistsUuidWithParams;
 import me.inquis1tor.userservice.entities.Account;
-import me.inquis1tor.userservice.services.AccountServiceImpl;
+import me.inquis1tor.userservice.services.impl.AccountServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
 @RequiredArgsConstructor
-public class ExistsUuidValidator implements ConstraintValidator<ExistsUuid, UUID> {
+public class ExistsUuidValidator implements ConstraintValidator<ExistsUuidWithParams, UUID> {
 
     private Account.Status status;
     private Account.Role[] role;
@@ -19,7 +19,7 @@ public class ExistsUuidValidator implements ConstraintValidator<ExistsUuid, UUID
     private final AccountServiceImpl accountServiceImpl;
 
     @Override
-    public void initialize(ExistsUuid constraintAnnotation) {
+    public void initialize(ExistsUuidWithParams constraintAnnotation) {
         status=constraintAnnotation.status();
         role=constraintAnnotation.roles();
     }

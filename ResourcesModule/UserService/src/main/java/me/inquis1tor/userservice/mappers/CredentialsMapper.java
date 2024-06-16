@@ -8,6 +8,8 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
 @Mapper(componentModel = SPRING)
 public interface CredentialsMapper {
+
     CredentialsDto credentialsToDto(Credentials credentials);
+
     Credentials dtoToCredentials(CredentialsDto credentialsDto);
 }
