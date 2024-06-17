@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="1" author="eugene-yuntsevich">
+        <sql>CREATE EXTENSION IF NOT EXISTS "uuid-ossp";</sql>
+    </changeSet>
+
+    <changeSet id="2" author="eugene-yuntsevich">
+        <insert tableName="brand">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="brandName" value="GOOCHI"/>
+        </insert>
+        <insert tableName="brand">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="brandName" value="ADIDAS"/>
+        </insert>
+        <insert tableName="brand">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="brandName" value="MARCO"/>
+        </insert>
+        <insert tableName="brand">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="brandName" value="SUPREME"/>
+        </insert>
+        <insert tableName="brand">
+            <column name="id" valueComputed="uuid_generate_v4()"/>
+            <column name="brandName" value="KUPALINKA"/>
+        </insert>
+    </changeSet>
+
+
+</databaseChangeLog>

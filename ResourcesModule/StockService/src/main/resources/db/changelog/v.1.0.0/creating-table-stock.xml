@@ -6,35 +6,20 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
 
     <changeSet id="1" author="eugene-yuntsevich">
-        <createTable tableName="StockModule">
-            <column name="id" type="UUID">
+        <createTable tableName="stock">
+            <column name="id" type="uuid">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(255)">
+            <column name="color" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="type" type="UUID">
+            <column name="size" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="color" type="UUID">
-                <constraints nullable="false"/>
-            </column>
-            <column name="size" type="UUID">
-                <constraints nullable="false"/>
-            </column>
-            <column name="brand" type="UUID">
+            <column name="product" type="UUID">
                 <constraints nullable="false"/>
             </column>
             <column name="amount" type="integer">
-                <constraints nullable="false"/>
-            </column>
-            <column name="currency" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="price" type="real">
-                <constraints nullable="false"/>
-            </column>
-            <column name="status" type="UUID">
                 <constraints nullable="false"/>
             </column>
             <column name="createdAt" type="timestamp">

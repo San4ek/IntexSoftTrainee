@@ -5,8 +5,9 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
             http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <include file="/db/changelog/v.1.0.0/creating-table-stock.xml"/>
-    <include file="db/changelog/v.1.0.0/creating-attributes-tables.xml"/>
+    <include file="db/changelog/v.1.0.0/creating-table-stock.xml"/>
+    <include file="db/changelog/v.1.0.0/creating-table-brand.xml"/>
+    <include file="db/changelog/v.1.0.0/creating-table-product.xml"/>
     <include file="db/changelog/v.1.0.0/adding-stock-foreign-keys.xml"/>
-    <include file="db/changelog/v.1.0.0/adding-initial-data-in-attribute-tables.xml"/>
+    <include file="db/changelog/v.1.0.0/adding-initial-data-in-brand-table.xml"/>
 </databaseChangeLog>
