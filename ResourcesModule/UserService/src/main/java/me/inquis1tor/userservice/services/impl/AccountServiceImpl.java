@@ -26,6 +26,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public void createAccount(Credentials credentials) {
+        //?TODO: можно ли юзать UUID.randomUUID() вместо GeneratedValue
         Account account = new Account();
         account.setRole(Account.Role.USER);
         account.setStatus(Account.Status.ACTIVE);
@@ -35,13 +36,13 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public Account get(UUID accountId) {
+    public Account getAccount(UUID accountId) {
         return accountRepository.findById(accountId).orElseThrow();
     }
 
     @Override
     @Transactional
-    public Account get(String email) {
+    public Account getAccount(String email) {
         return accountRepository.findByCredentials_Email(email).orElseThrow();
     }
 

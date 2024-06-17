@@ -17,10 +17,18 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
 
     private final PersonalInfoRepository personalInfoRepository;
 
+    @Override
     @Transactional
-    public PersonalInfo update(UUID accountId, PersonalInfo personalInfo) {
+    public PersonalInfo updatePersonalInfo(UUID accountId, PersonalInfo personalInfo) {
         personalInfo.setId(accountId);
 
         return personalInfoRepository.save(personalInfo);
+    }
+
+    @Override
+    @Transactional
+
+    public PersonalInfo getPersonalInfo(UUID accountId) {
+        return personalInfoRepository.findById(accountId).orElseThrow();
     }
 }

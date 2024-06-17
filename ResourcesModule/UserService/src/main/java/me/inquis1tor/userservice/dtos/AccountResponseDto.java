@@ -5,14 +5,16 @@ import me.inquis1tor.userservice.entities.Account;
 
 import java.util.UUID;
 
-@Schema(description = "Account information model for auth")
-public record AccountAuthDto(
+@Schema(description = "Account model information")
+public record AccountResponseDto(
         @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Account id")
         UUID id,
-        @Schema(description = "Account role")
+        @Schema(description = "Account role", example = "USER")
         Account.Role role,
         @Schema(description = "Account status", example = "ACTIVE")
         Account.Status status,
-        @Schema(description = "Account credentials for auth")
-        CredentialsAuthDto credentials
+        @Schema(description = "Account credentials")
+        CredentialsResponseDto credentials,
+        @Schema(description = "User personal info")
+        PersonalInfoDto personalInfo
 ) {}

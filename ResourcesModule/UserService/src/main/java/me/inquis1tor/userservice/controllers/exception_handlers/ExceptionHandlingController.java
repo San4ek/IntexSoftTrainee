@@ -1,7 +1,7 @@
 package me.inquis1tor.userservice.controllers.exception_handlers;
 
 import jakarta.validation.ConstraintViolationException;
-import me.inquis1tor.userservice.dtos.ErrorDto;
+import me.inquis1tor.userservice.dtos.ErrorResponseDto;
 import me.inquis1tor.userservice.exceptions.EndpointNotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -27,15 +27,15 @@ public class ExceptionHandlingController {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
-    public @ResponseBody List<ErrorDto> onConstraintViolationsException(ConstraintViolationException e) {
+    public @ResponseBody List<ErrorResponseDto> onConstraintViolationsException(ConstraintViolationException e) {
         return e.getConstraintViolations().stream().
-                map(val -> new ErrorDto("Not valid data", val.getMessage())).toList();
+                map(val -> new ErrorResponseDto("Not valid data", val.getMessage())).toList();
     }
 
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public @ResponseBody List<ErrorDto> onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public @ResponseBody List<ErrorResponseDto> onMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         return e.getBindingResult().getFieldErrors().stream().
-                map(val -> new ErrorDto( "Incorrect data format", val.getDefaultMessage())).toList();
+                map(val -> new ErrorResponseDto( "Incorrect data format", val.getDefaultMessage())).toList();
     }
 }

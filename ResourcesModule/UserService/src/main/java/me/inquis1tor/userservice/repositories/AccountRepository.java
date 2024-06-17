@@ -12,8 +12,12 @@ import java.util.UUID;
 
 @Repository
 public interface AccountRepository extends JpaRepository<Account, UUID> {
+
     Optional<Account> findByCredentials_Email(String email);
+
     boolean existsByIdAndStatusAndRoleIn(UUID id, Account.Status status, List<Account.Role> role);
+
+    boolean existsByCredentialsEmail(String email);
 
     @Modifying
     @Query("update Account set deletedDate=current_timestamp, status='DELETED' where id = ?1")

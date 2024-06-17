@@ -7,14 +7,15 @@ import jakarta.validation.constraints.Email;
 import me.inquis1tor.userservice.annotations.swagger.parameters.AccountIdParameter;
 import me.inquis1tor.userservice.annotations.swagger.parameters.AdminIdParameter;
 import me.inquis1tor.userservice.annotations.swagger.parameters.EmailParameter;
+import me.inquis1tor.userservice.annotations.swagger.requests.SwaggerRequestBody;
 import me.inquis1tor.userservice.annotations.swagger.responses.AccountAuthDtoOkResponse;
 import me.inquis1tor.userservice.annotations.swagger.responses.AccountDtoArrayOkResponse;
 import me.inquis1tor.userservice.annotations.swagger.responses.AccountDtoOkResponse;
 import me.inquis1tor.userservice.annotations.swagger.responses.NoContentOkResponse;
 import me.inquis1tor.userservice.annotations.swagger.statuses.OkResponseStatus;
-import me.inquis1tor.userservice.dtos.AccountAuthDto;
-import me.inquis1tor.userservice.dtos.AccountDto;
-import me.inquis1tor.userservice.dtos.CredentialsAuthDto;
+import me.inquis1tor.userservice.dtos.AccountAuthResponseDto;
+import me.inquis1tor.userservice.dtos.AccountResponseDto;
+import me.inquis1tor.userservice.dtos.CredentialsRequestDto;
 import me.inquis1tor.userservice.exceptions.EndpointNotImplementedException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +28,12 @@ import java.util.UUID;
 public interface AccountsController {
 
     @EmailParameter
-    @Operation(summary = "Get account by its email")
+    @Operation(summary = "Check account existence by its email")
     @AccountAuthDtoOkResponse
     @OkResponseStatus
     @GetMapping
-    default @ResponseBody AccountAuthDto getAccount(@RequestParam
-                                                 @Email(message = "Email format required")
-                                                 String email) throws EndpointNotImplementedException {
+    default @ResponseBody AccountAuthResponseDto getAccount(@RequestParam @Email(message = "Email format required")
+                                   String email) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
@@ -42,7 +42,7 @@ public interface AccountsController {
     @AccountDtoOkResponse
     @OkResponseStatus
     @GetMapping("/auth")
-    default @ResponseBody AccountDto getAccount(@RequestParam UUID accountId) throws EndpointNotImplementedException {
+    default @ResponseBody AccountResponseDto getAccount(@RequestParam UUID accountId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
@@ -59,10 +59,8 @@ public interface AccountsController {
     @NoContentOkResponse
     @OkResponseStatus
     @PostMapping
-    default void registerAccount(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Account credentials",
-                    useParameterTypeSchema = true)
-            @Valid @RequestBody CredentialsAuthDto credentials) throws EndpointNotImplementedException {
+    default void registerAccount(@SwaggerRequestBody(description = "Account credentials")
+                                     @Valid @RequestBody CredentialsRequestDto credentials) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
@@ -70,7 +68,7 @@ public interface AccountsController {
     @AccountDtoArrayOkResponse
     @OkResponseStatus
     @GetMapping("/all")
-    default @ResponseBody Iterable<AccountDto> getAllAccounts() throws EndpointNotImplementedException {
+    default @ResponseBody Iterable<AccountResponseDto> getAllAccounts() throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
@@ -80,7 +78,7 @@ public interface AccountsController {
     @AccountDtoOkResponse
     @OkResponseStatus
     @PutMapping("/block")
-    default @ResponseBody AccountDto blockAccount(@RequestParam UUID accountId, @RequestParam UUID adminId) throws EndpointNotImplementedException {
+    default @ResponseBody AccountResponseDto blockAccount(@RequestParam UUID accountId, @RequestParam UUID adminId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
@@ -90,7 +88,7 @@ public interface AccountsController {
     @AccountDtoOkResponse
     @OkResponseStatus
     @PutMapping("/unblock")
-    default @ResponseBody AccountDto unblockAccount(@RequestParam UUID accountId, @RequestParam UUID adminId) throws EndpointNotImplementedException {
+    default @ResponseBody AccountResponseDto unblockAccount(@RequestParam UUID accountId, @RequestParam UUID adminId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 }

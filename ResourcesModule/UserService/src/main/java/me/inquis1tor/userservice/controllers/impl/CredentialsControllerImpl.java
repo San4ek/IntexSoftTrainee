@@ -2,7 +2,7 @@ package me.inquis1tor.userservice.controllers.impl;
 
 import lombok.RequiredArgsConstructor;
 import me.inquis1tor.userservice.controllers.CredentialsController;
-import me.inquis1tor.userservice.dtos.CredentialsAuthDto;
+import me.inquis1tor.userservice.dtos.CredentialsRequestDto;
 import me.inquis1tor.userservice.mappers.CredentialsAuthMapper;
 import me.inquis1tor.userservice.services.impl.CredentialsServiceImpl;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ public class CredentialsControllerImpl implements CredentialsController {
     private final CredentialsAuthMapper credentialsAuthMapper;
 
     @Override
-    public void updateCredentials(UUID accountId, CredentialsAuthDto credentials) {
+    public void updateCredentials(UUID accountId, CredentialsRequestDto credentials) {
         credentialsServiceImpl.update(accountId, credentialsAuthMapper.authDtoToCredentials(credentials));
     }
 }

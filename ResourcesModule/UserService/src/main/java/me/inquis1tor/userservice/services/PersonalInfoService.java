@@ -7,5 +7,7 @@ import java.util.UUID;
 
 public interface PersonalInfoService {
 
-    PersonalInfo update(@AnyActiveUuid UUID accountId, PersonalInfo personalInfo);
+    PersonalInfo updatePersonalInfo(@AnyActiveUuid UUID accountId, PersonalInfo personalInfo);
+
+    PersonalInfo getPersonalInfo(@AnyActiveUuid UUID accountId);
 }

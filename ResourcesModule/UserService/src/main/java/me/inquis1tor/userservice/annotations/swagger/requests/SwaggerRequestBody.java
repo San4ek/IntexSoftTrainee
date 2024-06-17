@@ -16,5 +16,4 @@ public @interface SwaggerRequestBody {
 
     @AliasFor(annotation = RequestBody.class)
     String description() default "";
-
 }

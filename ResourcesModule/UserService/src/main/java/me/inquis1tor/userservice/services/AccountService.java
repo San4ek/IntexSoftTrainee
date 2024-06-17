@@ -17,9 +17,9 @@ public interface AccountService {
 
     void createAccount(@UniqueCredentials Credentials credentials);
 
-    Account get(UUID accountId);
+    Account getAccount(UUID accountId);
 
-    Account get(String email);
+    Account getAccount(String email);
 
     List<Account> getAll();
 
