@@ -5,7 +5,7 @@ import me.inquis1tor.userservice.entities.Account;
 
 import java.util.UUID;
 
-@Schema(description = "Account auth information model")
+@Schema(description = "Account information model for auth")
 public record AccountAuthResponseDto(
         @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Account id")
         UUID id,

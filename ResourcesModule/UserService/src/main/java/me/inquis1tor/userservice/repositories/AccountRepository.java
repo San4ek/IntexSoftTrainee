@@ -17,8 +17,6 @@ public interface AccountRepository extends JpaRepository<Account, UUID> {
 
     boolean existsByIdAndStatusAndRoleIn(UUID id, Account.Status status, List<Account.Role> role);
 
-    boolean existsByCredentialsEmail(String email);
-
     @Modifying
     @Query("update Account set deletedDate=current_timestamp, status='DELETED' where id = ?1")
     void deleteById(UUID accountId);

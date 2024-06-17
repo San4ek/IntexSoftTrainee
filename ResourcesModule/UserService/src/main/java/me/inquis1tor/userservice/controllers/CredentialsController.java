@@ -4,6 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import me.inquis1tor.userservice.annotations.swagger.parameters.AccountIdParameter;
+import me.inquis1tor.userservice.annotations.swagger.requests.SwaggerRequestBody;
+import me.inquis1tor.userservice.annotations.swagger.responses.BadRequestErrorResponse;
+import me.inquis1tor.userservice.annotations.swagger.responses.ExpectationFailedErrorResponse;
 import me.inquis1tor.userservice.annotations.swagger.responses.NoContentOkResponse;
 import me.inquis1tor.userservice.dtos.CredentialsRequestDto;
 import me.inquis1tor.userservice.exceptions.EndpointNotImplementedException;
@@ -21,10 +24,11 @@ public interface CredentialsController {
     @AccountIdParameter
     @Operation(summary = "Update account credentials by account id")
     @NoContentOkResponse
+    @ExpectationFailedErrorResponse
+    @BadRequestErrorResponse
     @PutMapping
-    default void updateCredentials(@RequestParam UUID accountId,
-                                   @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Account credentials", useParameterTypeSchema = true)
-                                        @Valid @RequestBody CredentialsRequestDto credentials) throws EndpointNotImplementedException {
+    default void updateCredentials(@RequestParam UUID accountId, @SwaggerRequestBody(description = "Account credentials")
+                                    @Valid @RequestBody CredentialsRequestDto credentials) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 }

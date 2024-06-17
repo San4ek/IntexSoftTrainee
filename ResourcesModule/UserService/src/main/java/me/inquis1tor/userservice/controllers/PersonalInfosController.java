@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import me.inquis1tor.userservice.annotations.swagger.parameters.AccountIdParameter;
 import me.inquis1tor.userservice.annotations.swagger.requests.SwaggerRequestBody;
+import me.inquis1tor.userservice.annotations.swagger.responses.BadRequestErrorResponse;
 import me.inquis1tor.userservice.annotations.swagger.responses.PersonalInfoDtoOkResponse;
 import me.inquis1tor.userservice.dtos.PersonalInfoDto;
 import me.inquis1tor.userservice.exceptions.EndpointNotImplementedException;
@@ -21,6 +22,7 @@ public interface PersonalInfosController {
     @AccountIdParameter
     @Operation(summary = "Update user personal info by account id")
     @PersonalInfoDtoOkResponse
+    @BadRequestErrorResponse
     @PutMapping
     default PersonalInfoDto updatePersonalInfo(@RequestParam UUID accountId,
                                                @SwaggerRequestBody(description = "User personal info")
