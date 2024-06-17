@@ -1,0 +1,1 @@
+alter table credentials alter column id set default uuid_generate_v4();

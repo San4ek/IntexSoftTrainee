@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: Utermybest1
+    driver-class-name: org.postgresql.Driver
+
+  test:
+    database:
+      replace: none
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+    default-schema: intexsofttrainee
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: intexsofttrainee
+        format_sql: true
+    hibernate:
+      ddl-auto: validate
+
+    show-sql: true
+    generate-ddl: false
