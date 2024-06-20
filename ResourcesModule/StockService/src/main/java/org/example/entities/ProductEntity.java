@@ -2,6 +2,7 @@ package org.example.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.enums.CurrencyEnum;
 import org.example.enums.TypeEnum;
 
 import java.util.UUID;
@@ -13,7 +14,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Table(name = "product")
 @Entity
-public class ProductEntity {
+public class ProductEntity extends Audit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -31,8 +32,9 @@ public class ProductEntity {
     @ManyToOne(optional = false)
     private BrandEntity brand;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "currency")
-    private String currency;
+    private CurrencyEnum currency;
 
     @Column(name = "price")
     private float price;

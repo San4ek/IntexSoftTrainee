@@ -12,6 +12,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @MappedSuperclass
 @Getter
@@ -32,12 +33,12 @@ public abstract class Audit {
 
     @Column(name = "createdBy")
     @CreatedBy
-    private String createdBy;
+    private UUID createdBy;
 
     @Column(name = "editedBy")
     @LastModifiedBy
-    private String editedBy;
+    private UUID editedBy;
 
     @Column(name = "deletedBy")
-    private String deletedBy;
+    private UUID deletedBy;
 }

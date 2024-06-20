@@ -7,6 +7,8 @@ import org.example.enums.SizeEnum;
 
 import java.util.UUID;
 
+import static org.example.utils.validation.ValidatorUtils.checkTrue;
+
 @Getter
 @Setter
 @ToString
@@ -14,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Table(name = "stock")
 @Entity
-public class StockEntity extends Audit {
+public class StockEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
@@ -33,5 +35,14 @@ public class StockEntity extends Audit {
     private ProductEntity product;
 
     @Column(name = "amount")
-    private int amount;
+    private Long amount;
+
+    public void addToStock(Long amount) {
+        this.amount += amount;
+    }
+
+    public void removeFromStock(Long amount) {
+        checkTrue(this.amount >= amount, "Not enough stock items");
+        this.amount -= amount;
+    }
 }
