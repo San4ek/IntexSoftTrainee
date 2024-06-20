@@ -124,7 +124,7 @@ public class StockItemMapperTest {
         // Создание списка тестовых DTO StockItemRequest
         UUID productId1 = UUID.randomUUID();
         StockItemRequest stockItemRequest1 = new StockItemRequest();
-        stockItemRequest1.setColor(ColorEnum.valueOf("GREEN"));
+        stockItemRequest1.setColor(ColorEnum.valueOf("RED"));
         stockItemRequest1.setSize(SizeEnum.valueOf("SIZE_40"));
         stockItemRequest1.setProductId(productId1);
         stockItemRequest1.setAmount(10L);
