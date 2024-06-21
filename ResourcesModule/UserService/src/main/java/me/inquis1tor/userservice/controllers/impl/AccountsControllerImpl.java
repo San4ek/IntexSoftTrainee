@@ -9,7 +9,8 @@ import me.inquis1tor.userservice.mappers.AccountAuthMapper;
 import me.inquis1tor.userservice.mappers.AccountMapper;
 import me.inquis1tor.userservice.mappers.CredentialsAuthMapper;
 import me.inquis1tor.userservice.services.AccountService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.UUID;

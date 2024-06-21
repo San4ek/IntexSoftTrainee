@@ -13,6 +13,8 @@ import java.util.UUID;
 @Repository
 public interface AccountRepository extends JpaRepository<Account, UUID> {
 
+    boolean existsById(UUID id);
+
     Optional<Account> findByCredentials_Email(String email);
 
     boolean existsByIdAndStatusAndRoleIn(UUID id, Account.Status status, List<Account.Role> role);

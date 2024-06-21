@@ -1,4 +1,4 @@
-package me.inqu1sitor.enums;
+package me.inqu1sitor.authservice.enums;
 
 public enum Role {
     USER,
