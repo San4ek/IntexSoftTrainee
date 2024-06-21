@@ -8,7 +8,7 @@ import me.inqu1sitor.interfaces.UniquenessChecker;
 import java.lang.annotation.Annotation;
 
 @RequiredArgsConstructor
-public class UniquenessValidator<A extends Annotation, T> implements ConstraintValidator<A, T> {
+public class EntityUniquenessValidator<A extends Annotation, T> implements ConstraintValidator<A, T> {
 
     private final UniquenessChecker<T> uniquenessChecker;
 
