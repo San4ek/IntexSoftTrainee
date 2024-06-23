@@ -26,7 +26,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public void createAccount(Credentials credentials) {
-        //?TODO: можно ли юзать UUID.randomUUID() вместо GeneratedValue
         Account account = new Account();
         account.setRole(Account.Role.USER);
         account.setStatus(Account.Status.ACTIVE);

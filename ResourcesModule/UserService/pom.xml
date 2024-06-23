@@ -20,9 +20,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>me.inqu1sitor</groupId>
-            <artifactId>validation-starter</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Schema(description = "Error information model")
-public class ErrorDto {
+public class ErrorResponseDto {
         @Schema(description = "Error code", example = "400")
         private int code;
 

@@ -1,6 +1,39 @@
+server:
+  port: 9000
+
 spring:
+  main:
+    allow-bean-definition-overriding: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9000/oauth2/jwks
+
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: Utermybest1
     driver-class-name: org.postgresql.Driver
+
+  test:
+    database:
+      replace: none
+
+  liquibase:
+    change-log: classpath:db.changelog/db.changelog-master.xml
+    default-schema: auth
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: auth
+        format_sql: true
+
+    hibernate:
+      ddl-auto: validate
+
+    show-sql: true
+    generate-ddl: false

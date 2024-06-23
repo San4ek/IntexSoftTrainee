@@ -1,18 +1,14 @@
 package me.inqu1sitor.authservice.dtos;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import me.inqu1sitor.authservice.enums.Role;
+import me.inqu1sitor.authservice.entities.Account;
 
 import java.util.UUID;
 
-@Data
-@NoArgsConstructor
-public class AccountDetailsTransferDto {
+public record AccountDetailsTransferDto (
 
-    private UUID id;
+    UUID id,
 
-    private String email;
+    String email,
 
-    private Role role;
-}
+    Account.Role role
+) {}

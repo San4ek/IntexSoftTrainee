@@ -12,7 +12,6 @@
     <modules>
         <module>AuthService</module>
         <module>ResourcesModule</module>
-        <module>starters</module>
     </modules>
 
     <properties>

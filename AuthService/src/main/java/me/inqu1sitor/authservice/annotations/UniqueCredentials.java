@@ -1,8 +1,8 @@
-package me.inqu1sitor.annotations;
+package me.inqu1sitor.authservice.annotations;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import me.inqu1sitor.validators.EnumPartValidator;
+import me.inqu1sitor.authservice.validators.UniqueCredentialsValidator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,12 +11,10 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = EnumPartValidator.class)
-public @interface EnumPart {
+@Constraint(validatedBy = UniqueCredentialsValidator.class)
+public @interface UniqueCredentials {
 
-    Class<? extends Enum<?>> enumClass();
-
-    String message() default "String should be a part of required enum";
+    String message() default "Credentials should be unique";
 
     Class<?>[] groups() default {};
 
