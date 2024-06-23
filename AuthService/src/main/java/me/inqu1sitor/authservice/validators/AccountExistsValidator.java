@@ -3,7 +3,7 @@ package me.inqu1sitor.authservice.validators;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
-import me.inqu1sitor.authservice.annotations.AccountExists;
+import me.inqu1sitor.authservice.annotations.validation.AccountExists;
 import me.inqu1sitor.authservice.entities.Account;
 import me.inqu1sitor.authservice.repositories.AccountRepository;
 import org.springframework.transaction.annotation.Transactional;

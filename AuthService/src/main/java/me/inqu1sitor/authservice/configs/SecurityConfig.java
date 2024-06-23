@@ -1,5 +1,7 @@
 package me.inqu1sitor.authservice.configs;
 
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import me.inqu1sitor.authservice.entities.Account;
 import me.inqu1sitor.authservice.repositories.AccountRepository;
 import org.springframework.context.annotation.Bean;
@@ -13,14 +15,24 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+
 
 @EnableWebSecurity
 @Configuration(proxyBeanMethods = false)
+@SecurityScheme(
+        type = SecuritySchemeType.HTTP,
+        scheme = "bearer",
+        bearerFormat = "JWT",
+        name = "bearerAuth")
 public class SecurityConfig {
 
     @Bean
-    SecurityFilterChain restApiSecurityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain restApiSecurityFilterChain(HttpSecurity http, JwtRoleConverter jwtRoleConverter) throws Exception {
+        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtRoleConverter);
+
         return http.
                 securityMatcher("/api/**").
                 csrf(csrf -> csrf.disable()).
@@ -32,8 +44,7 @@ public class SecurityConfig {
                                 requestMatchers("api/accounts/**").hasAuthority("ROLE_"+ Account.Role.ADMIN.name())).
                 logout(logout -> logout.logoutUrl("/logout")).
                 sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
-                oauth2ResourceServer(oauth2 ->
-                        oauth2.jwt(Customizer.withDefaults())).
+                oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationConverter))).
                 build();
     }
 

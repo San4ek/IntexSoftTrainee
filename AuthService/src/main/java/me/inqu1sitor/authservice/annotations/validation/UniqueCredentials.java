@@ -1,4 +1,4 @@
-package me.inqu1sitor.authservice.annotations;
+package me.inqu1sitor.authservice.annotations.validation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

@@ -1,9 +1,9 @@
-package me.inquis1tor.userservice.annotations.swagger.responses;
+package me.inqu1sitor.authservice.annotations.swagger.responses;
 
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import me.inquis1tor.userservice.dtos.ErrorResponseDto;
+import me.inqu1sitor.authservice.dtos.ErrorResponseDto;
 import org.springframework.http.MediaType;
 
 import java.lang.annotation.Retention;

@@ -1,7 +1,7 @@
 package me.inqu1sitor.authservice.services.impl;
 
 import lombok.RequiredArgsConstructor;
-import me.inqu1sitor.authservice.annotations.UniqueCredentials;
+import me.inqu1sitor.authservice.annotations.validation.UniqueCredentials;
 import me.inqu1sitor.authservice.dtos.CredentialsRequestDto;
 import me.inqu1sitor.authservice.entities.Account;
 import me.inqu1sitor.authservice.mappers.AccountMapper;

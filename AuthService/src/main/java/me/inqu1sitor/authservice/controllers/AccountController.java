@@ -1,6 +1,14 @@
 package me.inqu1sitor.authservice.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import me.inqu1sitor.authservice.annotations.swagger.parameters.AccountIdParameter;
+import me.inqu1sitor.authservice.annotations.swagger.requests.SwaggerRequestBody;
+import me.inqu1sitor.authservice.annotations.swagger.responses.BadRequestErrorResponse;
+import me.inqu1sitor.authservice.annotations.swagger.responses.ExpectationFailedErrorResponse;
+import me.inqu1sitor.authservice.annotations.swagger.responses.NoContentOkResponse;
+import me.inqu1sitor.authservice.annotations.swagger.security.Oauth2SecurityRequired;
+import me.inqu1sitor.authservice.annotations.swagger.statuses.OkResponseStatus;
 import me.inqu1sitor.authservice.dtos.CredentialsRequestDto;
 import me.inqu1sitor.authservice.exceptions.EndpointNotImplementedException;
 import org.springframework.http.HttpStatus;
@@ -9,48 +17,78 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
+@Tag(name = "Account", description = "Account management APIs")
 @RequestMapping("/default/accounts")
 public interface AccountController {
 
+    @BadRequestErrorResponse
+    @ExpectationFailedErrorResponse
+    @NoContentOkResponse
     @PostMapping("/user")
     @ResponseStatus(HttpStatus.OK)
-    default void registerUser(@Valid CredentialsRequestDto credentialsRequestDto) throws EndpointNotImplementedException {
+    default void registerUser(@SwaggerRequestBody(description = "Account credentials") @RequestBody
+                                  @Valid CredentialsRequestDto credentialsRequestDto) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
+    @Oauth2SecurityRequired
+    @BadRequestErrorResponse
+    @ExpectationFailedErrorResponse
+    @NoContentOkResponse
     @PostMapping("/moder")
-    @ResponseStatus(HttpStatus.OK)
-    default void registerModer(@Valid CredentialsRequestDto credentialsRequestDto) throws EndpointNotImplementedException {
+    @OkResponseStatus
+    default void registerModer(@SwaggerRequestBody(description = "Account credentials") @RequestBody
+                                   @Valid CredentialsRequestDto credentialsRequestDto) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
+    @Oauth2SecurityRequired
+    @BadRequestErrorResponse
+    @ExpectationFailedErrorResponse
+    @NoContentOkResponse
     @PostMapping("/admin")
-    @ResponseStatus(HttpStatus.OK)
-    default void registerAdmin(@Valid CredentialsRequestDto credentialsRequestDto) throws EndpointNotImplementedException {
+    @OkResponseStatus
+    default void registerAdmin(@SwaggerRequestBody(description = "Account credentials") @RequestBody
+                                   @Valid CredentialsRequestDto credentialsRequestDto) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
+    @Oauth2SecurityRequired
+    @BadRequestErrorResponse
+    @NoContentOkResponse
+    @AccountIdParameter
     @PutMapping("/block")
-    @ResponseStatus(HttpStatus.OK)
-    default void block(UUID accountId) throws EndpointNotImplementedException {
+    @OkResponseStatus
+    default void block(@RequestParam UUID accountId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
+    @Oauth2SecurityRequired
+    @BadRequestErrorResponse
+    @NoContentOkResponse
+    @AccountIdParameter
     @PutMapping("/unblock")
-    @ResponseStatus(HttpStatus.OK)
-    default void unblock(UUID accountId) throws EndpointNotImplementedException {
+    @OkResponseStatus
+    default void unblock(@RequestParam UUID accountId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
+    @Oauth2SecurityRequired
+    @NoContentOkResponse
     @DeleteMapping
-    @ResponseStatus(HttpStatus.OK)
+    @OkResponseStatus
     default void delete() throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
+    @Oauth2SecurityRequired
+    @BadRequestErrorResponse
+    @ExpectationFailedErrorResponse
+    @NoContentOkResponse
     @PutMapping
-    @ResponseStatus(HttpStatus.OK)
-    default void update(@Valid CredentialsRequestDto credentialsRequestDto) throws EndpointNotImplementedException {
+    @OkResponseStatus
+    default void update(@SwaggerRequestBody(description = "Account credentials")
+                            @RequestBody @Valid CredentialsRequestDto credentialsRequestDto) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 }

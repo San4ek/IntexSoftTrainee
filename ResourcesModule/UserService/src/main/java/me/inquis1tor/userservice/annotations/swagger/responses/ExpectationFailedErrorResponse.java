@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import me.inquis1tor.userservice.dtos.ErrorResponseDto;
+import org.springframework.http.MediaType;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -14,6 +15,7 @@ import static java.lang.annotation.ElementType.METHOD;
 @Target(METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @ApiResponse(responseCode = "417",
-        content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+        content = @Content(schema = @Schema(implementation = ErrorResponseDto.class),
+                mediaType = MediaType.APPLICATION_JSON_VALUE))
 public @interface ExpectationFailedErrorResponse {
 }
