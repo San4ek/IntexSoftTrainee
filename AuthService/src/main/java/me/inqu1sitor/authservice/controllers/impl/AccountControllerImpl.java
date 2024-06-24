@@ -33,6 +33,5 @@ public class AccountControllerImpl implements AccountController {
     @Override
     public void delete() {
         accountService.deleteAccount();
-        System.out.println("Work");
     }
 }

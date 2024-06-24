@@ -5,6 +5,7 @@ import me.inqu1sitor.authservice.annotations.validation.UniqueCredentials;
 import me.inqu1sitor.authservice.dtos.CredentialsRequestDto;
 import me.inqu1sitor.authservice.entities.Account;
 import me.inqu1sitor.authservice.mappers.AccountMapper;
+import me.inqu1sitor.authservice.rabbit.AccountDeletedNotifier;
 import me.inqu1sitor.authservice.repositories.AccountRepository;
 import me.inqu1sitor.authservice.services.AccountService;
 import me.inqu1sitor.authservice.utils.LoggedAccountHolder;
@@ -24,6 +25,7 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final LoggedAccountHolder loggedAccountHolder;
+    private final AccountDeletedNotifier accountDeletedNotifier;
 
     @Override
     @Transactional
@@ -64,5 +66,6 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void deleteAccount() {
         accountRepository.deleteById(loggedAccountHolder.getId());
+        accountDeletedNotifier.notifyAbout(loggedAccountHolder.getId());
     }
 }
