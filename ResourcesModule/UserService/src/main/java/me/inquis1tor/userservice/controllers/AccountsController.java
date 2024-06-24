@@ -61,19 +61,18 @@ public interface AccountsController {
     @BadRequestErrorResponse
     @OkResponseStatus
     @PutMapping("/block")
-    default @ResponseBody AccountResponseDto blockAccount(@RequestParam UUID accountId) throws EndpointNotImplementedException {
+    default void blockAccount(@RequestParam UUID accountId, @RequestParam UUID adminId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
     @PreAuthorize("@securityService.hasCode('UNBLOCK_CODE')")
     @AccountIdParameter
-    @AdminIdParameter
     @Operation(summary = "Unblock account by its id")
     @AccountDtoOkResponse
     @BadRequestErrorResponse
     @OkResponseStatus
     @PutMapping("/unblock")
-    default @ResponseBody AccountResponseDto unblockAccount(@RequestParam UUID accountId) throws EndpointNotImplementedException {
+    default void unblockAccount(@RequestParam UUID accountId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 }

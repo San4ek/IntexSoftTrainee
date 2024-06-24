@@ -7,6 +7,7 @@ import me.inqu1sitor.authservice.entities.Account;
 import me.inqu1sitor.authservice.mappers.AccountMapper;
 import me.inqu1sitor.authservice.repositories.AccountRepository;
 import me.inqu1sitor.authservice.services.AccountService;
+import me.inqu1sitor.authservice.utils.LoggedAccountHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,10 +23,11 @@ public class AccountServiceImpl implements AccountService {
     private final AccountMapper accountMapper;
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
+    private final LoggedAccountHolder loggedAccountHolder;
 
     @Override
     @Transactional
-    public void createAccount(@UniqueCredentials CredentialsRequestDto credentials, Account.Role role) {
+    public void createAccount(CredentialsRequestDto credentials, Account.Role role) {
         Account account = accountMapper.credentialsToAccount(credentials);
         account.setPassword(passwordEncoder.encode(account.getPassword()));
         account.setRole(role);
@@ -37,7 +39,7 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public void updateAccount(CredentialsRequestDto credentials) {
         Account account=accountMapper.credentialsToAccount(credentials);
-        //account.setId();
+        account.setId(loggedAccountHolder.getId());
         accountRepository.save(account);
     }
 
@@ -55,12 +57,12 @@ public class AccountServiceImpl implements AccountService {
     public void unblockAccount(UUID accountId) {
         Account account = new Account();
         account.setId(accountId);
-        account.setStatus(Account.Status.BLOCKED);
+        account.setStatus(Account.Status.ACTIVE);
         accountRepository.save(account);
     }
 
     @Override
     public void deleteAccount() {
-
+        accountRepository.deleteById(loggedAccountHolder.getId());
     }
 }

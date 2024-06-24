@@ -1,10 +1,10 @@
 package me.inquis1tor.userservice.services;
 
+import me.inquis1tor.userservice.annotations.validation.uuid.AdminActiveUuid;
 import me.inquis1tor.userservice.annotations.validation.uuid.UserOrModerActiveUuid;
 import me.inquis1tor.userservice.annotations.validation.uuid.UserOrModerBlockedUuid;
-import me.inquis1tor.userservice.annotations.validation.credentials.UniqueCredentials;
+import me.inquis1tor.userservice.annotations.validation.credentials.UniqueAccount;
 import me.inquis1tor.userservice.entities.Account;
-import me.inquis1tor.userservice.entities.Credentials;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
@@ -15,17 +15,17 @@ public interface AccountService {
 
     boolean existsByIdAndStatusAndRoles(UUID id, Account.Status status, Account.Role[] role);
 
-    void createAccount(@UniqueCredentials Credentials credentials);
+    void createAccount(@UniqueAccount Account account);
 
-    Account getAccount(UUID accountId);
-
-    Account getAccount(String email);
+    Account getAccount();
 
     List<Account> getAll();
 
     void delete(@UserOrModerActiveUuid UUID accountId);
 
-    Account block(@UserOrModerActiveUuid UUID accountId, UUID adminId);
+    void block(@UserOrModerActiveUuid UUID accountId, @AdminActiveUuid UUID adminId);
 
-    Account unblock(@UserOrModerBlockedUuid UUID accountId, UUID adminId);
+    void unblock(@UserOrModerBlockedUuid UUID accountId);
+
+    boolean existByEmail(String email);
 }

@@ -21,8 +21,8 @@ public class PersonalInfoControllerImpl implements PersonalInfosController {
 
     @Override
     public PersonalInfoDto updatePersonalInfo(PersonalInfoDto personalInfoDto) {
-        //PersonalInfo personalInfo = personalInfoServiceImpl.updatePersonalInfo(personalInfoMapper.dtoToPersonalInfo(personalInfoDto));
+        PersonalInfo personalInfo = personalInfoServiceImpl.updatePersonalInfo(personalInfoMapper.dtoToPersonalInfo(personalInfoDto));
 
-        return null;//personalInfoMapper.personalInfoToDto(personalInfo);
+        return personalInfoMapper.personalInfoToDto(personalInfo);
     }
 }

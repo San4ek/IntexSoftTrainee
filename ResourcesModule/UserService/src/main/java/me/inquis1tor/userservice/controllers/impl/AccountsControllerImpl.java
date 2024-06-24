@@ -5,9 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import me.inquis1tor.userservice.controllers.AccountsController;
 import me.inquis1tor.userservice.dtos.AccountDetailsTransferDto;
 import me.inquis1tor.userservice.dtos.AccountResponseDto;
-import me.inquis1tor.userservice.mappers.AccountAuthMapper;
 import me.inquis1tor.userservice.mappers.AccountMapper;
-import me.inquis1tor.userservice.mappers.CredentialsAuthMapper;
+import me.inquis1tor.userservice.mappers.TransferAccountMapper;
 import me.inquis1tor.userservice.services.AccountService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,37 +21,31 @@ import java.util.UUID;
 public class AccountsControllerImpl implements AccountsController {
 
     private final AccountService accountService;
-    private final CredentialsAuthMapper credentialsAuthMapper;
+    private final TransferAccountMapper transferAccountMapper;
     private final AccountMapper accountMapper;
-    private final AccountAuthMapper accountAuthMapper;
 
     @Override
     public AccountResponseDto getAccount() {
-        log.info("Get account");
-        return null;//accountMapper.accountToDto(accountService.getAccount(accountId));
+        return accountMapper.accountToDto(accountService.getAccount());
     }
 
     @Override
-    public void registerAccount(AccountDetailsTransferDto account) {
-        log.info("Register account");
-        //accountService.createAccount(credentialsAuthMapper.authDtoToCredentials(credentials));
+    public void registerAccount(AccountDetailsTransferDto transferDto) {
+        accountService.createAccount(transferAccountMapper.transferDtoToAccount(transferDto));
     }
 
     @Override
     public List<AccountResponseDto> getAllAccounts() {
-        log.info("Get all accounts");
         return accountMapper.accountListToDtoList(accountService.getAll());
     }
 
     @Override
-    public AccountResponseDto blockAccount(UUID accountId) {
-        log.info("Block account");
-        return null;//accountMapper.accountToDto(accountService.block(accountId));
+    public void blockAccount(UUID accountId, UUID adminId) {
+        accountService.block(accountId, adminId);
     }
 
     @Override
-    public AccountResponseDto unblockAccount(UUID accountId) {
-        log.info("Unblock account");
-        return null;//accountMapper.accountToDto(accountService.unblock(accountId, adminId));
+    public void unblockAccount(UUID accountId) {
+        accountService.unblock(accountId);
     }
 }

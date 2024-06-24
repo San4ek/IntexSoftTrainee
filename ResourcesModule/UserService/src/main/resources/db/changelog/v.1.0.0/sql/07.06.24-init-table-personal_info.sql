@@ -1,6 +1,6 @@
 create table if not exists personal_info
 (
-    account_id   uuid         not null,
+    account_id   uuid not null,
     name         varchar(255),
     patronymic   varchar(255),
     phone_number varchar(255),

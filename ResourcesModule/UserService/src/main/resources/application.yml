@@ -23,13 +23,13 @@ spring:
 
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
-    default-schema: intexsofttrainee
+    default-schema: user_service
 
   jpa:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        default_schema: intexsofttrainee
+        default_schema: user_service
         format_sql: true
     hibernate:
       ddl-auto: validate

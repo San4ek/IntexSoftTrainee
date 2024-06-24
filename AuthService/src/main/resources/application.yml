@@ -23,13 +23,13 @@ spring:
 
   liquibase:
     change-log: classpath:db.changelog/db.changelog-master.xml
-    default-schema: auth
+    default-schema: auth_service
 
   jpa:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        default_schema: auth
+        default_schema: auth_service
         format_sql: true
 
     hibernate:

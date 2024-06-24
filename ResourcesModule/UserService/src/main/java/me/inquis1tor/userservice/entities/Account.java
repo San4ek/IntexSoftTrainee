@@ -15,13 +15,11 @@ import java.util.UUID;
 public class Account extends Audit {
 
     @Id
-    @Column(name = "credentials_id")
+    @Column(name = "id")
     private UUID id;
 
-    @OneToOne(optional = false)
-    @MapsId
-    @JoinColumn(name = "credentials_id", nullable = false, unique = true)
-    private Credentials credentials;
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @OneToOne(mappedBy = "account", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @PrimaryKeyJoinColumn

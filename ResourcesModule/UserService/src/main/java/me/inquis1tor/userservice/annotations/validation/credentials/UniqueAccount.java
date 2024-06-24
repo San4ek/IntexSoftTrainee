@@ -2,7 +2,7 @@ package me.inquis1tor.userservice.annotations.validation.credentials;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import me.inquis1tor.userservice.validators.UniqueCredentialsValidator;
+import me.inquis1tor.userservice.validators.UniqueAccountValidator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -11,8 +11,8 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = UniqueCredentialsValidator.class)
-public @interface UniqueCredentials {
+@Constraint(validatedBy = UniqueAccountValidator.class)
+public @interface UniqueAccount {
 
     String message() default "Email already registered";
 
