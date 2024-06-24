@@ -2,6 +2,7 @@ package me.inquis1tor.userservice.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,7 +22,10 @@ public class SecurityConfig {
 
         return http.securityMatcher("/api/**", "/default/**").
                 authorizeHttpRequests(authorize ->
-                        authorize.anyRequest().authenticated()).
+                        authorize.
+                                requestMatchers(HttpMethod.PUT, "/**/accounts/block", "/**/accounts/unblock", "/**/credentials").permitAll().
+                                requestMatchers(HttpMethod.POST, "/**/accounts").permitAll().
+                                anyRequest().authenticated()).
                 sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
                 oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationConverter))).
                 build();
