@@ -2,5 +2,5 @@ POST localhost:9000/oauth2/token
 Authorization: Basic intexsoft intexsoft
 Content-Type: application/x-www-form-urlencoded
 
-grant_type=authorization_code&redirect_uri=http://127.0.0.1:9090/authorized&code=HZefygW7WIKcROnGcGBLHSNGHLcZxnQ9tHIRB9aYek9ZCGEPjZSB6BlitxqOF3ZQiegdovArgAXGYPSAWpGlb2gqkVEhKUlghM6ModE6K5iLiJ4RXvC3C1oqV0en2OgO
+grant_type=authorization_code&redirect_uri=http://127.0.0.1:9090/authorized&code=RXpxXmqVA9_oBosdOIctkQssZsFuC2U2Jo9sG6d2OJVHdFNw5fO5JVZxGaKgqASlwc_x6AIJ0Ci8YTj7z-WcQkevmu_xOWZVz6xro9N2ZPf0eXzaX5UKQTLQRI1q15GY
 ###

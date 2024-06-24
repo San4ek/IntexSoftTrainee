@@ -11,21 +11,17 @@ import me.inquis1tor.userservice.exceptions.EndpointNotImplementedException;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.UUID;
 
 @Tag(name = "Personal info", description = "Personal info managements APIs")
 @RequestMapping("/default/personal-infos")
 public interface PersonalInfosController {
 
     @AccountIdParameter
-    @Operation(summary = "Update user personal info by account id")
+    @Operation(summary = "Update user personal info")
     @PersonalInfoDtoOkResponse
     @BadRequestErrorResponse
     @PutMapping
-    default PersonalInfoDto updatePersonalInfo(@RequestParam UUID accountId,
-                                               @SwaggerRequestBody(description = "User personal info")
+    default PersonalInfoDto updatePersonalInfo(@SwaggerRequestBody(description = "User personal info")
                                                @RequestBody PersonalInfoDto personalInfo) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }

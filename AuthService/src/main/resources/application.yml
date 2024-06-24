@@ -37,3 +37,7 @@ spring:
 
     show-sql: true
     generate-ddl: false
+
+logging:
+  level:
+    me.inqu1sitor.authservice.clients: DEBUG

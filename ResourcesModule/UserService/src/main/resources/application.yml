@@ -1,4 +1,16 @@
+server:
+  port: 8081
+
 spring:
+  main:
+    allow-bean-definition-overriding: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9000/oauth2/jwks
+
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
