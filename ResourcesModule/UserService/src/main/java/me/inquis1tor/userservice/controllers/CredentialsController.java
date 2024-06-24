@@ -10,6 +10,7 @@ import me.inquis1tor.userservice.annotations.swagger.responses.ExpectationFailed
 import me.inquis1tor.userservice.annotations.swagger.responses.NoContentOkResponse;
 import me.inquis1tor.userservice.dtos.CredentialsRequestDto;
 import me.inquis1tor.userservice.exceptions.EndpointNotImplementedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import java.util.UUID;
 @RequestMapping("/default/credentials")
 public interface CredentialsController {
 
+    @PreAuthorize("@securityService.hasCode('CREDENTIALS_CODE')")
     @AccountIdParameter
     @Operation(summary = "Update account credentials by account id")
     @NoContentOkResponse

@@ -20,12 +20,12 @@ public class SecurityConfig {
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtRoleConverter);
 
-        return http.securityMatcher("/api/**", "/default/**").
-                authorizeHttpRequests(authorize ->
-                        authorize.
-                                requestMatchers(HttpMethod.PUT, "/**/accounts/block", "/**/accounts/unblock", "/**/credentials").permitAll().
-                                requestMatchers(HttpMethod.POST, "/**/accounts").permitAll().
-                                anyRequest().authenticated()).
+        return http.securityMatcher("/api/**").
+                csrf(csfr -> csfr.disable()).
+                authorizeHttpRequests(authorize -> authorize.
+                        requestMatchers(HttpMethod.POST, "/api/accounts").permitAll().
+                        requestMatchers(HttpMethod.PUT, "/api/accounts/block", "api/accounts/unblock", "api/credentials").permitAll().
+                        anyRequest().authenticated()).
                 sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
                 oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationConverter))).
                 build();
