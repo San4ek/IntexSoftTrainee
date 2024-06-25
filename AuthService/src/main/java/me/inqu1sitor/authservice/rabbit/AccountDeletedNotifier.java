@@ -17,6 +17,6 @@ public class AccountDeletedNotifier {
     private FanoutExchange fanoutExchange;
 
     public void notifyAbout(final UUID accountId) {
-        this.rabbitTemplate.convertAndSend(fanoutExchange.getName(), "",accountId);
+        this.rabbitTemplate.convertAndSend(fanoutExchange.getName(), "", accountId);
     }
 }

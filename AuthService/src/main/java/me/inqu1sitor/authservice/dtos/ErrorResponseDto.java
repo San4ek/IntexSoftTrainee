@@ -8,7 +8,6 @@ public record ErrorResponseDto (
         int code,
         @Schema(description = "Error name", example = "Incorrect data format")
         String name,
-
         @Schema(description = "Error message", example = "Email format required")
         String message
 ){}

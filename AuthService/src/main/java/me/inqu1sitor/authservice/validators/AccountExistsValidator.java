@@ -24,7 +24,7 @@ public class AccountExistsValidator implements ConstraintValidator<AccountExists
     @Override
     public void initialize(AccountExists constraintAnnotation) {
         roles=constraintAnnotation.roles();
-        status=constraintAnnotation.status();
+        status = constraintAnnotation.status();
     }
 
     @Override
