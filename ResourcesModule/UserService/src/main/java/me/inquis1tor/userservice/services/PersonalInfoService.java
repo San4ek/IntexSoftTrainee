@@ -4,7 +4,7 @@ import me.inquis1tor.userservice.entities.PersonalInfo;
 
 public interface PersonalInfoService {
 
-    PersonalInfo updatePersonalInfo(PersonalInfo personalInfo);
+    void updatePersonalInfo(PersonalInfo personalInfo);
 
     PersonalInfo getPersonalInfo();
 }

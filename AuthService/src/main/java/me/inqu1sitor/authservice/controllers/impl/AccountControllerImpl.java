@@ -1,37 +1,51 @@
 package me.inqu1sitor.authservice.controllers.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.inqu1sitor.authservice.controllers.AccountController;
 import me.inqu1sitor.authservice.dtos.CredentialsRequestDto;
 import me.inqu1sitor.authservice.entities.Account;
+import me.inqu1sitor.authservice.mappers.AccountMapper;
 import me.inqu1sitor.authservice.services.AccountService;
+import me.inqu1sitor.authservice.utils.LoggedAccountHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/accounts")
 @RequiredArgsConstructor
 public class AccountControllerImpl implements AccountController {
 
     private final AccountService accountService;
+    private final AccountMapper accountMapper;
+    private final LoggedAccountHolder loggedAccountHolder;
 
     @Override
     public void registerUser(CredentialsRequestDto credentialsRequestDto) {
-        accountService.createAccount(credentialsRequestDto, Account.Role.USER);
+        log.info("Received request for new user registration");
+
+        accountService.createAccount(accountMapper.credentialsToAccount(credentialsRequestDto), Account.Role.USER);
     }
 
     @Override
     public void registerModer(CredentialsRequestDto credentialsRequestDto) {
-        accountService.createAccount(credentialsRequestDto, Account.Role.MODER);
+        log.info("Receive '{}' request for new moder registration", loggedAccountHolder.getId());
+
+        accountService.createAccount(accountMapper.credentialsToAccount(credentialsRequestDto), Account.Role.MODER);
     }
 
     @Override
     public void registerAdmin(CredentialsRequestDto credentialsRequestDto) {
-        accountService.createAccount(credentialsRequestDto, Account.Role.ADMIN);
+        log.info("Received '{}' request for new admin registration", loggedAccountHolder.getId());
+
+        accountService.createAccount(accountMapper.credentialsToAccount(credentialsRequestDto), Account.Role.ADMIN);
     }
 
     @Override
     public void delete() {
+        log.info("Received '{}' request for account deletion", loggedAccountHolder.getId());
+
         accountService.deleteAccount();
     }
 }

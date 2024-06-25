@@ -9,9 +9,9 @@ import java.util.UUID;
 
 public interface AccountService {
 
-    void createAccount(@UniqueCredentials CredentialsRequestDto credentials, Account.Role role);
+    void createAccount(@UniqueCredentials Account credentials, Account.Role role);
 
-    void updateAccount(@UniqueCredentials CredentialsRequestDto credentials);
+    void updateAccount(@UniqueCredentials Account credentials);
 
     void blockAccount(@AccountExists(status = Account.Status.ACTIVE,
             roles = {Account.Role.USER, Account.Role.MODER}) UUID accountId);

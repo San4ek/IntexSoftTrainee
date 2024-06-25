@@ -16,6 +16,8 @@ public class UniqueAccountValidator implements ConstraintValidator<UniqueAccount
     @Override
     @Transactional
     public boolean isValid(Account value, ConstraintValidatorContext context) {
+
+
         return !accountService.existByEmail(value.getEmail());
     }
 }

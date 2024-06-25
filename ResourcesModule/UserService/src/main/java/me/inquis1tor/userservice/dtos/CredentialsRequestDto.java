@@ -5,14 +5,15 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-@Schema(description = "Credentials information model for registration")
+import java.util.UUID;
+
+@Schema(description = "Credentials information model for updating")
 public record CredentialsRequestDto(
+        @NotNull(message = "Account id must not be null")
+        @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Account id")
+        UUID accountId,
         @NotNull(message = "Email must not be null")
         @Email(message = "Email format required")
         @Schema(description = "Account email", example = "sanekvich2003@mail.ru")
-        String email,
-        @NotNull(message = "Password must not be null")
-        @Size(min = 6, max = 16, message = "Password length should be between 6 and 16 characters")
-        @Schema(description = "Account password")
-        String password
+        String email
 ){}

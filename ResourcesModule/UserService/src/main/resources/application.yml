@@ -42,3 +42,7 @@ spring:
 
     show-sql: true
     generate-ddl: false
+
+logging:
+  pattern:
+    console: %d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg%n

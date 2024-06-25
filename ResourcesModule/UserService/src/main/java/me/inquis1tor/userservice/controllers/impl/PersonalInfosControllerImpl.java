@@ -1,28 +1,25 @@
 package me.inquis1tor.userservice.controllers.impl;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import me.inquis1tor.userservice.controllers.PersonalInfosController;
 import me.inquis1tor.userservice.dtos.PersonalInfoDto;
-import me.inquis1tor.userservice.entities.PersonalInfo;
 import me.inquis1tor.userservice.mappers.PersonalInfoMapper;
 import me.inquis1tor.userservice.services.impl.PersonalInfoServiceImpl;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.UUID;
-
 @RestController
 @RequestMapping("/api/personal-infos")
 @RequiredArgsConstructor
-public class PersonalInfoControllerImpl implements PersonalInfosController {
+@Tag(name = "Personal info", description = "Personal info management APIs")
+public class PersonalInfosControllerImpl implements PersonalInfosController {
 
     private final PersonalInfoServiceImpl personalInfoServiceImpl;
     private final PersonalInfoMapper personalInfoMapper;
 
     @Override
-    public PersonalInfoDto updatePersonalInfo(PersonalInfoDto personalInfoDto) {
-        PersonalInfo personalInfo = personalInfoServiceImpl.updatePersonalInfo(personalInfoMapper.dtoToPersonalInfo(personalInfoDto));
-
-        return personalInfoMapper.personalInfoToDto(personalInfo);
+    public void updatePersonalInfo(PersonalInfoDto personalInfoDto) {
+        personalInfoServiceImpl.updatePersonalInfo(personalInfoMapper.dtoToPersonalInfo(personalInfoDto));
     }
 }

@@ -2,6 +2,7 @@ package me.inquis1tor.userservice.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import me.inquis1tor.userservice.annotations.security.IsAdmin;
 import me.inquis1tor.userservice.annotations.swagger.parameters.AccountIdParameter;
 import me.inquis1tor.userservice.annotations.swagger.parameters.AdminIdParameter;
@@ -10,6 +11,7 @@ import me.inquis1tor.userservice.annotations.swagger.responses.*;
 import me.inquis1tor.userservice.annotations.swagger.statuses.OkResponseStatus;
 import me.inquis1tor.userservice.dtos.AccountDetailsTransferDto;
 import me.inquis1tor.userservice.dtos.AccountResponseDto;
+import me.inquis1tor.userservice.dtos.CredentialsRequestDto;
 import me.inquis1tor.userservice.exceptions.EndpointNotImplementedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -73,6 +75,29 @@ public interface AccountsController {
     @OkResponseStatus
     @PutMapping("/unblock")
     default void unblockAccount(@RequestParam UUID accountId) throws EndpointNotImplementedException {
+        throw new EndpointNotImplementedException();
+    }
+
+    @PreAuthorize("@securityService.hasCode('UNBLOCK_CODE')")
+    @AccountIdParameter
+    @Operation(summary = "Unblock account by its id")
+    @AccountDtoOkResponse
+    @BadRequestErrorResponse
+    @OkResponseStatus
+    @PutMapping("/email")
+    default void updateEmail(@RequestParam UUID accountId) throws EndpointNotImplementedException {
+        throw new EndpointNotImplementedException();
+    }
+
+    @PreAuthorize("@securityService.hasCode('EMAIL_CODE')")
+    @AccountIdParameter
+    @Operation(summary = "Update account email by account id")
+    @NoContentOkResponse
+    @ExpectationFailedErrorResponse
+    @BadRequestErrorResponse
+    @PutMapping("/email")
+    default void updateEmail(@RequestParam UUID accountId,@SwaggerRequestBody(description = "Account credentials")
+                                   @Valid @RequestBody CredentialsRequestDto credentials) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 }
