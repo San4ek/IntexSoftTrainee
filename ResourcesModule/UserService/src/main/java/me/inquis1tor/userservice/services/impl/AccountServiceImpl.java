@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.inquis1tor.userservice.entities.Account;
 import me.inquis1tor.userservice.entities.PersonalInfo;
 import me.inquis1tor.userservice.repositories.AccountRepository;
+import me.inquis1tor.userservice.services.AccountFinderService;
 import me.inquis1tor.userservice.services.AccountService;
 import me.inquis1tor.userservice.utils.LoggedAccountHolder;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
     private final LoggedAccountHolder loggedAccountHolder;
+    private final AccountFinderService accountFinderService;
 
     @Override
     @Transactional
@@ -63,8 +65,7 @@ public class AccountServiceImpl implements AccountService {
     public void delete(final UUID accountId) {
         log.info("Deleting account '{}'", accountId);
 
-        Account account=new Account();
-        account.setId(accountId);
+        Account account=accountFinderService.findActiveAny(accountId);
         account.setStatus(Account.Status.DELETED);
         account.setDeletedDate(LocalDateTime.now());
         accountRepository.saveAndFlush(account);
@@ -77,8 +78,7 @@ public class AccountServiceImpl implements AccountService {
     public void block(final UUID accountId, final UUID adminId) {
         log.info("Blocking account '{}' by '{}'", accountId, adminId);
 
-        Account account=new Account();
-        account.setId(accountId);
+        Account account=accountFinderService.findActiveNotAdmin(accountId);
         account.setStatus(Account.Status.BLOCKED);
         account.setBlockedBy(adminId);
         account.setBlockedDate(LocalDateTime.now());
@@ -92,9 +92,10 @@ public class AccountServiceImpl implements AccountService {
     public void unblock(final UUID accountId) {
         log.info("Unblocking account '{}'", accountId);
 
-        Account account=new Account();
-        account.setId(accountId);
+        Account account=accountFinderService.findBlockedNotAdmin(accountId);
         account.setStatus(Account.Status.ACTIVE);
+        account.setBlockedBy(null);
+        account.setBlockedDate(null);
         accountRepository.saveAndFlush(account);
 
         log.info("Account '{}' unblocked", accountId);
