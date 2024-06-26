@@ -15,7 +15,7 @@ public class SecurityService {
     private final HttpServletRequest request;
 
     public boolean hasCode(String requiredCode) {
-        String code=request.getHeader("Auth-code");
+        String code=request.getHeader("Auth-Code");
 
         return code!=null && code.equals(requiredCode);
     }
