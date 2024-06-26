@@ -78,25 +78,13 @@ public interface AccountsController {
         throw new EndpointNotImplementedException();
     }
 
-    @PreAuthorize("@securityService.hasCode('UNBLOCK_CODE')")
-    @AccountIdParameter
-    @Operation(summary = "Unblock account by its id")
-    @AccountDtoOkResponse
-    @BadRequestErrorResponse
-    @OkResponseStatus
-    @PutMapping("/email")
-    default void updateEmail(@RequestParam UUID accountId) throws EndpointNotImplementedException {
-        throw new EndpointNotImplementedException();
-    }
-
     @PreAuthorize("@securityService.hasCode('EMAIL_CODE')")
-    @AccountIdParameter
     @Operation(summary = "Update account email by account id")
     @NoContentOkResponse
     @ExpectationFailedErrorResponse
     @BadRequestErrorResponse
     @PutMapping("/email")
-    default void updateEmail(@RequestParam UUID accountId,@SwaggerRequestBody(description = "Account credentials")
+    default void updateEmail(@SwaggerRequestBody(description = "Account credentials")
                                    @Valid @RequestBody CredentialsRequestDto credentials) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
