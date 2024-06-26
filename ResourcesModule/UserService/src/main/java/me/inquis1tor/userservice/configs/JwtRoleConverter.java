@@ -15,8 +15,7 @@ import java.util.stream.Collectors;
 public class JwtRoleConverter implements Converter<Jwt, Collection<GrantedAuthority>> {
     @Override
     public Collection<GrantedAuthority> convert(Jwt jwt) {
-        @SuppressWarnings("unchecked")
-        List<String> roles = (List<String>) jwt.getClaims().get("role");
+        List<String> roles = jwt.getClaimAsStringList("role");
         if (roles == null || roles.isEmpty()) {
             return new ArrayList<>();
         }

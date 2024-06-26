@@ -21,11 +21,11 @@ public interface AccountService {
 
     List<Account> getAll();
 
-    void delete(@UserOrModerActiveUuid UUID accountId);
+    void delete(UUID accountId);
 
-    void block(@UserOrModerActiveUuid UUID accountId, @AdminActiveUuid UUID adminId);
+    void block(UUID accountId, @AdminActiveUuid UUID adminId);
 
-    void unblock(@UserOrModerBlockedUuid UUID accountId);
+    void unblock(UUID accountId);
 
     boolean existByEmail(String email);
 }
