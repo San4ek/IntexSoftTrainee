@@ -1,6 +1,5 @@
 package me.inqu1sitor.authservice.configs;
 
-import me.inqu1sitor.authservice.rabbit.AccountDeletedNotifier;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
@@ -12,11 +11,6 @@ public class RabbitConfig {
     @Bean
     public FanoutExchange fanoutExchange() {
         return new FanoutExchange("account.deleted");
-    }
-
-    @Bean
-    public AccountDeletedNotifier accountDeletedSender() {
-        return new AccountDeletedNotifier();
     }
 
     @Bean

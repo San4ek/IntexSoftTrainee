@@ -79,7 +79,9 @@ public class AccountServiceImpl implements AccountService {
     public void deleteAccount() {
         log.info("Deleting account '{}'", loggedAccountHolder.getId());
 
-        accountRepository.deleteById(loggedAccountHolder.getId());
+        Account account=accountRepository.findById(loggedAccountHolder.getId()).get();
+        account.setStatus(Account.Status.DELETED);
+        accountRepository.saveAndFlush(account);
 
         log.info("Account '{}' deleted", loggedAccountHolder.getId());
 
