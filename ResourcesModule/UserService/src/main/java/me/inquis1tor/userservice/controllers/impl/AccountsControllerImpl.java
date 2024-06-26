@@ -7,7 +7,6 @@ import me.inquis1tor.userservice.controllers.AccountsController;
 import me.inquis1tor.userservice.dtos.AccountDetailsTransferDto;
 import me.inquis1tor.userservice.dtos.AccountResponseDto;
 import me.inquis1tor.userservice.mappers.AccountMapper;
-import me.inquis1tor.userservice.mappers.TransferAccountMapper;
 import me.inquis1tor.userservice.services.AccountService;
 import me.inquis1tor.userservice.utils.LoggedAccountHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +23,6 @@ import java.util.UUID;
 public class AccountsControllerImpl implements AccountsController {
 
     private final AccountService accountService;
-    private final TransferAccountMapper transferAccountMapper;
     private final AccountMapper accountMapper;
     private final LoggedAccountHolder loggedAccountHolder;
 
@@ -39,7 +37,7 @@ public class AccountsControllerImpl implements AccountsController {
     public void registerAccount(AccountDetailsTransferDto transferDto) {
         log.info("Received '{}' request for new {} registration", transferDto.id(), transferDto.role());
 
-        accountService.createAccount(transferAccountMapper.transferDtoToAccount(transferDto));
+        accountService.createAccount(accountMapper.transferDtoToAccount(transferDto));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package me.inquis1tor.userservice.mappers;
 
+import me.inquis1tor.userservice.dtos.AccountDetailsTransferDto;
 import me.inquis1tor.userservice.dtos.AccountResponseDto;
 import me.inquis1tor.userservice.entities.Account;
 import org.mapstruct.Mapper;
@@ -16,4 +17,6 @@ public interface AccountMapper {
     Account dtoToAccount(AccountResponseDto accountResponseDto);
 
     List<AccountResponseDto> accountListToDtoList(List<Account> employees);
+
+    Account transferDtoToAccount(AccountDetailsTransferDto accountDetailsTransferDto);
 }
