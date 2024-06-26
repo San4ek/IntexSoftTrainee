@@ -2,7 +2,6 @@ package me.inquis1tor.userservice.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import me.inquis1tor.userservice.annotations.swagger.parameters.AccountIdParameter;
 import me.inquis1tor.userservice.annotations.swagger.requests.SwaggerRequestBody;
 import me.inquis1tor.userservice.annotations.swagger.responses.BadRequestErrorResponse;
 import me.inquis1tor.userservice.annotations.swagger.responses.NoContentOkResponse;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/default/personal-infos")
 public interface PersonalInfosController {
 
-    @AccountIdParameter
     @Operation(summary = "Update user personal info")
     @NoContentOkResponse
     @BadRequestErrorResponse
