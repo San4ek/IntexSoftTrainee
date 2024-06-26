@@ -13,8 +13,8 @@ public record AccountResponseDto(
         Account.Role role,
         @Schema(description = "Account status", example = "ACTIVE")
         Account.Status status,
-        @Schema(description = "Account credentials")
-        CredentialsResponseDto credentials,
+        @Schema(description = "Account email")
+        String email,
         @Schema(description = "User personal info")
         PersonalInfoDto personalInfo
 ) {}
