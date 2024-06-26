@@ -24,6 +24,7 @@ import java.util.UUID;
 @RequestMapping("/default/accounts")
 public interface AccountsController {
 
+    //works
     @AccountIdParameter
     @Operation(summary = "Get account by its id")
     @AccountDtoOkResponse
@@ -34,6 +35,7 @@ public interface AccountsController {
         throw new EndpointNotImplementedException();
     }
 
+    //works in single mode
     @PreAuthorize("@securityService.hasCode('REGISTER_CODE')")
     @Operation(summary = "Register new account")
     @NoContentOkResponse
@@ -46,6 +48,7 @@ public interface AccountsController {
         throw new EndpointNotImplementedException();
     }
 
+    //works
     @IsAdmin
     @Operation(summary = "Get all accounts")
     @AccountDtoArrayOkResponse
@@ -55,6 +58,7 @@ public interface AccountsController {
         throw new EndpointNotImplementedException();
     }
 
+    //works in single mode
     @PreAuthorize("@securityService.hasCode('BLOCK_CODE')")
     @AccountIdParameter
     @AdminIdParameter
@@ -63,10 +67,11 @@ public interface AccountsController {
     @BadRequestErrorResponse
     @OkResponseStatus
     @PutMapping("/block")
-    default void blockAccount(@RequestParam UUID accountId, @RequestParam UUID adminId) throws EndpointNotImplementedException {
+    default void blockAccount(@RequestParam("accountId") UUID accountId, @RequestParam("adminId") UUID adminId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
+    //works in single mode
     @PreAuthorize("@securityService.hasCode('UNBLOCK_CODE')")
     @AccountIdParameter
     @Operation(summary = "Unblock account by its id")
@@ -74,10 +79,12 @@ public interface AccountsController {
     @BadRequestErrorResponse
     @OkResponseStatus
     @PutMapping("/unblock")
-    default void unblockAccount(@RequestParam UUID accountId) throws EndpointNotImplementedException {
+    default void unblockAccount(@RequestParam("accountId") UUID accountId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
+
+    //not implemented
     @PreAuthorize("@securityService.hasCode('EMAIL_CODE')")
     @Operation(summary = "Update account email by account id")
     @NoContentOkResponse
