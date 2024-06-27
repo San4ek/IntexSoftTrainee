@@ -20,25 +20,19 @@ import java.util.UUID;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class Audit {
 
-    @Column(name = "createdAt")
+    @Column(name = "created_at")
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @Column(name = "editedAt")
+    @Column(name = "edited_at")
     @LastModifiedDate
     private LocalDateTime editedAt;
 
-    @Column(name = "deletedAt")
-    private LocalDateTime deletedAt;
-
-    @Column(name = "createdBy")
+    @Column(name = "created_by")
     @CreatedBy
     private UUID createdBy;
 
-    @Column(name = "editedBy")
+    @Column(name = "edited_by")
     @LastModifiedBy
     private UUID editedBy;
-
-    @Column(name = "deletedBy")
-    private UUID deletedBy;
 }

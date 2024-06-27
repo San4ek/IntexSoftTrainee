@@ -22,14 +22,6 @@
             <column name="amount" type="integer">
                 <constraints nullable="false"/>
             </column>
-            <column name="createdAt" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
-            <column name="createdBy" type="varchar(255)"/>
-            <column name="editedAt" type="timestamp"/>
-            <column name="editedBy" type="varchar(255)"/>
-            <column name="deletedAt" type="timestamp"/>
-            <column name="deletedBy" type="varchar(255)"/>
         </createTable>
     </changeSet>
 

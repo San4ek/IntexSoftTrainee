@@ -3,15 +3,14 @@ package org.example.mappers;
 import org.example.dtos.StockItemRequest;
 import org.example.dtos.StockItemResponse;
 import org.example.entities.StockEntity;
-import org.example.enums.ColorEnum;
-import org.example.enums.SizeEnum;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {ProductMapper.class})
 public interface StockItemMapper {
+
     @Mapping(source = "size", target = "size")
     @Mapping(source = "color", target = "color")
     @Mapping(source = "product.id", target = "productId")
@@ -28,19 +27,4 @@ public interface StockItemMapper {
 
     List<StockEntity> toEntity(List<StockItemRequest> stockItemRequestList);
 
-    default ColorEnum stringToColorEnum(String color) {
-        return ColorEnum.valueOf(color.toUpperCase());
-    }
-
-    default String colorEnumToString(ColorEnum colorEnum) {
-        return colorEnum.name();
-    }
-
-    default SizeEnum stringToSizeEnum(String size) {
-        return SizeEnum.valueOf(size.toUpperCase());
-    }
-
-    default String sizeEnumToString(SizeEnum sizeEnum) {
-        return sizeEnum.name();
-    }
 }

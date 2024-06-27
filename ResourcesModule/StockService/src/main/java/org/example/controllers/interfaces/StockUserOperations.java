@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Tag(name = "UserStock", description = "User's stock APIs")
-@RequestMapping("/stock")
+@RequestMapping("/user-stock")
 public interface StockUserOperations {
 
     @SneakyThrows
@@ -33,7 +33,7 @@ public interface StockUserOperations {
     @ApiResponse(responseCode = "501")
     @ApiResponse(responseCode = "200")
     @GetMapping("/find/{name}")
-    default @ResponseBody StockItemResponse getStockItemByName(@PathVariable String name) {
+    default @ResponseBody List<StockItemResponse> getStockItemsByName(@PathVariable String name) {
         throw new EndpointNotImplementedException();
     }
 
@@ -42,7 +42,7 @@ public interface StockUserOperations {
     @ApiResponse(responseCode = "501")
     @ApiResponse(responseCode = "200")
     @GetMapping("/find/attributes")
-    default List<StockItemResponse> getStockItemsByAttributes(@RequestParam(required = false) UUID brand,
+    default List<StockItemResponse> getStockItemsByAttributes(@RequestParam(required = false) String brand,
                                                               @RequestParam(required = false) ColorEnum color,
                                                               @RequestParam(required = false) SizeEnum size,
                                                               @RequestParam(required = false) TypeEnum type,

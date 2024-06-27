@@ -10,7 +10,7 @@ import java.util.UUID;
 @Repository
 public interface BrandRepository extends JpaRepository<BrandEntity, UUID> {
 
-    Optional<BrandEntity> findByBrandName(String brandName);
+    Optional<BrandEntity> findByName(String name);
 
-    Boolean existsByBrandName(String brandName);
+    Boolean existsByName(String name);
 }

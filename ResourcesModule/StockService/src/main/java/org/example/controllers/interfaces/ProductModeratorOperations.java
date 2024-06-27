@@ -30,7 +30,7 @@ public interface ProductModeratorOperations {
     }
 
     @SneakyThrows
-    @PutMapping("/delete/{productId}")
+    @DeleteMapping("/delete/{productId}")
     default void deleteProduct(@PathVariable UUID productId){
         throw new EndpointNotImplementedException();
     }

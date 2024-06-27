@@ -25,6 +25,12 @@
             <column name="price" type="real">
                 <constraints nullable="false"/>
             </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(255)"/>
+            <column name="edited_at" type="timestamp"/>
+            <column name="edited_by" type="varchar(255)"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

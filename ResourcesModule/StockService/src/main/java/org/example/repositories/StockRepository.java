@@ -8,13 +8,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface StockRepository extends JpaRepository<StockEntity, UUID>, QuerydslPredicateExecutor<StockEntity> {
 
-    Optional<StockEntity> findByProductName(String name);
+    Optional<List<StockEntity>> findByProductName(String name);
     Boolean existsByIdAndAmountEquals(UUID id, long amount);
     Boolean existsByProductIdAndAmountGreaterThan(UUID productId, long amount);
     Boolean existsByColorAndSizeAndProduct(ColorEnum color, SizeEnum size, ProductEntity product);

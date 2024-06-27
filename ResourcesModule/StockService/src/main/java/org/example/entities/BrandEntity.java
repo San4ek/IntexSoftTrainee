@@ -20,6 +20,6 @@ public class BrandEntity {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "brandName")
-    private String brandName;
+    @Column(name = "name")
+    private String name;
 }

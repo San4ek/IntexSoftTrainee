@@ -12,23 +12,23 @@
     <changeSet id="2" author="eugene-yuntsevich">
         <insert tableName="brand">
             <column name="id" valueComputed="uuid_generate_v4()"/>
-            <column name="brandName" value="GOOCHI"/>
+            <column name="name" value="GOOCHI"/>
         </insert>
         <insert tableName="brand">
             <column name="id" valueComputed="uuid_generate_v4()"/>
-            <column name="brandName" value="ADIDAS"/>
+            <column name="name" value="ADIDAS"/>
         </insert>
         <insert tableName="brand">
             <column name="id" valueComputed="uuid_generate_v4()"/>
-            <column name="brandName" value="MARCO"/>
+            <column name="name" value="MARCO"/>
         </insert>
         <insert tableName="brand">
             <column name="id" valueComputed="uuid_generate_v4()"/>
-            <column name="brandName" value="SUPREME"/>
+            <column name="name" value="SUPREME"/>
         </insert>
         <insert tableName="brand">
             <column name="id" valueComputed="uuid_generate_v4()"/>
-            <column name="brandName" value="KUPALINKA"/>
+            <column name="name" value="KUPALINKA"/>
         </insert>
     </changeSet>
 

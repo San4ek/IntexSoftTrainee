@@ -42,7 +42,9 @@ public class StockEntity {
     }
 
     public void removeFromStock(Long amount) {
-        checkTrue(this.amount >= amount, "Not enough stock items");
+        checkTrue(this.amount > amount, "Not enough stock items");
         this.amount -= amount;
     }
+
+    //to string for logs
 }

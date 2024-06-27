@@ -1,4 +1,4 @@
-package org.example.controllers.advices;
+package org.example.controllers.exception_handlers;
 
 import org.example.exceptions.EndpointNotImplementedException;
 import org.springframework.http.HttpStatus;

@@ -9,9 +9,9 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface BrandMapper {
 
-    @Mapping(source = "brandName", target = "brandName")
+    @Mapping(source = "name", target = "name")
     BrandResponse toDto(BrandEntity brand);
 
-    @Mapping(source = "brandName", target = "brandName")
+    @Mapping(source = "name", target = "name")
     BrandEntity toEntity(BrandRequest brandRequest);
 }

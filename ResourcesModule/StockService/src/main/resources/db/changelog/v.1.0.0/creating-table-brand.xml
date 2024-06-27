@@ -10,7 +10,7 @@
             <column name="id" type="uuid">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="brandName" type="varchar(100)">
+            <column name="name" type="varchar(100)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
