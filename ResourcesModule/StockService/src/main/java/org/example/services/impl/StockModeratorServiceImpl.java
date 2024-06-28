@@ -33,7 +33,6 @@ public class StockModeratorServiceImpl implements StockModeratorService {
     @Override
     @Transactional(readOnly = true)
     public StockEntity findById(final UUID stockItemId) {
-        log.info("Find stock item by id: {}", stockItemId);
         return stockRepository.findById(stockItemId)
                 .orElseThrow(() -> new StockNotExistException("Stock not exists with id: " + stockItemId));
     }
