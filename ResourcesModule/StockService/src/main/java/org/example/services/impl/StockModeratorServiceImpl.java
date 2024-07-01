@@ -32,7 +32,6 @@ public class StockModeratorServiceImpl implements StockModeratorService {
     @Override
     @Transactional(readOnly = true)
     public StockEntity findById(final UUID stockItemId) {
-        log.info("Find stock item by id: {}", stockItemId);
         return stockRepository.getById(stockItemId);
     }
 
@@ -45,7 +44,7 @@ public class StockModeratorServiceImpl implements StockModeratorService {
     @Override
     @Transactional
     public StockEntity createStockItem(final StockItemRequest stockItemRequest) {
-        log.info("Create stock item: {}", stockItemRequest);
+        log.info("Create stock item with productId: {}", stockItemRequest.getProductId());
         validationStockService.validateStockItemForCreate(stockItemRequest);
         return stockRepository.save(stockItemCreateRequestMapper.toEntity(stockItemRequest));
     }

@@ -33,7 +33,6 @@ public class BrandServiceImpl implements BrandService {
     @Override
     @Transactional(readOnly = true)
     public BrandEntity getBrandByName(final String name) {
-        log.info("Getting brand by name: {}", name);
         return brandRepository.getByName(name);
     }
 
