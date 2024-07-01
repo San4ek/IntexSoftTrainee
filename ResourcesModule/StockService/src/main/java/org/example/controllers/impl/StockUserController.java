@@ -21,17 +21,6 @@ public class StockUserController implements StockUserOperations {
     private final StockItemMapper stockItemMapper;
 
     /**
-     * Finds all stock items.
-     *
-     * @return List of StockItemResponse containing all stock items.
-     */
-    @Override
-    public List<StockItemResponse> getAllStockItems() {
-        List<StockEntity> stockEntities = stockUserService.findAllStockItems();
-        return stockItemMapper.toDto(stockEntities);
-    }
-
-    /**
      * Finds stock items by name.
      *
      * @param name The name of the stock item to find.
