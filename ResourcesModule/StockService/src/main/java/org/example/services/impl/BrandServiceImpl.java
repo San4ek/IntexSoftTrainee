@@ -34,7 +34,6 @@ public class BrandServiceImpl implements BrandService {
     @Override
     @Transactional(readOnly = true)
     public BrandEntity getBrandByName(final String name) {
-        log.info("Getting brand by name: {}", name);
         return brandRepository.findByName(name)
                 .orElseThrow(() -> new BrandNotExistException("Brand doesn't exist with name: " + name));
     }
@@ -81,7 +80,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     @Transactional
     public void deleteBrand(final UUID brandId) {
-        log.info("Deleting brand: {}", brandId);
+        log.info("Deleting brand with id: {}", brandId);
         validationBrandService.validateBrandRequestForDelete(brandId);
         brandRepository.deleteById(brandId);
     }

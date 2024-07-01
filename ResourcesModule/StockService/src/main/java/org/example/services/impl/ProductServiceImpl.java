@@ -36,7 +36,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional(readOnly = true)
     public ProductEntity getProductByName(String name) {
-        log.info("Get product by name: {}", name);
         return productRepository.findByName(name).orElseThrow();
     }
 

@@ -33,7 +33,6 @@ public class StockUserServiceImpl implements StockUserService {
     @Override
     @Transactional(readOnly = true)
     public List<StockEntity> findAllStockItems() {
-        log.info("Find all stock items");
         return stockRepository.findAll();
     }
 
@@ -47,7 +46,6 @@ public class StockUserServiceImpl implements StockUserService {
     @Override
     @Transactional(readOnly = true)
     public List<StockEntity> findStockItemByName(final String name) {
-        log.info("Find stock item by name: {}", name);
         return stockRepository.findByProductName(name)
                 .orElseThrow(() -> new StockNotExistException("Stock items not exist with name: " + name));
     }
@@ -71,7 +69,6 @@ public class StockUserServiceImpl implements StockUserService {
                                               final TypeEnum type,
                                               final Float minPrice,
                                               final Float maxPrice) {
-        log.info("Find stock item by attributes");
         QStockEntity stockItem = QStockEntity.stockEntity;
         BooleanBuilder builder = new BooleanBuilder();
         Optional.ofNullable(brand).ifPresent(b -> builder.and(stockItem.product.brand.name.eq(b)));
