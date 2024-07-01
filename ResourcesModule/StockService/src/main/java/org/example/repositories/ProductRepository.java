@@ -20,9 +20,4 @@ public interface ProductRepository extends BaseRepository<ProductEntity, UUID> {
 
     boolean existsByBrandId(UUID brandId);
 
-    Optional<ProductEntity> findByName(String name);
-
-    default ProductEntity getByName(String name) {
-        return findByName(name).orElseThrow(() -> new ObjectNotFoundException("Object not found with name: " + name));
-    }
 }

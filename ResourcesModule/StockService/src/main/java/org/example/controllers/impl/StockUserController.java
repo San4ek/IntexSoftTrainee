@@ -28,7 +28,7 @@ public class StockUserController implements StockUserOperations {
      */
     @Override
     public List<StockItemResponse> getStockItemsByName(String name) {
-        return stockItemMapper.toDto(stockUserService.findStockItemByName(name));
+        return stockItemMapper.toDto(stockUserService.findStockItemsByName(name));
     }
 
     /**

@@ -25,15 +25,15 @@ public class BrandServiceImpl implements BrandService {
 
 
     /**
-     * Finds a brand by its name.
+     * Finds a brand by its id.
      *
-     * @param name The name of the brand to find.
-     * @return The brand entity matching the provided name.
+     * @param id The id of the brand to find.
+     * @return The brand entity matching the provided id.
      */
     @Override
     @Transactional(readOnly = true)
-    public BrandEntity getBrandByName(final String name) {
-        return brandRepository.getByName(name);
+    public BrandEntity getBrandById(final UUID id) {
+        return brandRepository.getById(id);
     }
 
     /**

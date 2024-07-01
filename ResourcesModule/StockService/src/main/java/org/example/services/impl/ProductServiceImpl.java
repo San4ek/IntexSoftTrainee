@@ -6,6 +6,7 @@ import org.example.dtos.ProductRequest;
 import org.example.entities.BrandEntity;
 import org.example.entities.ProductEntity;
 import org.example.exceptions.BrandNotExistException;
+import org.example.exceptions.ProductNotExistException;
 import org.example.mappers.ProductMapper;
 import org.example.repositories.BrandRepository;
 import org.example.repositories.ProductRepository;
@@ -27,15 +28,15 @@ public class ProductServiceImpl implements ProductService {
     private final ValidationProductService validationProductService;
 
     /**
-     * Finds a product by its name.
+     * Finds a product by its id.
      *
-     * @param name The name of the product to find.
-     * @return The product entity matching the provided name.
+     * @param id The id of the product to find.
+     * @return The product entity matching the provided id.
      */
     @Override
     @Transactional(readOnly = true)
-    public ProductEntity getProductByName(String name) {
-        return productRepository.getByName(name);
+    public ProductEntity getProductById(final UUID id) {
+        return productRepository.getById(id);
     }
 
     /**
@@ -46,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     @Transactional
-    public ProductEntity createProduct(ProductRequest productRequest) {
+    public ProductEntity createProduct(final ProductRequest productRequest) {
         log.info("Creating product with name {}", productRequest.getName());
         validationProductService.validateProductRequestForCreate(productRequest);
         ProductEntity productEntity = productMapper.toEntity(productRequest);
@@ -62,7 +63,7 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     @Transactional
-    public ProductEntity updateProduct(UUID productId, ProductRequest productRequest) {
+    public ProductEntity updateProduct(final UUID productId, final ProductRequest productRequest) {
         log.info("Updating product with id: {} ", productId);
         validationProductService.validateProductRequestForUpdate(productId, productRequest);
         ProductEntity existingProductEntity = productRepository.getById(productId);
@@ -82,7 +83,7 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     @Transactional
-    public void deleteProduct(UUID productId) {
+    public void deleteProduct(final UUID productId) {
         log.info("Deleting product with id: {}", productId);
         validationProductService.validateProductForDelete(productId);
         productRepository.deleteById(productId);

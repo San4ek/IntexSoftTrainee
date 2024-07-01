@@ -23,14 +23,14 @@ public class ValidationStockService {
 
     @Transactional(readOnly = true)
     public void validateStockItemForCreate(final StockItemRequest stockItemRequest) {
-        ProductEntity productEntity = productRepository.getById(stockItemRequest.getProductId());
+        final ProductEntity productEntity = productRepository.getById(stockItemRequest.getProductId());
         checkFalse(stockRepository.existsByColorAndSizeAndProduct(stockItemRequest.getColor(), stockItemRequest.getSize(), productEntity), "Stock item exists with such parameters");
     }
 
     @Transactional(readOnly = true)
     public void validateStockItemForUpdate(final UUID stockItemId, final StockItemRequest stockItemRequest) {
         checkTrue(stockRepository.existsById(stockItemId), "Stock doesn't exist with id: " + stockItemId);
-        ProductEntity productEntity = productRepository.getById(stockItemRequest.getProductId());
+        final ProductEntity productEntity = productRepository.getById(stockItemRequest.getProductId());
         checkFalse(stockRepository.existsByColorAndSizeAndProduct(stockItemRequest.getColor(), stockItemRequest.getSize(), productEntity), "Stock item exists with such parameters");
     }
 

@@ -33,7 +33,7 @@ public class StockUserServiceImpl implements StockUserService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<StockEntity> findStockItemByName(final String name) {
+    public List<StockEntity> findStockItemsByName(final String name) {
         return stockRepository.getByProductName(name);
     }
 
