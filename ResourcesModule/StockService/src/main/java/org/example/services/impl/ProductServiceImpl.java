@@ -31,13 +31,12 @@ public class ProductServiceImpl implements ProductService {
      *
      * @param name The name of the product to find.
      * @return The product entity matching the provided name.
-     * @throws RuntimeException if no product with the given name exists.
      */
     @Override
     @Transactional(readOnly = true)
     public ProductEntity getProductByName(String name) {
         log.info("Get product by name: {}", name);
-        return productRepository.findByName(name).orElseThrow();
+        return productRepository.getByName(name);
     }
 
     /**
@@ -52,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
         log.info("Creating product with name {}", productRequest.getName());
         validationProductService.validateProductRequestForCreate(productRequest);
         ProductEntity productEntity = productMapper.toEntity(productRequest);
-        return productRepository.saveAndFlush(productEntity);
+        return productRepository.save(productEntity);
     }
 
     /**
@@ -61,22 +60,20 @@ public class ProductServiceImpl implements ProductService {
      * @param productId      The ID of the product to update.
      * @param productRequest The request containing updated details of the product.
      * @return The updated product entity.
-     * @throws BrandNotExistException if no brand with the given brand ID exists.
      */
     @Override
     @Transactional
     public ProductEntity updateProduct(UUID productId, ProductRequest productRequest) {
         log.info("Updating product with id: {} ", productId);
         validationProductService.validateProductRequestForUpdate(productId, productRequest);
-        ProductEntity existingProductEntity = productRepository.findById(productId).get();
+        ProductEntity existingProductEntity = productRepository.getById(productId);
         existingProductEntity.setName(productRequest.getName());
         existingProductEntity.setType(productRequest.getType());
         existingProductEntity.setCurrency(productRequest.getCurrency());
         existingProductEntity.setPrice(productRequest.getPrice());
-        BrandEntity brandEntity = brandRepository.findById(productRequest.getBrandId())
-                .orElseThrow(() -> new BrandNotExistException("Brand doesn't exist with id: " + productRequest.getBrandId()));
+        BrandEntity brandEntity = brandRepository.getById(productRequest.getBrandId());
         existingProductEntity.setBrand(brandEntity);
-        return productRepository.saveAndFlush(existingProductEntity);
+        return productRepository.save(existingProductEntity);
     }
 
     /**

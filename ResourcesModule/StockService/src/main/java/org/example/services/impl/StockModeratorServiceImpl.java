@@ -28,14 +28,12 @@ public class StockModeratorServiceImpl implements StockModeratorService {
      *
      * @param stockItemId The ID of the stock item.
      * @return The stock item matching the provided ID.
-     * @throws StockNotExistException if no stock item with the given ID exists.
      */
     @Override
     @Transactional(readOnly = true)
     public StockEntity findById(final UUID stockItemId) {
         log.info("Find stock item by id: {}", stockItemId);
-        return stockRepository.findById(stockItemId)
-                .orElseThrow(() -> new StockNotExistException("Stock not exists with id: " + stockItemId));
+        return stockRepository.getById(stockItemId);
     }
 
     /**
@@ -49,7 +47,7 @@ public class StockModeratorServiceImpl implements StockModeratorService {
     public StockEntity createStockItem(final StockItemRequest stockItemRequest) {
         log.info("Create stock item: {}", stockItemRequest);
         validationStockService.validateStockItemForCreate(stockItemRequest);
-        return stockRepository.saveAndFlush(stockItemCreateRequestMapper.toEntity(stockItemRequest));
+        return stockRepository.save(stockItemCreateRequestMapper.toEntity(stockItemRequest));
     }
 
     /**
@@ -58,7 +56,6 @@ public class StockModeratorServiceImpl implements StockModeratorService {
      * @param stockItemId     The ID of the stock item to update.
      * @param stockItemRequest The request containing updated details of the stock item.
      * @return The updated stock item entity.
-     * @throws StockNotExistException if no stock item exists with the given ID.
      */
     @Override
     @Transactional
@@ -66,13 +63,12 @@ public class StockModeratorServiceImpl implements StockModeratorService {
         log.info("Update stock item with id: {}", stockItemId);
         validationStockService.validateStockItemForUpdate(stockItemId, stockItemRequest);
         StockEntity stockEntity = stockItemCreateRequestMapper.toEntity(stockItemRequest);
-        StockEntity existingStockEntity = stockRepository.findById(stockItemId)
-                .orElseThrow(() -> new StockNotExistException("Stock not exist with id: " + stockItemId));
+        StockEntity existingStockEntity = stockRepository.getById(stockItemId);
         existingStockEntity.setSize(stockEntity.getSize());
         existingStockEntity.setColor(stockEntity.getColor());
         existingStockEntity.setAmount(stockEntity.getAmount());
         existingStockEntity.setProduct(stockEntity.getProduct());
-        return stockRepository.saveAndFlush(existingStockEntity);
+        return stockRepository.save(existingStockEntity);
     }
 
     /**

@@ -29,14 +29,12 @@ public class BrandServiceImpl implements BrandService {
      *
      * @param name The name of the brand to find.
      * @return The brand entity matching the provided name.
-     * @throws BrandNotExistException if no brand with the given name exists.
      */
     @Override
     @Transactional(readOnly = true)
     public BrandEntity getBrandByName(final String name) {
         log.info("Getting brand by name: {}", name);
-        return brandRepository.findByName(name)
-                .orElseThrow(() -> new BrandNotExistException("Brand doesn't exist with name: " + name));
+        return brandRepository.getByName(name);
     }
 
     /**
@@ -51,7 +49,7 @@ public class BrandServiceImpl implements BrandService {
         log.info("Creating brand: {}", brandRequest);
         validationBrandService.validateBrandRequestForCreate(brandRequest);
         BrandEntity brandEntity = brandMapper.toEntity(brandRequest);
-        return brandRepository.saveAndFlush(brandEntity);
+        return brandRepository.save(brandEntity);
     }
 
     /**
@@ -60,17 +58,15 @@ public class BrandServiceImpl implements BrandService {
      * @param brandId      The ID of the brand to update.
      * @param brandRequest The request containing updated details of the brand.
      * @return The updated brand entity.
-     * @throws BrandNotExistException if no brand with the given ID exists.
      */
     @Override
     @Transactional
     public BrandEntity updateBrand(final UUID brandId, final BrandRequest brandRequest) {
         log.info("Updating brand with id: {}", brandId);
         validationBrandService.validateBrandRequestForUpdate(brandId, brandRequest);
-        BrandEntity existingBrandEntity = brandRepository.findById(brandId)
-                .orElseThrow(() -> new BrandNotExistException("Brand doesn't exist with id: " + brandId));
+        BrandEntity existingBrandEntity = brandRepository.getById(brandId);
         existingBrandEntity.setName(brandRequest.getName());
-        return brandRepository.saveAndFlush(existingBrandEntity);
+        return brandRepository.save(existingBrandEntity);
     }
 
     /**

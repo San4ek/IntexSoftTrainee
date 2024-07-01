@@ -26,30 +26,16 @@ public class StockUserServiceImpl implements StockUserService {
     private final StockRepository stockRepository;
 
     /**
-     * Finds all stock items.
-     *
-     * @return List of all stock items.
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<StockEntity> findAllStockItems() {
-        log.info("Find all stock items");
-        return stockRepository.findAll();
-    }
-
-    /**
      * Finds stock items by their name.
      *
      * @param name Name of the stock item to search for.
      * @return List of stock items matching the specified name.
-     * @throws StockNotExistException if no stock items with the given name are found.
      */
     @Override
     @Transactional(readOnly = true)
     public List<StockEntity> findStockItemByName(final String name) {
         log.info("Find stock item by name: {}", name);
-        return stockRepository.findByProductName(name)
-                .orElseThrow(() -> new StockNotExistException("Stock items not exist with name: " + name));
+        return stockRepository.getByProductName(name);
     }
 
     /**
