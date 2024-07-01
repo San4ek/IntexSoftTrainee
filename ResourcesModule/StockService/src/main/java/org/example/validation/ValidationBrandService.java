@@ -21,13 +21,13 @@ public class ValidationBrandService {
 
     @Transactional(readOnly = true)
     public void validateBrandRequestForCreate(final BrandRequest brandRequest) {
-        checkFalse(brandRepository.existsByName(brandRequest.getName()));
+        checkFalse(brandRepository.existsByName(brandRequest.getName()), "Brand is already exists with name: " + brandRequest.getName());
     }
 
     @Transactional(readOnly = true)
     public void validateBrandRequestForUpdate(final UUID brandId, final BrandRequest brandRequest) {
         checkTrue(brandRepository.existsById(brandId), "Brand doesn't exist");
-        checkFalse(brandRepository.existsByName(brandRequest.getName()));
+        checkFalse(brandRepository.existsByName(brandRequest.getName()), "Brand is already exists with name: " + brandRequest.getName());
     }
 
     @Transactional(readOnly = true)

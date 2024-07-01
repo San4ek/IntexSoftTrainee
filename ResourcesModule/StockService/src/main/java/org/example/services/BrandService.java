@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface BrandService {
 
-    BrandEntity getBrandByName(String name);
+    BrandEntity getBrandById(UUID id);
 
     BrandEntity createBrand(BrandRequest brandRequest);
 

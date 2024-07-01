@@ -10,9 +10,7 @@ import java.util.UUID;
 
 public interface StockUserService {
 
-    List<StockEntity> findAllStockItems();
-
-    List<StockEntity> findStockItemByName(String name);
+    List<StockEntity> findStockItemsByName(String name);
 
     List<StockEntity> findByAttributes(String brand, ColorEnum color, SizeEnum size, TypeEnum type, Float minPrice, Float maxPrice);
 
