@@ -25,17 +25,15 @@ public class BrandServiceImpl implements BrandService {
 
 
     /**
-     * Finds a brand by its name.
+     * Finds a brand by its id.
      *
-     * @param name The name of the brand to find.
-     * @return The brand entity matching the provided name.
-     * @throws BrandNotExistException if no brand with the given name exists.
+     * @param id The id of the brand to find.
+     * @return The brand entity matching the provided id.
      */
     @Override
     @Transactional(readOnly = true)
-    public BrandEntity getBrandByName(final String name) {
-        return brandRepository.findByName(name)
-                .orElseThrow(() -> new BrandNotExistException("Brand doesn't exist with name: " + name));
+    public BrandEntity getBrandById(final UUID id) {
+        return brandRepository.getById(id);
     }
 
     /**
@@ -50,7 +48,7 @@ public class BrandServiceImpl implements BrandService {
         log.info("Creating brand: {}", brandRequest);
         validationBrandService.validateBrandRequestForCreate(brandRequest);
         BrandEntity brandEntity = brandMapper.toEntity(brandRequest);
-        return brandRepository.saveAndFlush(brandEntity);
+        return brandRepository.save(brandEntity);
     }
 
     /**
@@ -59,17 +57,15 @@ public class BrandServiceImpl implements BrandService {
      * @param brandId      The ID of the brand to update.
      * @param brandRequest The request containing updated details of the brand.
      * @return The updated brand entity.
-     * @throws BrandNotExistException if no brand with the given ID exists.
      */
     @Override
     @Transactional
     public BrandEntity updateBrand(final UUID brandId, final BrandRequest brandRequest) {
         log.info("Updating brand with id: {}", brandId);
         validationBrandService.validateBrandRequestForUpdate(brandId, brandRequest);
-        BrandEntity existingBrandEntity = brandRepository.findById(brandId)
-                .orElseThrow(() -> new BrandNotExistException("Brand doesn't exist with id: " + brandId));
+        BrandEntity existingBrandEntity = brandRepository.getById(brandId);
         existingBrandEntity.setName(brandRequest.getName());
-        return brandRepository.saveAndFlush(existingBrandEntity);
+        return brandRepository.save(existingBrandEntity);
     }
 
     /**
@@ -80,7 +76,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     @Transactional
     public void deleteBrand(final UUID brandId) {
-        log.info("Deleting brand with id: {}", brandId);
+        log.info("Deleting brand: {}", brandId);
         validationBrandService.validateBrandRequestForDelete(brandId);
         brandRepository.deleteById(brandId);
     }

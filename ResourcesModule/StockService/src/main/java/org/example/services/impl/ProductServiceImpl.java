@@ -6,6 +6,7 @@ import org.example.dtos.ProductRequest;
 import org.example.entities.BrandEntity;
 import org.example.entities.ProductEntity;
 import org.example.exceptions.BrandNotExistException;
+import org.example.exceptions.ProductNotExistException;
 import org.example.mappers.ProductMapper;
 import org.example.repositories.BrandRepository;
 import org.example.repositories.ProductRepository;
@@ -27,16 +28,15 @@ public class ProductServiceImpl implements ProductService {
     private final ValidationProductService validationProductService;
 
     /**
-     * Finds a product by its name.
+     * Finds a product by its id.
      *
-     * @param name The name of the product to find.
-     * @return The product entity matching the provided name.
-     * @throws RuntimeException if no product with the given name exists.
+     * @param id The id of the product to find.
+     * @return The product entity matching the provided id.
      */
     @Override
     @Transactional(readOnly = true)
-    public ProductEntity getProductByName(String name) {
-        return productRepository.findByName(name).orElseThrow();
+    public ProductEntity getProductById(final UUID id) {
+        return productRepository.getById(id);
     }
 
     /**
@@ -47,11 +47,11 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     @Transactional
-    public ProductEntity createProduct(ProductRequest productRequest) {
+    public ProductEntity createProduct(final ProductRequest productRequest) {
         log.info("Creating product with name {}", productRequest.getName());
         validationProductService.validateProductRequestForCreate(productRequest);
         ProductEntity productEntity = productMapper.toEntity(productRequest);
-        return productRepository.saveAndFlush(productEntity);
+        return productRepository.save(productEntity);
     }
 
     /**
@@ -60,22 +60,20 @@ public class ProductServiceImpl implements ProductService {
      * @param productId      The ID of the product to update.
      * @param productRequest The request containing updated details of the product.
      * @return The updated product entity.
-     * @throws BrandNotExistException if no brand with the given brand ID exists.
      */
     @Override
     @Transactional
-    public ProductEntity updateProduct(UUID productId, ProductRequest productRequest) {
+    public ProductEntity updateProduct(final UUID productId, final ProductRequest productRequest) {
         log.info("Updating product with id: {} ", productId);
         validationProductService.validateProductRequestForUpdate(productId, productRequest);
-        ProductEntity existingProductEntity = productRepository.findById(productId).get();
+        ProductEntity existingProductEntity = productRepository.getById(productId);
         existingProductEntity.setName(productRequest.getName());
         existingProductEntity.setType(productRequest.getType());
         existingProductEntity.setCurrency(productRequest.getCurrency());
         existingProductEntity.setPrice(productRequest.getPrice());
-        BrandEntity brandEntity = brandRepository.findById(productRequest.getBrandId())
-                .orElseThrow(() -> new BrandNotExistException("Brand doesn't exist with id: " + productRequest.getBrandId()));
+        BrandEntity brandEntity = brandRepository.getById(productRequest.getBrandId());
         existingProductEntity.setBrand(brandEntity);
-        return productRepository.saveAndFlush(existingProductEntity);
+        return productRepository.save(existingProductEntity);
     }
 
     /**
@@ -85,7 +83,7 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     @Transactional
-    public void deleteProduct(UUID productId) {
+    public void deleteProduct(final UUID productId) {
         log.info("Deleting product with id: {}", productId);
         validationProductService.validateProductForDelete(productId);
         productRepository.deleteById(productId);
