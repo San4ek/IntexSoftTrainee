@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="24.06.24-init-database" author="iNQU1SITOR" failOnError="true">
+        <preConditions onFail="HALT"/>
+        <sqlFile path="sql/23.06.24-init-table-account.sql"
+                 relativeToChangelogFile="true"/>
+        <sqlFile path="sql/24.06.24-create-extension.sql"
+                 relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="24.06.24-v.1.0.0-snapshot" author="iNQU1SITOR">
+        <tagDatabase tag="v.1.0.0-snapshot"/>
+    </changeSet>
+
+</databaseChangeLog>
