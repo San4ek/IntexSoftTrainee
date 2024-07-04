@@ -3,7 +3,8 @@ package me.inqu1sitor.authservice.services.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.inqu1sitor.authservice.clients.UserServiceClient;
-import me.inqu1sitor.authservice.entities.Account;
+import me.inqu1sitor.authservice.dtos.CredentialsRequestDto;
+import me.inqu1sitor.authservice.entities.AccountEntity;
 import me.inqu1sitor.authservice.mappers.AccountMapper;
 import me.inqu1sitor.authservice.rabbit.AccountDeletedNotifier;
 import me.inqu1sitor.authservice.repositories.AccountRepository;
@@ -33,25 +34,26 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public void createAccount(Account account, Account.Role role) {
+    public void createAccount(CredentialsRequestDto credentialsRequestDto, AccountEntity.Role role) {
         log.info("Creating {} account", role);
-        account.setPassword(passwordEncoder.encode(account.getPassword()));
-        account.setRole(role);
-        account.setStatus(Account.Status.ACTIVE);
-        accountRepository.save(account);
-        userServiceClient.register(accountMapper.accountToTransferDto(account));
+        AccountEntity accountEntity = accountMapper.credentialsToAccount(credentialsRequestDto);
+        accountEntity.setPassword(passwordEncoder.encode(accountEntity.getPassword()));
+        accountEntity.setRole(role);
+        accountEntity.setStatus(AccountEntity.Status.ACTIVE);
+        accountRepository.save(accountEntity);
+        userServiceClient.register(accountMapper.accountToTransferDto(accountEntity));
         log.info("Account created");
     }
 
     @Override
     @Transactional
-    public void updateAccount(Account newAccount) {
+    public void updateAccount(CredentialsRequestDto credentialsRequestDto) {
         log.info("Updating account '{}'", loggedAccountHolder.getId());
-        Account account = accountFinderService.findActiveAny(loggedAccountHolder.getId());
-        account.setPassword(passwordEncoder.encode(newAccount.getPassword()));
-        account.setEmail(newAccount.getEmail());
-        account = accountRepository.save(account);
-        userServiceClient.update(accountMapper.accountToCredentialsTransferDto(account));
+        AccountEntity accountEntity = accountFinderService.findActiveAny(loggedAccountHolder.getId());
+        accountEntity.setPassword(passwordEncoder.encode(credentialsRequestDto.password()));
+        accountEntity.setEmail(credentialsRequestDto.email());
+        accountEntity = accountRepository.save(accountEntity);
+        userServiceClient.update(accountMapper.accountToCredentialsTransferDto(accountEntity));
         log.info("Account '{}' updated", loggedAccountHolder.getId());
     }
 
@@ -59,10 +61,10 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public void blockAccount(UUID accountId) {
         log.info("Blocking account '{}'", loggedAccountHolder.getId());
-        Account account = accountFinderService.findActiveNotAdmin(accountId);
-        account.setId(accountId);
-        account.setStatus(Account.Status.BLOCKED);
-        accountRepository.save(account);
+        AccountEntity accountEntity = accountFinderService.findActiveNotAdmin(accountId);
+        accountEntity.setId(accountId);
+        accountEntity.setStatus(AccountEntity.Status.BLOCKED);
+        accountRepository.save(accountEntity);
         userServiceClient.block(accountId, loggedAccountHolder.getId());
         log.info("Account '{}' blocked", loggedAccountHolder.getId());
     }
@@ -71,10 +73,10 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public void unblockAccount(UUID accountId) {
         log.info("Unblocking account '{}'", loggedAccountHolder.getId());
-        Account account = accountFinderService.findBlockedNotAdmin(accountId);
-        account.setId(accountId);
-        account.setStatus(Account.Status.ACTIVE);
-        accountRepository.save(account);
+        AccountEntity accountEntity = accountFinderService.findBlockedNotAdmin(accountId);
+        accountEntity.setId(accountId);
+        accountEntity.setStatus(AccountEntity.Status.ACTIVE);
+        accountRepository.save(accountEntity);
         userServiceClient.unblock(accountId);
         log.info("Account '{}' unblocked", loggedAccountHolder.getId());
     }
@@ -82,9 +84,9 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void deleteAccount() {
         log.info("Deleting account '{}'", loggedAccountHolder.getId());
-        Account account = accountRepository.findById(loggedAccountHolder.getId()).get();
-        account.setStatus(Account.Status.DELETED);
-        accountRepository.saveAndFlush(account);
+        AccountEntity accountEntity = accountRepository.findById(loggedAccountHolder.getId()).get();
+        accountEntity.setStatus(AccountEntity.Status.DELETED);
+        accountRepository.saveAndFlush(accountEntity);
         log.info("Account '{}' deleted", loggedAccountHolder.getId());
         accountDeletedNotifier.notifyAbout(loggedAccountHolder.getId());
     }

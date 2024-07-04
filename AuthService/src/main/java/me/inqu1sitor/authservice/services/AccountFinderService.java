@@ -1,7 +1,7 @@
 package me.inqu1sitor.authservice.services;
 
 import lombok.RequiredArgsConstructor;
-import me.inqu1sitor.authservice.entities.Account;
+import me.inqu1sitor.authservice.entities.AccountEntity;
 import me.inqu1sitor.authservice.repositories.AccountRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,17 +15,17 @@ public class AccountFinderService {
     private final AccountRepository accountRepository;
 
     @Transactional
-    public Account findActiveNotAdmin(final UUID accountId) {
-        return accountRepository.findByIdAndRoleNotAndStatus(accountId, Account.Role.ADMIN, Account.Status.ACTIVE).orElseThrow();
+    public AccountEntity findActiveNotAdmin(final UUID accountId) {
+        return accountRepository.findByIdAndRoleNotAndStatus(accountId, AccountEntity.Role.ADMIN, AccountEntity.Status.ACTIVE).orElseThrow();
     }
 
     @Transactional
-    public Account findBlockedNotAdmin(final UUID accountId) {
-        return accountRepository.findByIdAndRoleNotAndStatus(accountId, Account.Role.ADMIN, Account.Status.BLOCKED).orElseThrow();
+    public AccountEntity findBlockedNotAdmin(final UUID accountId) {
+        return accountRepository.findByIdAndRoleNotAndStatus(accountId, AccountEntity.Role.ADMIN, AccountEntity.Status.BLOCKED).orElseThrow();
     }
 
     @Transactional
-    public Account findActiveAny(final UUID accountId) {
+    public AccountEntity findActiveAny(final UUID accountId) {
         return accountRepository.findById(accountId).orElseThrow();
     }
 }

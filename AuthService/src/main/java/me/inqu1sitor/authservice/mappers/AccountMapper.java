@@ -3,7 +3,7 @@ package me.inqu1sitor.authservice.mappers;
 import me.inqu1sitor.authservice.dtos.AccountDetailsTransferDto;
 import me.inqu1sitor.authservice.dtos.CredentialsRequestDto;
 import me.inqu1sitor.authservice.dtos.CredentialsTransferDto;
-import me.inqu1sitor.authservice.entities.Account;
+import me.inqu1sitor.authservice.entities.AccountEntity;
 import org.mapstruct.Mapper;
 
 import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
@@ -11,9 +11,9 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 @Mapper(componentModel = SPRING)
 public interface AccountMapper {
 
-    Account credentialsToAccount(CredentialsRequestDto credentials);
+    AccountEntity credentialsToAccount(CredentialsRequestDto credentials);
 
-    AccountDetailsTransferDto accountToTransferDto(Account account);
+    AccountDetailsTransferDto accountToTransferDto(AccountEntity accountEntity);
 
-    CredentialsTransferDto accountToCredentialsTransferDto(Account account);
+    CredentialsTransferDto accountToCredentialsTransferDto(AccountEntity accountEntity);
 }

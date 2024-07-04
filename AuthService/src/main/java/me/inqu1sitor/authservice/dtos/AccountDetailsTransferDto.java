@@ -1,7 +1,7 @@
 package me.inqu1sitor.authservice.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import me.inqu1sitor.authservice.entities.Account;
+import me.inqu1sitor.authservice.entities.AccountEntity;
 
 import java.util.UUID;
 
@@ -12,5 +12,5 @@ public record AccountDetailsTransferDto(
         @Schema(description = "Account email", example = "sankevich2003@mail.ru")
         String email,
         @Schema(description = "Account role")
-        Account.Role role
+        AccountEntity.Role role
 ) {}
