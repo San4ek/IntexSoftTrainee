@@ -22,7 +22,6 @@ import java.util.UUID;
 @RequestMapping("/default/accounts")
 public interface AccountController {
 
-    //works in single mode
     @BadRequestErrorResponse
     @ExpectationFailedErrorResponse
     @NoContentOkResponse
