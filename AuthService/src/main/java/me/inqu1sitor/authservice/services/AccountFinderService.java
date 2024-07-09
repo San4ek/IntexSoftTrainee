@@ -1,31 +1,19 @@
 package me.inqu1sitor.authservice.services;
 
-import lombok.RequiredArgsConstructor;
 import me.inqu1sitor.authservice.entities.AccountEntity;
-import me.inqu1sitor.authservice.repositories.AccountRepository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-@Service
-@RequiredArgsConstructor
-public class AccountFinderService {
+/**
+ * Implementations of this interface are responsible for {@link AccountEntity} searching.
+ *
+ * @author Alexander Sankevich
+ */
+public interface AccountFinderService {
 
-    private final AccountRepository accountRepository;
+    AccountEntity findActiveNotAdmin(UUID accountId);
 
-    @Transactional
-    public AccountEntity findActiveNotAdmin(final UUID accountId) {
-        return accountRepository.findByIdAndRoleNotAndStatus(accountId, AccountEntity.Role.ADMIN, AccountEntity.Status.ACTIVE).orElseThrow();
-    }
+    AccountEntity findBlockedNotAdmin(UUID accountId);
 
-    @Transactional
-    public AccountEntity findBlockedNotAdmin(final UUID accountId) {
-        return accountRepository.findByIdAndRoleNotAndStatus(accountId, AccountEntity.Role.ADMIN, AccountEntity.Status.BLOCKED).orElseThrow();
-    }
-
-    @Transactional
-    public AccountEntity findActiveAny(final UUID accountId) {
-        return accountRepository.findById(accountId).orElseThrow();
-    }
+    AccountEntity findActiveAny(UUID accountId);
 }
