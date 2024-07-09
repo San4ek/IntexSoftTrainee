@@ -1,17 +1,13 @@
 server:
   port: 9000
 
-
-
 spring:
   cache:
     type: redis
 
-  data:
-    redis:
-      host: localhost
-      port: 6379
-      password:
+  redis:
+    host: localhost
+    port: 6379
 
   rabbitmq:
     host: localhost
@@ -45,9 +41,9 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         default_schema: auth_service
         format_sql: true
+    open-in-view: false
 
     hibernate:
       ddl-auto: validate
@@ -57,4 +53,4 @@ spring:
 
 logging:
   level:
-    me.inqu1sitor.authservice.clients: DEBUG
+    src.main.java.me.inqu1sitor.authservice.clients: DEBUG
