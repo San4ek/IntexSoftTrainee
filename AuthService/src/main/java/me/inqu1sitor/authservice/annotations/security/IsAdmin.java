@@ -6,7 +6,13 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.security.Principal;
 
+/**
+ * The annotated method should validate {@link Principal} for having {@code ROLE_ADMIN} authority.
+ *
+ * @author Alexander Sankevich
+ */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
