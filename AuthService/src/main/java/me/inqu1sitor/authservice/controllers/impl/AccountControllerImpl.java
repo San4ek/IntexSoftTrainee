@@ -6,7 +6,8 @@ import me.inqu1sitor.authservice.controllers.AccountController;
 import me.inqu1sitor.authservice.dtos.CredentialsRequestDto;
 import me.inqu1sitor.authservice.entities.AccountEntity;
 import me.inqu1sitor.authservice.services.AccountService;
-import me.inqu1sitor.authservice.utils.LoggedAccountHolder;
+import me.inqu1sitor.authservice.services.LogoutService;
+import me.inqu1sitor.authservice.utils.LoggedAccountDetailsHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,8 +19,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AccountControllerImpl implements AccountController {
 
+    private final LogoutService logoutService;
     private final AccountService accountService;
-    private final LoggedAccountHolder loggedAccountHolder;
+    private final LoggedAccountDetailsHolder loggedAccountDetailsHolder;
 
     @Override
     public void registerUser(CredentialsRequestDto credentialsRequestDto) {
@@ -29,37 +31,49 @@ public class AccountControllerImpl implements AccountController {
 
     @Override
     public void registerModer(CredentialsRequestDto credentialsRequestDto) {
-        log.info("Receive '{}' request for new moder registration", loggedAccountHolder.getId());
+        log.info("Receive '{}' request for new moder registration", loggedAccountDetailsHolder.getAccountId());
         accountService.createAccount(credentialsRequestDto, AccountEntity.Role.MODER);
     }
 
     @Override
     public void registerAdmin(CredentialsRequestDto credentialsRequestDto) {
-        log.info("Received '{}' request for new admin registration", loggedAccountHolder.getId());
+        log.info("Received '{}' request for new admin registration", loggedAccountDetailsHolder.getAccountId());
         accountService.createAccount(credentialsRequestDto, AccountEntity.Role.ADMIN);
     }
 
     @Override
     public void deleteAccount() {
-        log.info("Received '{}' request for account deletion", loggedAccountHolder.getId());
+        log.info("Received '{}' request for account deletion", loggedAccountDetailsHolder.getAccountId());
         accountService.deleteAccount();
     }
 
     @Override
     public void blockAccount(UUID accountId) {
-        log.info("Received '{}' request for account '{}' blocking", loggedAccountHolder.getId(), accountId);
+        log.info("Received '{}' request for account '{}' blocking", loggedAccountDetailsHolder.getAccountId(), accountId);
         accountService.blockAccount(accountId);
     }
 
     @Override
     public void unblockAccount(UUID accountId) {
-        log.info("Received '{}' request for account '{}' unblocking", loggedAccountHolder.getId(), accountId);
+        log.info("Received '{}' request for account '{}' unblocking", loggedAccountDetailsHolder.getAccountId(), accountId);
         accountService.unblockAccount(accountId);
     }
 
     @Override
     public void updateAccount(CredentialsRequestDto credentialsRequestDto) {
-        log.info("Received '{}' request for updating credentials", loggedAccountHolder.getId());
+        log.info("Received '{}' request for updating credentials", loggedAccountDetailsHolder.getAccountId());
         accountService.updateAccount(credentialsRequestDto);
+    }
+
+    @Override
+    public void logout() {
+        log.info("Received '{}' request for logout", loggedAccountDetailsHolder.getAccountId());
+        logoutService.logout();
+    }
+
+    @Override
+    public void logoutAll() {
+        log.info("Received '{}' request for logout from all devices", loggedAccountDetailsHolder.getAccountId());
+        logoutService.logoutAll();
     }
 }
