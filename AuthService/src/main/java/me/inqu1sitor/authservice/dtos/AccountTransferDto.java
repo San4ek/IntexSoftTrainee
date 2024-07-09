@@ -5,12 +5,19 @@ import me.inqu1sitor.authservice.entities.AccountEntity;
 
 import java.util.UUID;
 
+/**
+ * DTO for transferring {@link AccountEntity} required information from
+ * auth to user service for registration.
+ *
+ * @author Alexander Sankevich
+ */
 @Schema(description = "Account transfer model")
-public record AccountDetailsTransferDto(
+public record AccountTransferDto(
         @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "Account id")
         UUID id,
-        @Schema(description = "Account email", example = "sankevich2003@mail.ru")
+        @Schema(description = "Account email", example = "test@test.ru")
         String email,
         @Schema(description = "Account role")
         AccountEntity.Role role
-) {}
+) {
+}
