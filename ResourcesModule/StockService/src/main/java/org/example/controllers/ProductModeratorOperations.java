@@ -8,12 +8,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+/**
+ * Interface with operations for product moderator controller
+ */
 @RequestMapping("/products")
 public interface ProductModeratorOperations {
 
     @SneakyThrows
-    @GetMapping("/find/{name}")
-    default ProductResponse getProductByName(@PathVariable String name){
+    @GetMapping("/find/{productId}")
+    default ProductResponse getProductById(@PathVariable UUID id){
         throw new EndpointNotImplementedException();
     }
 

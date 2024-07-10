@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
+/**
+ * Controller with methods for moderator to work with products
+ */
 @RestController
 @RequiredArgsConstructor
 public class ProductModeratorController implements ProductModeratorOperations {
@@ -18,14 +21,14 @@ public class ProductModeratorController implements ProductModeratorOperations {
     private final ProductMapper productMapper;
 
     /**
-     * Finds a product by its name.
+     * Finds a product by its id.
      *
-     * @param name The name of the product to find.
+     * @param id The id of the product to find.
      * @return ProductResponse containing the found product.
      */
     @Override
-    public ProductResponse getProductByName(String name) {
-        return productMapper.toDto(productService.getProductByName(name));
+    public ProductResponse getProductById(final UUID id) {
+        return productMapper.toDto(productService.getProductById(id));
     }
 
     /**
@@ -35,7 +38,7 @@ public class ProductModeratorController implements ProductModeratorOperations {
      * @return ProductResponse containing the newly created product.
      */
     @Override
-    public ProductResponse createProduct(ProductRequest productRequest) {
+    public ProductResponse createProduct(final ProductRequest productRequest) {
         return productMapper.toDto(productService.createProduct(productRequest));
     }
 
@@ -47,7 +50,7 @@ public class ProductModeratorController implements ProductModeratorOperations {
      * @return ProductResponse containing the updated product.
      */
     @Override
-    public ProductResponse updateProduct(UUID productId, ProductRequest productRequest) {
+    public ProductResponse updateProduct(final UUID productId, final ProductRequest productRequest) {
         return productMapper.toDto(productService.updateProduct(productId, productRequest));
     }
 
@@ -57,7 +60,7 @@ public class ProductModeratorController implements ProductModeratorOperations {
      * @param productId The ID of the product to delete.
      */
     @Override
-    public void deleteProduct(UUID productId) {
+    public void deleteProduct(final UUID productId) {
         productService.deleteProduct(productId);
     }
 }

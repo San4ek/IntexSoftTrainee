@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+/**
+ * Interface with operations for stock moderator controller
+ */
 @Tag(name = "ModeratorStock", description = "Moderator's stock APIs")
 @RequestMapping("/stock")
 public interface StockModeratorOperations {
