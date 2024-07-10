@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dtos.BrandRequest;
 import org.example.entities.BrandEntity;
-import org.example.exceptions.BrandNotExistException;
 import org.example.mappers.BrandMapper;
 import org.example.repositories.BrandRepository;
 import org.example.services.BrandService;
@@ -22,7 +21,6 @@ public class BrandServiceImpl implements BrandService {
     private final BrandRepository brandRepository;
     private final BrandMapper brandMapper;
     private final ValidationBrandService validationBrandService;
-
 
     /**
      * Finds a brand by its id.
@@ -47,8 +45,7 @@ public class BrandServiceImpl implements BrandService {
     public BrandEntity createBrand(final BrandRequest brandRequest) {
         log.info("Creating brand: {}", brandRequest);
         validationBrandService.validateBrandRequestForCreate(brandRequest);
-        BrandEntity brandEntity = brandMapper.toEntity(brandRequest);
-        return brandRepository.save(brandEntity);
+        return brandRepository.save(brandMapper.toEntity(brandRequest));
     }
 
     /**
@@ -64,7 +61,7 @@ public class BrandServiceImpl implements BrandService {
         log.info("Updating brand with id: {}", brandId);
         validationBrandService.validateBrandRequestForUpdate(brandId, brandRequest);
         BrandEntity existingBrandEntity = brandRepository.getById(brandId);
-        existingBrandEntity.setName(brandRequest.getName());
+        brandMapper.toEntity(existingBrandEntity, brandRequest);
         return brandRepository.save(existingBrandEntity);
     }
 

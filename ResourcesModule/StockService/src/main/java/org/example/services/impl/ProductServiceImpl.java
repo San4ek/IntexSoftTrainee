@@ -3,12 +3,8 @@ package org.example.services.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dtos.ProductRequest;
-import org.example.entities.BrandEntity;
 import org.example.entities.ProductEntity;
-import org.example.exceptions.BrandNotExistException;
-import org.example.exceptions.ProductNotExistException;
 import org.example.mappers.ProductMapper;
-import org.example.repositories.BrandRepository;
 import org.example.repositories.ProductRepository;
 import org.example.services.ProductService;
 import org.example.validation.ValidationProductService;
@@ -23,7 +19,6 @@ import java.util.UUID;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final BrandRepository brandRepository;
     private final ProductMapper productMapper;
     private final ValidationProductService validationProductService;
 
@@ -50,8 +45,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductEntity createProduct(final ProductRequest productRequest) {
         log.info("Creating product with name {}", productRequest.getName());
         validationProductService.validateProductRequestForCreate(productRequest);
-        ProductEntity productEntity = productMapper.toEntity(productRequest);
-        return productRepository.save(productEntity);
+        return productRepository.save(productMapper.toEntity(productRequest));
     }
 
     /**
@@ -67,12 +61,7 @@ public class ProductServiceImpl implements ProductService {
         log.info("Updating product with id: {} ", productId);
         validationProductService.validateProductRequestForUpdate(productId, productRequest);
         ProductEntity existingProductEntity = productRepository.getById(productId);
-        existingProductEntity.setName(productRequest.getName());
-        existingProductEntity.setType(productRequest.getType());
-        existingProductEntity.setCurrency(productRequest.getCurrency());
-        existingProductEntity.setPrice(productRequest.getPrice());
-        BrandEntity brandEntity = brandRepository.getById(productRequest.getBrandId());
-        existingProductEntity.setBrand(brandEntity);
+        productMapper.toEntity(existingProductEntity, productRequest);
         return productRepository.save(existingProductEntity);
     }
 

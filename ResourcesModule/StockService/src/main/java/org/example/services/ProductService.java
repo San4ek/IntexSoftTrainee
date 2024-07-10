@@ -5,6 +5,9 @@ import org.example.entities.ProductEntity;
 
 import java.util.UUID;
 
+/**
+ * Interface with business logic for products
+ */
 public interface ProductService {
 
     ProductEntity getProductById(UUID id);

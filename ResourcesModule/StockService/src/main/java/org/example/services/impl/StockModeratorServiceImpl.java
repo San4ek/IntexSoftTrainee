@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dtos.StockItemRequest;
 import org.example.entities.StockEntity;
-import org.example.exceptions.StockNotExistException;
 import org.example.mappers.StockItemMapper;
 import org.example.repositories.StockRepository;
 import org.example.services.StockModeratorService;
@@ -21,7 +20,7 @@ public class StockModeratorServiceImpl implements StockModeratorService {
 
     private final StockRepository stockRepository;
     private final ValidationStockService validationStockService;
-    private final StockItemMapper stockItemCreateRequestMapper;
+    private final StockItemMapper stockItemMapper;
 
     /**
      * Finds a stock item by ID.
@@ -46,7 +45,7 @@ public class StockModeratorServiceImpl implements StockModeratorService {
     public StockEntity createStockItem(final StockItemRequest stockItemRequest) {
         log.info("Create stock item with productId: {}", stockItemRequest.getProductId());
         validationStockService.validateStockItemForCreate(stockItemRequest);
-        return stockRepository.save(stockItemCreateRequestMapper.toEntity(stockItemRequest));
+        return stockRepository.save(stockItemMapper.toEntity(stockItemRequest));
     }
 
     /**
@@ -61,12 +60,8 @@ public class StockModeratorServiceImpl implements StockModeratorService {
     public StockEntity updateStockItem(final UUID stockItemId, final StockItemRequest stockItemRequest) {
         log.info("Update stock item with id: {}", stockItemId);
         validationStockService.validateStockItemForUpdate(stockItemId, stockItemRequest);
-        StockEntity stockEntity = stockItemCreateRequestMapper.toEntity(stockItemRequest);
         StockEntity existingStockEntity = stockRepository.getById(stockItemId);
-        existingStockEntity.setSize(stockEntity.getSize());
-        existingStockEntity.setColor(stockEntity.getColor());
-        existingStockEntity.setAmount(stockEntity.getAmount());
-        existingStockEntity.setProduct(stockEntity.getProduct());
+        stockItemMapper.toEntity(existingStockEntity, stockItemRequest);
         return stockRepository.save(existingStockEntity);
     }
 
