@@ -1,0 +1,1 @@
+create index id_role_status on account(id, role, status);

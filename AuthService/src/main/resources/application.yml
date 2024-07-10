@@ -1,0 +1,56 @@
+server:
+  port: 9000
+
+spring:
+  cache:
+    type: redis
+
+  redis:
+    host: localhost
+    port: 6379
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: iNQU1SITOR
+    password: Utermybest1
+
+  main:
+    allow-bean-definition-overriding: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:9000/oauth2/jwks
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: Utermybest1
+    driver-class-name: org.postgresql.Driver
+
+  test:
+    database:
+      replace: none
+
+  liquibase:
+    change-log: classpath:db.changelog/db.changelog-master.xml
+    default-schema: auth_service
+
+  jpa:
+    properties:
+      hibernate:
+        default_schema: auth_service
+        format_sql: true
+    open-in-view: false
+
+    hibernate:
+      ddl-auto: validate
+
+    show-sql: true
+    generate-ddl: false
+
+logging:
+  level:
+    src.main.java.me.inqu1sitor.authservice.clients: DEBUG
