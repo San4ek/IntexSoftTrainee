@@ -1,6 +1,12 @@
 package me.inqu1sitor.authservice.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +23,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Entity(name = "account")
-public class Account implements UserDetails {
+public class AccountEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -60,14 +66,10 @@ public class Account implements UserDetails {
     }
 
     public enum Role {
-        USER,
-        MODER,
-        ADMIN
+        USER, MODER, ADMIN
     }
 
     public enum Status {
-        ACTIVE,
-        DELETED,
-        BLOCKED
+        ACTIVE, DELETED, BLOCKED
     }
 }

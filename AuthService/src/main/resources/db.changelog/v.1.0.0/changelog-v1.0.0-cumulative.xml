@@ -10,9 +10,11 @@
                  relativeToChangelogFile="true"/>
         <sqlFile path="sql/24.06.24-create-extension.sql"
                  relativeToChangelogFile="true"/>
+        <sqlFile path="sql/09.07.24-init-indexes.sql"
+                 relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="24.06.24-v.1.0.0-snapshot" author="iNQU1SITOR">
+    <changeSet id="v.1.0.0-snapshot" author="iNQU1SITOR">
         <tagDatabase tag="v.1.0.0-snapshot"/>
     </changeSet>
 

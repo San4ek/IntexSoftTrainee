@@ -5,5 +5,6 @@ create table if not exists account
     role     varchar(255) not null,
     password varchar(255) not null,
     email    varchar(255) not null,
-    primary key (id)
+    primary key (id),
+    constraint unique_email unique(email)
 );
