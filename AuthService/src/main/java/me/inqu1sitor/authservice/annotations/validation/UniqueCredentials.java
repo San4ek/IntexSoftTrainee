@@ -25,7 +25,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = UniqueCredentialsValidator.class)
 public @interface UniqueCredentials {
 
-    String message() default "Email already registered";
+    String message() default "Email is empty or already registered";
 
     Class<?>[] groups() default {};
 

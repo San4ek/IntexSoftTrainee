@@ -1,10 +1,11 @@
-package me.inqu1sitor.authservice.controllers.exception_handlers;
+package me.inqu1sitor.authservice.controllers.handlers;
 
 import jakarta.validation.ConstraintViolationException;
 import me.inqu1sitor.authservice.dtos.ErrorResponseDto;
 import me.inqu1sitor.authservice.exceptions.AccountNotFoundException;
 import me.inqu1sitor.authservice.exceptions.EndpointNotImplementedException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -37,6 +38,10 @@ public interface ExceptionHandlingController {
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     List<ErrorResponseDto> onMethodArgumentNotValidException(MethodArgumentNotValidException e);
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    ErrorResponseDto onHttpMessageNotReadableException(HttpMessageNotReadableException e);
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Throwable.class)

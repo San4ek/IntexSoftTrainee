@@ -1,12 +1,13 @@
-package me.inqu1sitor.authservice.controllers.exception_handlers.impl;
+package me.inqu1sitor.authservice.controllers.handlers.impl;
 
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
-import me.inqu1sitor.authservice.controllers.exception_handlers.ExceptionHandlingController;
+import me.inqu1sitor.authservice.controllers.handlers.ExceptionHandlingController;
 import me.inqu1sitor.authservice.dtos.ErrorResponseDto;
 import me.inqu1sitor.authservice.exceptions.AccountNotFoundException;
 import me.inqu1sitor.authservice.exceptions.EndpointNotImplementedException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -68,6 +69,11 @@ public class ExceptionHandlingControllerImpl implements ExceptionHandlingControl
                     logWarn(val.getDefaultMessage());
                     return new ErrorResponseDto(HttpStatus.EXPECTATION_FAILED.value(), HttpStatus.EXPECTATION_FAILED.getReasonPhrase(), val.getDefaultMessage());
                 }).toList();
+    }
+
+    @Override
+    public ErrorResponseDto onHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+        return new ErrorResponseDto(HttpStatus.CONFLICT.value(), HttpStatus.CONFLICT.getReasonPhrase(), e.getMessage());
     }
 
     /**

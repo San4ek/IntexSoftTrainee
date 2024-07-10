@@ -29,7 +29,6 @@ public class RabbitAccountDeletedNotifierImpl implements AccountDeletedNotifier 
      * @param accountId the deleted {@link AccountEntity} id
      */
     @Override
-    @Transactional
     public void notifyAbout(final UUID accountId) {
         this.rabbitTemplate.convertAndSend(fanoutExchange.getName(), "", accountId);
     }

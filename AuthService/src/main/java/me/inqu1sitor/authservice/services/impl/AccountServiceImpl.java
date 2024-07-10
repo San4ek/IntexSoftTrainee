@@ -56,7 +56,7 @@ public class AccountServiceImpl implements AccountService {
         accountEntity.setEmail(credentialsRequestDto.email());
         accountEntity.setRole(role);
         accountEntity.setStatus(AccountEntity.Status.ACTIVE);
-        accountRepository.saveAndFlush(accountEntity);
+        accountRepository.save(accountEntity);
         userServiceClient.register(accountMapper.toAccountTransferDto(accountEntity));
         log.info("Account '{}' created", accountEntity.getId());
     }
@@ -77,7 +77,7 @@ public class AccountServiceImpl implements AccountService {
         AccountEntity accountEntity = accountFinderService.findActiveAny(loggedAccountDetailsHolder.getAccountId());
         accountEntity.setPassword(passwordEncoder.encode(credentialsRequestDto.password()));
         accountEntity.setEmail(credentialsRequestDto.email());
-        accountRepository.saveAndFlush(accountEntity);
+        accountRepository.save(accountEntity);
         logoutService.logoutAll();
         userServiceClient.update(accountMapper.toCredentialsTransferDto(accountEntity));
         log.info("Account '{}' updated  and logged out", loggedAccountDetailsHolder.getAccountId());
@@ -97,7 +97,7 @@ public class AccountServiceImpl implements AccountService {
         AccountEntity accountEntity = accountFinderService.findActiveNotAdmin(accountId);
         accountEntity.setId(accountId);
         accountEntity.setStatus(AccountEntity.Status.BLOCKED);
-        accountRepository.saveAndFlush(accountEntity);
+        accountRepository.save(accountEntity);
         logoutService.logoutAll(accountId);
         userServiceClient.block(accountId, loggedAccountDetailsHolder.getAccountId());
         log.info("Account '{}' blocked  and logged out", loggedAccountDetailsHolder.getAccountId());
@@ -116,7 +116,7 @@ public class AccountServiceImpl implements AccountService {
         AccountEntity accountEntity = accountFinderService.findBlockedNotAdmin(accountId);
         accountEntity.setId(accountId);
         accountEntity.setStatus(AccountEntity.Status.ACTIVE);
-        accountRepository.saveAndFlush(accountEntity);
+        accountRepository.save(accountEntity);
         userServiceClient.unblock(accountId);
         log.info("Account '{}' unblocked", loggedAccountDetailsHolder.getAccountId());
     }
@@ -132,7 +132,7 @@ public class AccountServiceImpl implements AccountService {
         log.info("Deleting account '{}'", loggedAccountDetailsHolder.getAccountId());
         AccountEntity accountEntity = accountFinderService.findActiveNotAdmin(loggedAccountDetailsHolder.getAccountId());
         accountEntity.setStatus(AccountEntity.Status.DELETED);
-        accountRepository.saveAndFlush(accountEntity);
+        accountRepository.save(accountEntity);
         logoutService.logoutAll();
         accountDeletedNotifier.notifyAbout(loggedAccountDetailsHolder.getAccountId());
         log.info("Account '{}' deleted and logged out", loggedAccountDetailsHolder.getAccountId());

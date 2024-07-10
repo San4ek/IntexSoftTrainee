@@ -2,7 +2,6 @@ package me.inqu1sitor.authservice.controllers;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import me.inqu1sitor.authservice.annotations.security.IsAdmin;
 import me.inqu1sitor.authservice.annotations.swagger.parameters.AccountIdParameter;
 import me.inqu1sitor.authservice.annotations.swagger.requests.SwaggerRequestBody;
 import me.inqu1sitor.authservice.annotations.swagger.responses.BadRequestErrorResponse;
@@ -12,6 +11,7 @@ import me.inqu1sitor.authservice.annotations.swagger.security.Oauth2SecurityRequ
 import me.inqu1sitor.authservice.dtos.CredentialsRequestDto;
 import me.inqu1sitor.authservice.exceptions.EndpointNotImplementedException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -38,7 +38,7 @@ public interface AccountController {
         throw new EndpointNotImplementedException();
     }
 
-    @IsAdmin
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Oauth2SecurityRequired
     @BadRequestErrorResponse
     @ExpectationFailedErrorResponse
@@ -50,7 +50,7 @@ public interface AccountController {
         throw new EndpointNotImplementedException();
     }
 
-    @IsAdmin
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Oauth2SecurityRequired
     @BadRequestErrorResponse
     @ExpectationFailedErrorResponse
@@ -62,7 +62,7 @@ public interface AccountController {
         throw new EndpointNotImplementedException();
     }
 
-    @IsAdmin
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Oauth2SecurityRequired
     @BadRequestErrorResponse
     @NoContentOkResponse
@@ -73,7 +73,7 @@ public interface AccountController {
         throw new EndpointNotImplementedException();
     }
 
-    @IsAdmin
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Oauth2SecurityRequired
     @BadRequestErrorResponse
     @NoContentOkResponse

@@ -1,5 +1,6 @@
 package me.inqu1sitor.authservice.services;
 
+import jakarta.validation.constraints.NotNull;
 import me.inqu1sitor.authservice.annotations.validation.UniqueCredentials;
 import me.inqu1sitor.authservice.dtos.CredentialsRequestDto;
 import me.inqu1sitor.authservice.entities.AccountEntity;
@@ -14,7 +15,7 @@ import java.util.UUID;
  */
 public interface AccountService {
 
-    void createAccount(@UniqueCredentials CredentialsRequestDto credentialsRequestDto, AccountEntity.Role role);
+    void createAccount(@UniqueCredentials CredentialsRequestDto credentialsRequestDto, @NotNull AccountEntity.Role role);
 
     void updateAccount(@UniqueCredentials CredentialsRequestDto credentialsRequestDto);
 

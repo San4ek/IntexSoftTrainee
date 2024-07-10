@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 
 /**
- * A Spring Data Jpa implementation of an {@link AccountFinderService} that uses a
+ * An implementation of an {@link AccountFinderService} that uses a
  * {@link AccountRepository} for {@link AccountEntity} searching.
  *
  * @author Alexander Sankevich
@@ -33,7 +33,9 @@ public class AccountFinderServiceImpl implements AccountFinderService {
      */
     @Transactional
     public AccountEntity findActiveNotAdmin(final UUID accountId) {
-        return accountRepository.findByIdAndRoleNotAndStatus(accountId, AccountEntity.Role.ADMIN, AccountEntity.Status.ACTIVE).orElseThrow(() -> new AccountNotFoundException(accountId));
+        return accountRepository.
+                findByIdAndRoleNotAndStatus(accountId, AccountEntity.Role.ADMIN, AccountEntity.Status.ACTIVE).
+                orElseThrow(() -> new AccountNotFoundException(accountId));
     }
 
     /**
@@ -47,7 +49,9 @@ public class AccountFinderServiceImpl implements AccountFinderService {
      */
     @Transactional
     public AccountEntity findBlockedNotAdmin(final UUID accountId) {
-        return accountRepository.findByIdAndRoleNotAndStatus(accountId, AccountEntity.Role.ADMIN, AccountEntity.Status.BLOCKED).orElseThrow(() -> new AccountNotFoundException(accountId));
+        return accountRepository.
+                findByIdAndRoleNotAndStatus(accountId, AccountEntity.Role.ADMIN, AccountEntity.Status.BLOCKED).
+                orElseThrow(() -> new AccountNotFoundException(accountId));
     }
 
     /**
@@ -61,6 +65,8 @@ public class AccountFinderServiceImpl implements AccountFinderService {
      */
     @Transactional
     public AccountEntity findActiveAny(final UUID accountId) {
-        return accountRepository.findById(accountId).orElseThrow(() -> new AccountNotFoundException(accountId));
+        return accountRepository.
+                findById(accountId).
+                orElseThrow(() -> new AccountNotFoundException(accountId));
     }
 }
