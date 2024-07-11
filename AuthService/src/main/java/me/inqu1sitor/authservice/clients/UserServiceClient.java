@@ -30,7 +30,7 @@ public interface UserServiceClient {
      * @param adminId   the admins id which blocked the account
      */
     @PutMapping("/block")
-    void block(@RequestParam("accountId") final UUID accountId, @RequestParam("adminId") final UUID adminId);
+    void block(@RequestParam("accountId") UUID accountId, @RequestParam("adminId") UUID adminId);
 
     /**
      * Sends {@code PUT /unblock} HTTP request for account unblocking.
@@ -38,7 +38,7 @@ public interface UserServiceClient {
      * @param accountId the accounts id being unblocked
      */
     @PutMapping("/unblock")
-    void unblock(@RequestParam("accountId") final UUID accountId);
+    void unblock(@RequestParam("accountId") UUID accountId);
 
     /**
      * Sends {@code POST /} HTTP request for account registration.
@@ -46,13 +46,13 @@ public interface UserServiceClient {
      * @param account the dto with required account info
      */
     @PostMapping
-    void register(@RequestBody final AccountTransferDto account);
+    void register(@RequestBody AccountTransferDto account);
 
     /**
      * Sends {@code PUT /email} HTTP request for account credentials updating.
      *
      * @param credentials the dto with required account credentials info
      */
-    @PutMapping("/email")
-    void update(@RequestBody final CredentialsTransferDto credentials);
+    @PutMapping("/credentials")
+    void update(@RequestBody CredentialsTransferDto credentials);
 }
