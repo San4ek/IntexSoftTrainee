@@ -45,6 +45,4 @@ public class StockEntity {
         checkTrue(this.amount > amount, "Not enough stock items");
         this.amount -= amount;
     }
-
-    //to string for logs
 }

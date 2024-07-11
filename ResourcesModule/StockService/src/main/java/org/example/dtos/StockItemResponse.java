@@ -1,9 +1,5 @@
 package org.example.dtos;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,17 +15,14 @@ import java.util.UUID;
 @NoArgsConstructor
 public class StockItemResponse {
 
-    @NotNull(message = "Color can't be null")
+    private UUID id;
+
     private ColorEnum color;
 
-    @NotNull(message = "Size can't be null")
     private SizeEnum size;
 
-    @NotNull(message = "ProductId can't be null")
-    private UUID productId;
+    private ProductResponse product;
 
-    @PositiveOrZero(message = "Amount can't be negative")
-    @NotNull(message = "Amount can't be null")
     private Long amount;
 
 

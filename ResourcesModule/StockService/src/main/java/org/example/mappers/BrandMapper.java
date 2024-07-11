@@ -5,13 +5,19 @@ import org.example.dtos.BrandResponse;
 import org.example.entities.BrandEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
-public interface BrandMapper {
+public abstract class BrandMapper {
 
-    @Mapping(source = "name", target = "name")
-    BrandResponse toDto(BrandEntity brand);
+    public abstract BrandResponse toDto(BrandEntity brandEntity);
 
-    @Mapping(source = "name", target = "name")
-    BrandEntity toEntity(BrandRequest brandRequest);
+    @Mapping(target = "id", ignore = true)
+    public abstract BrandEntity toEntity(BrandRequest brandRequest);
+
+    public abstract void toDto(@MappingTarget BrandResponse brandResponse, BrandEntity brand);
+
+    @Mapping(target = "id", ignore = true)
+    public abstract void toEntity(@MappingTarget BrandEntity brandEntity, BrandRequest brandRequest);
+
 }
