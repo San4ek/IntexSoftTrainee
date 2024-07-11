@@ -34,3 +34,4 @@ build/
 ### Mac OS ###
 .DS_Store
 /AuthService/src/main/resources/gitignore/
+/ResourcesModule/UserService/src/main/resources/gitignore/
