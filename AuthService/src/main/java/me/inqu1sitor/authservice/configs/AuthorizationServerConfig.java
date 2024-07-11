@@ -14,6 +14,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -60,13 +61,17 @@ public class AuthorizationServerConfig {
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class).oidc(Customizer.withDefaults());
-        return http.formLogin(Customizer.withDefaults()).build();
+        return http.build();
     }
 
     @Bean
     @Order(1)
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        return http.formLogin(Customizer.withDefaults()).build();
+        return http.
+                csrf(AbstractHttpConfigurer::disable).
+                formLogin(Customizer.withDefaults()).
+                logout(logout -> logout.logoutUrl("/api/accounts/logout")).
+                build();
     }
 
     @Bean
