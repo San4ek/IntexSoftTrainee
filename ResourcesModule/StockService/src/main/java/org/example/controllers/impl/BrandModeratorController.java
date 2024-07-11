@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
+/**
+ * Controller with methods for moderator to work with brand
+ */
 @RestController
 @RequiredArgsConstructor
 public class BrandModeratorController implements BrandModeratorOperations {
@@ -18,14 +21,14 @@ public class BrandModeratorController implements BrandModeratorOperations {
     private final BrandMapper brandMapper;
 
     /**
-     * Finds a brand by its name.
+     * Finds a brand by its id.
      *
-     * @param name The name of the brand to find.
+     * @param id The id of the brand to find.
      * @return BrandResponse containing the found brand.
      */
     @Override
-    public BrandResponse getBrandByName(String name) {
-        return brandMapper.toDto(brandService.getBrandByName(name));
+    public BrandResponse getBrandById(final UUID id) {
+        return brandMapper.toDto(brandService.getBrandById(id));
     }
 
     /**
@@ -35,7 +38,7 @@ public class BrandModeratorController implements BrandModeratorOperations {
      * @return BrandResponse containing the newly created brand.
      */
     @Override
-    public BrandResponse createBrand(BrandRequest brandRequest) {
+    public BrandResponse createBrand(final BrandRequest brandRequest) {
         return brandMapper.toDto(brandService.createBrand(brandRequest));
     }
 
@@ -47,7 +50,7 @@ public class BrandModeratorController implements BrandModeratorOperations {
      * @return BrandResponse containing the updated brand.
      */
     @Override
-    public BrandResponse updateBrand(UUID brandId, BrandRequest brandRequest) {
+    public BrandResponse updateBrand(final UUID brandId, final BrandRequest brandRequest) {
         return brandMapper.toDto(brandService.updateBrand(brandId, brandRequest));
     }
 
@@ -57,7 +60,7 @@ public class BrandModeratorController implements BrandModeratorOperations {
      * @param brandId The ID of the brand to delete.
      */
     @Override
-    public void deleteBrand(UUID brandId) {
+    public void deleteBrand(final UUID brandId) {
          brandService.deleteBrand(brandId);
     }
 }

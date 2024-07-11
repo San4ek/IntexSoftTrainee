@@ -2,6 +2,7 @@ package org.example.controllers.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.controllers.StockUserOperations;
+import org.example.dtos.StockItemAmount;
 import org.example.dtos.StockItemResponse;
 import org.example.entities.StockEntity;
 import org.example.enums.ColorEnum;
@@ -12,7 +13,11 @@ import org.example.services.impl.StockUserServiceImpl;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
+/**
+ * Controller with methods for users to use stock items
+ */
 @RestController
 @RequiredArgsConstructor
 public class StockUserController implements StockUserOperations {
@@ -27,7 +32,7 @@ public class StockUserController implements StockUserOperations {
      * @return List of StockItemResponse matching the provided name.
      */
     @Override
-    public List<StockItemResponse> getStockItemsByName(String name) {
+    public List<StockItemResponse> getStockItemsByName(final String name) {
         return stockItemMapper.toDto(stockUserService.findStockItemsByName(name));
     }
 
@@ -43,8 +48,23 @@ public class StockUserController implements StockUserOperations {
      * @return List of StockItemResponse matching the specified attributes.
      */
     @Override
-    public List<StockItemResponse> getStockItemsByAttributes(String brand, ColorEnum color, SizeEnum size, TypeEnum type, Float minPrice, Float maxPrice) {
+    public List<StockItemResponse> getStockItemsByAttributes(final String brand, final ColorEnum color, final SizeEnum size, final TypeEnum type, final Float minPrice, final Float maxPrice) {
         List<StockEntity> stockEntities = stockUserService.findByAttributes(brand, color, size, type, minPrice, maxPrice);
         return stockItemMapper.toDto(stockEntities);
+    }
+
+    @Override
+    public StockItemAmount checkStockItemAmount(final UUID stockItemId) {
+        return stockUserService.checkStockItemAmount(stockItemId);
+    }
+
+    @Override
+    public void decreaseStock(final UUID stockItemId, final Long amount) {
+        stockUserService.decreaseStockItemAmount(stockItemId, amount);
+    }
+
+    @Override
+    public void increaseStock(final UUID stockItemId, final Long amount) {
+        stockUserService.increaseStockItemAmount(stockItemId, amount);
     }
 }

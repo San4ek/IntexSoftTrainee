@@ -3,19 +3,20 @@ package org.example.controllers;
 import lombok.SneakyThrows;
 import org.example.dtos.BrandRequest;
 import org.example.dtos.BrandResponse;
-import org.example.dtos.ProductRequest;
-import org.example.dtos.ProductResponse;
 import org.example.exceptions.EndpointNotImplementedException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+/**
+ * Interface with operations for brand moderator controller
+ */
 @RequestMapping("/brands")
 public interface BrandModeratorOperations {
 
     @SneakyThrows
-    @GetMapping("/find/{name}")
-    default BrandResponse getBrandByName(@PathVariable String name){
+    @GetMapping("/find/{brandId}")
+    default BrandResponse getBrandById(@PathVariable UUID brandId){
         throw new EndpointNotImplementedException();
     }
 

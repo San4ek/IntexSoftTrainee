@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
+/**
+ * Controller with methods for moderator to work with stock
+ */
 @RestController
 @RequiredArgsConstructor
 public class StockModeratorController implements StockModeratorOperations {

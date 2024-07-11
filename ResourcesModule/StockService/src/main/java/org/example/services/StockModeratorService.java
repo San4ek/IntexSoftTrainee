@@ -5,6 +5,9 @@ import org.example.entities.StockEntity;
 
 import java.util.UUID;
 
+/**
+ * Interface with business logic for stock items and moderator
+ */
 public interface StockModeratorService {
 
     StockEntity findById(UUID stockItemId);

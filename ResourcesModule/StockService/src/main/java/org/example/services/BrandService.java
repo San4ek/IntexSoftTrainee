@@ -5,6 +5,9 @@ import org.example.entities.BrandEntity;
 
 import java.util.UUID;
 
+/**
+ * Interface with business logic for brands
+ */
 public interface BrandService {
 
     BrandEntity getBrandById(UUID id);
