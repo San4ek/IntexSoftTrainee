@@ -1,4 +1,4 @@
-package me.inqu1sitor.authservice.repositories;
+package me.inquis1tor.userservice.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
