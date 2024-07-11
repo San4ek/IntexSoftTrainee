@@ -1,9 +1,9 @@
-package me.inqu1sitor.authservice.dtos;
+package me.inquis1tor.userservice.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import me.inqu1sitor.authservice.entities.AccountEntity;
+import me.inquis1tor.userservice.entities.AccountEntity;
 
 import java.util.UUID;
 
@@ -20,7 +20,7 @@ public record CredentialsTransferDto(
         UUID id,
         @NotNull(message = "Email is required")
         @Email(message = "Email format required")
-        @Schema(description = "Account email", example = "test@test.ru")
+        @Schema(description = "Account email", example = "test2003@test.ru")
         String email
 ) {
 }

@@ -6,7 +6,7 @@ import me.inqu1sitor.authservice.entities.AccountEntity;
 import java.util.UUID;
 
 /**
- * DTO for transferring {@link AccountEntity} required information from
+ * DTO for transferring the required {@link AccountEntity} information from
  * auth to user service for registration.
  *
  * @author Alexander Sankevich
