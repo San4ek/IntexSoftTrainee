@@ -1,0 +1,120 @@
+services:
+  auth-service:
+    image: inqu1sitor/auth_service:latest
+    ports:
+      - "9000:9000"
+    container_name: auth-service
+    depends_on:
+      auth-postgres:
+        condition: service_healthy
+      auth-redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://auth-postgres:5432/auth_service
+      SPRING_DATA_REDIS_HOST: auth-redis
+      SPRING_RABBITMQ_HOST: rabbitmq
+    networks:
+      - bridge_network
+
+  user-service:
+    image: inqu1sitor/user_service:latest
+    ports:
+      - "8081:8081"
+    container_name: user-service
+    depends_on:
+      user-postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://user-postgres:5432/user_service
+      SPRING_RABBITMQ_HOST: rabbitmq
+    networks:
+      - bridge_network
+
+  auth-postgres:
+    image: postgres:latest
+    container_name: auth-postgres-server
+    restart: on-failure
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Utermybest1
+      POSTGRES_DB: auth_service
+      PGUSER: postgres
+    networks:
+      - bridge_network
+    volumes:
+      - .docker/auth-postgres:/var/lib/postgresql
+    healthcheck:
+      test: pg_isready
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  user-postgres:
+    image: postgres:latest
+    container_name: user-postgres-server
+    restart: on-failure
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Utermybest1
+      POSTGRES_DB: user_service
+      PGUSER: postgres
+    networks:
+      - bridge_network
+    volumes:
+      - .docker/user-postgres:/var/lib/postgresql
+    healthcheck:
+      test: pg_isready
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  auth-redis:
+    image: redis:latest
+    container_name: redis-server
+    restart: on-failure
+    ports:
+      - "6379:6379"
+    environment:
+      ALLOW_EMPTY_PASSWORD: yes
+    volumes:
+      - .docker/auth-redis:/data
+    networks:
+      - bridge_network
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  rabbitmq:
+    image: rabbitmq:latest
+    container_name: rabbit-server
+    restart: on-failure
+    hostname: rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    environment:
+      RABBITMQ_DEFAULT_USER: iNQU1SITOR
+      RABBITMQ_DEFAULT_PASS: Utermybest1
+    volumes:
+      - .docker/rabbitmq:/var/lib/rabbitmq
+    networks:
+      - bridge_network
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+networks:
+  bridge_network:
+    driver: bridge
