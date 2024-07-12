@@ -30,7 +30,7 @@ public class AccountDeletedReceiverImpl implements AccountDeletedReceiver {
      * @param accountId the deleted {@link AccountEntity} id, caught from the queue
      */
     @RabbitListener(queues = "#{autoDeleteQueue.name}")
-    public void receive(UUID accountId) {
+    public void receive(final UUID accountId) {
         accountService.deleteAccount(accountId);
     }
 

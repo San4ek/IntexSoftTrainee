@@ -17,7 +17,7 @@ public class PersonalInfosControllerImpl implements PersonalInfosController {
     private final PersonalInfoServiceImpl personalInfoServiceImpl;
 
     @Override
-    public void updatePersonalInfo(PersonalInfoDto personalInfoDto) {
+    public void updatePersonalInfo(final PersonalInfoDto personalInfoDto) {
         personalInfoServiceImpl.updatePersonalInfo(personalInfoDto);
     }
 }

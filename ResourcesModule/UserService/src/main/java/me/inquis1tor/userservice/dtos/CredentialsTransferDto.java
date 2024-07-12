@@ -20,7 +20,7 @@ public record CredentialsTransferDto(
         UUID id,
         @NotNull(message = "Email is required")
         @Email(message = "Email format required")
-        @Schema(description = "Account email", example = "test2003@test.ru")
+        @Schema(description = "Account email", example = "test@test.ru")
         String email
 ) {
 }

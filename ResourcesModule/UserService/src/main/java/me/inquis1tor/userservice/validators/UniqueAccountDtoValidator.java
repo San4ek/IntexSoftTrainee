@@ -30,7 +30,7 @@ public class UniqueAccountDtoValidator implements ConstraintValidator<UniqueCred
      */
     @Override
     @Transactional
-    public boolean isValid(AccountTransferDto value, ConstraintValidatorContext context) {
+    public boolean isValid(final AccountTransferDto value, ConstraintValidatorContext context) {
         log.info("Validating credentials for uniqueness");
         return !(value == null || accountRepository.existsByEmail(value.email()));
     }

@@ -44,7 +44,7 @@ public class AccountsControllerImpl implements AccountsController {
     }
 
     @Override
-    public void blockAccount(final UUID accountId, UUID adminId) {
+    public void blockAccount(final UUID accountId, final UUID adminId) {
         log.info("Received '{}' request for blocking account '{}'", adminId, accountId);
         accountService.blockAccount(accountId, adminId);
     }

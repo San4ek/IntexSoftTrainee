@@ -33,7 +33,7 @@ public class ExistsAccountValidator implements ConstraintValidator<ExistsAccount
      * @param constraintAnnotation annotation instance for a given constraint declaration
      */
     @Override
-    public void initialize(ExistsAccount constraintAnnotation) {
+    public void initialize(final ExistsAccount constraintAnnotation) {
         status = constraintAnnotation.status();
         roles = constraintAnnotation.roles();
     }
