@@ -1,0 +1,1 @@
+alter database postgres set timezone to 'Europe/Minsk';

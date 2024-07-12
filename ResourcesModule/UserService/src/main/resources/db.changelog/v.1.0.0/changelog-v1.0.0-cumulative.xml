@@ -8,10 +8,6 @@
         <preConditions onFail="HALT"/>
         <sqlFile path="sql/07.06.24-init-table-account.sql"
                  relativeToChangelogFile="true"/>
-        <sqlFile path="sql/07.06.24-create-extension.sql"
-                 relativeToChangelogFile="true"/>
-        <sqlFile path="sql/10.07.24-init-indexes.sql"
-                 relativeToChangelogFile="true"/>
         <sqlFile path="sql/07.06.24-init-table-personal_info.sql"
                  relativeToChangelogFile="true"/>
     </changeSet>
