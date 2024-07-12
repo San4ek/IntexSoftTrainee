@@ -48,7 +48,7 @@ services:
     networks:
       - bridge_network
     volumes:
-      - backup/auth-postgres:/var/lib/postgresql
+      - ./backup/auth-postgres:/var/lib/postgresql
     healthcheck:
       test: pg_isready
       interval: 5s
@@ -69,7 +69,7 @@ services:
     networks:
       - bridge_network
     volumes:
-      - backup/user-postgres:/var/lib/postgresql
+      - ./backup/user-postgres:/var/lib/postgresql
     healthcheck:
       test: pg_isready
       interval: 5s
@@ -85,7 +85,7 @@ services:
     environment:
       ALLOW_EMPTY_PASSWORD: yes
     volumes:
-      - backup/auth-redis:/data
+      - ./backup/auth-redis:/data
     networks:
       - bridge_network
     healthcheck:
@@ -106,7 +106,7 @@ services:
       RABBITMQ_DEFAULT_USER: iNQU1SITOR
       RABBITMQ_DEFAULT_PASS: Utermybest1
     volumes:
-      - backup/rabbitmq:/var/lib/rabbitmq
+      - ./backup/rabbitmq:/var/lib/rabbitmq
     networks:
       - bridge_network
     healthcheck:

@@ -67,6 +67,10 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <docker>
+                        <host>//./pipe/dockerDesktopLinuxEngine</host>
+                    </docker>
+                    <imageName>inqu1sitor/auth_service:latest</imageName>
                     <mainClass>me.inqu1sitor.authservice.AuthServiceApplication</mainClass>
                     <excludes>
                         <exclude>
