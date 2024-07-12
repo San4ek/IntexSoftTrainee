@@ -4,6 +4,7 @@ import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import me.inqu1sitor.authservice.entities.AccountEntity;
 import me.inqu1sitor.authservice.repositories.AccountRepository;
@@ -70,7 +71,8 @@ public class AuthorizationServerConfig {
         return http.
                 csrf(AbstractHttpConfigurer::disable).
                 formLogin(Customizer.withDefaults()).
-                logout(logout -> logout.logoutUrl("/api/accounts/logout")).
+                formLogin(login -> login.failureHandler((request, response, exception) -> response.setStatus(HttpServletResponse.SC_UNAUTHORIZED))).
+                logout(Customizer.withDefaults()).
                 build();
     }
 
