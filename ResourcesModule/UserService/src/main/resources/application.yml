@@ -34,7 +34,6 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         default_schema: user_service
         format_sql: true
     hibernate:
@@ -42,7 +41,3 @@ spring:
 
     show-sql: true
     generate-ddl: false
-
-logging:
-  pattern:
-    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx"

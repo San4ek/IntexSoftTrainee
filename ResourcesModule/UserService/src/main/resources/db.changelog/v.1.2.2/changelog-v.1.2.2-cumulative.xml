@@ -4,8 +4,11 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <include file="v.1.0.0/changelog-v1.0.0-cumulative.xml" relativeToChangelogFile="true"/>
-    <include file="v.1.1.0/changelog-v.1.1.0-cumulative.xml" relativeToChangelogFile="true"/>
-    <include file="v.1.2.0/changelog-v.1.2.0-cumulative.xml" relativeToChangelogFile="true"/>
-    <include file="v.1.2.1/changelog-v.1.2.1-cumulative.xml" relativeToChangelogFile="true"/>
+    <changeSet id="12.07.24-create-indexes" author="iNQU1SITOR">
+        <sqlFile path="sql/12.07.24-create-indexes.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="12.07.24-v.1.2.2-snapshot" author="iNQU1SITOR">
+        <tagDatabase tag="v.1.2.2-snapshot"/>
+    </changeSet>
 </databaseChangeLog>

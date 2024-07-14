@@ -17,10 +17,10 @@ import java.util.UUID;
 public record CredentialsTransferDto(
         @NotNull(message = "Account id is required")
         @Schema(description = "Account id", example = "c0a80067-907f-19d0-8190-7f09f40e0000")
-        UUID accountId,
+        UUID id,
         @NotNull(message = "Email is required")
         @Email(message = "Email format required")
-        @Schema(description = "Account email", example = "test2003@test.ru")
+        @Schema(description = "Account email", example = "test@test.ru")
         String email
 ) {
 }

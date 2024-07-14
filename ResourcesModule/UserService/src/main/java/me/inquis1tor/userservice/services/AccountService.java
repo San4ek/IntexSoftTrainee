@@ -1,31 +1,37 @@
 package me.inquis1tor.userservice.services;
 
-import me.inquis1tor.userservice.annotations.validation.uuid.AdminActiveUuid;
-import me.inquis1tor.userservice.annotations.validation.uuid.UserOrModerActiveUuid;
-import me.inquis1tor.userservice.annotations.validation.uuid.UserOrModerBlockedUuid;
-import me.inquis1tor.userservice.annotations.validation.credentials.UniqueAccount;
-import me.inquis1tor.userservice.entities.Account;
+import me.inquis1tor.userservice.annotations.validation.ExistsAccount;
+import me.inquis1tor.userservice.annotations.validation.UniqueCredentials;
+import me.inquis1tor.userservice.dtos.AccountResponseDto;
+import me.inquis1tor.userservice.dtos.AccountTransferDto;
+import me.inquis1tor.userservice.dtos.CredentialsTransferDto;
+import me.inquis1tor.userservice.entities.AccountEntity;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Implementations of this interface are responsible for the management
+ * of {@link AccountEntity}.
+ *
+ * @author Alexander Sankevich
+ */
 @Validated
 public interface AccountService {
 
-    boolean existsByIdAndStatusAndRoles(UUID id, Account.Status status, Account.Role[] role);
+    void createAccount(@UniqueCredentials AccountTransferDto dto);
 
-    void createAccount(@UniqueAccount Account account);
+    AccountResponseDto getAccount();
 
-    Account getAccount();
+    List<AccountResponseDto> getAll();
 
-    List<Account> getAll();
+    void deleteAccount(UUID accountId);
 
-    void delete(UUID accountId);
+    void blockAccount(UUID accountId, @ExistsAccount(roles = AccountEntity.Role.ADMIN,
+            status = AccountEntity.Status.ACTIVE) UUID adminId);
 
-    void block(UUID accountId, @AdminActiveUuid UUID adminId);
+    void unblockAccount(UUID accountId);
 
-    void unblock(UUID accountId);
-
-    boolean existByEmail(String email);
+    void updateCredentials(@UniqueCredentials CredentialsTransferDto dto);
 }

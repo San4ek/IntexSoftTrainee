@@ -7,7 +7,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 public interface BaseRepository<T, ID> extends JpaRepository<T, ID> {
 
     @Override
-    default <S extends T> S save(S entity) {
+    default <S extends T> S save(final S entity) {
         return saveAndFlush(entity);
     }
 }

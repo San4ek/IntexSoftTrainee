@@ -1,7 +1,13 @@
 package me.inquis1tor.userservice.entities;
 
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +19,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Table(name = "personal_info")
-public class PersonalInfo {
+public class PersonalInfoEntity {
 
     @Id
     @Column(name = "account_id", nullable = false)
@@ -21,7 +27,7 @@ public class PersonalInfo {
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "account_id")
-    private Account account;
+    private AccountEntity accountEntity;
 
     @Column(name = "name")
     private String name;

@@ -1,7 +1,7 @@
 package me.inquis1tor.userservice.configs;
 
-import me.inquis1tor.userservice.entities.Account;
-import me.inquis1tor.userservice.utils.LoggedAccountHolder;
+import me.inquis1tor.userservice.entities.AccountEntity;
+import me.inquis1tor.userservice.utils.LoggedAccountDetailsHolder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,6 +10,11 @@ import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.UUID;
 
+/**
+ * {@link Configuration} for {@link LoggedAccountDetailsHolder} support.
+ *
+ * @author Alexander Sankevich
+ */
 @Configuration
 public class LoggedAccountHolderConfig {
 
@@ -21,11 +26,11 @@ public class LoggedAccountHolderConfig {
 
     @Bean
     @RequestScope
-    public LoggedAccountHolder userInfoHolder(Jwt jwt) {
-        LoggedAccountHolder loggedAccountHolder =new LoggedAccountHolder();
-        loggedAccountHolder.setId(UUID.fromString(jwt.getSubject()));
-        loggedAccountHolder.setRole(Account.Role.valueOf(jwt.getClaimAsStringList("role").get(0)));
+    public LoggedAccountDetailsHolder userInfoHolder(Jwt jwt) {
+        LoggedAccountDetailsHolder loggedAccountDetailsHolder = new LoggedAccountDetailsHolder();
+        loggedAccountDetailsHolder.setAccountId(UUID.fromString(jwt.getSubject()));
+        loggedAccountDetailsHolder.setAccountRole(AccountEntity.Role.valueOf(jwt.getClaimAsStringList("role").get(0)));
 
-        return loggedAccountHolder;
+        return loggedAccountDetailsHolder;
     }
 }
