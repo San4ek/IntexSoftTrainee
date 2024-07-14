@@ -1,8 +1,8 @@
 package me.inquis1tor.userservice.mappers;
 
-import me.inquis1tor.userservice.dtos.AccountDetailsTransferDto;
 import me.inquis1tor.userservice.dtos.AccountResponseDto;
-import me.inquis1tor.userservice.entities.Account;
+import me.inquis1tor.userservice.dtos.AccountTransferDto;
+import me.inquis1tor.userservice.entities.AccountEntity;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -12,11 +12,11 @@ import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 @Mapper(componentModel = SPRING)
 public interface AccountMapper {
 
-    AccountResponseDto accountToDto(Account account);
+    AccountResponseDto accountToDto(AccountEntity accountEntity);
 
-    Account dtoToAccount(AccountResponseDto accountResponseDto);
+    AccountEntity dtoToAccount(AccountResponseDto accountResponseDto);
 
-    List<AccountResponseDto> accountListToDtoList(List<Account> employees);
+    List<AccountResponseDto> accountListToDtoList(List<AccountEntity> employees);
 
-    Account transferDtoToAccount(AccountDetailsTransferDto accountDetailsTransferDto);
+    AccountEntity transferDtoToAccount(AccountTransferDto accountTransferDto);
 }

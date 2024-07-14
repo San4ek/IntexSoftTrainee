@@ -2,12 +2,16 @@ package me.inquis1tor.userservice.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import me.inquis1tor.userservice.entities.Account;
-import me.inquis1tor.userservice.entities.PersonalInfo;
+import me.inquis1tor.userservice.dtos.AccountResponseDto;
+import me.inquis1tor.userservice.dtos.AccountTransferDto;
+import me.inquis1tor.userservice.dtos.CredentialsTransferDto;
+import me.inquis1tor.userservice.entities.AccountEntity;
+import me.inquis1tor.userservice.entities.PersonalInfoEntity;
+import me.inquis1tor.userservice.mappers.AccountMapper;
 import me.inquis1tor.userservice.repositories.AccountRepository;
 import me.inquis1tor.userservice.services.AccountFinderService;
 import me.inquis1tor.userservice.services.AccountService;
-import me.inquis1tor.userservice.utils.LoggedAccountHolder;
+import me.inquis1tor.userservice.utils.LoggedAccountDetailsHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,95 +19,127 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * An implementation of an {@link AccountService}.
+ *
+ * @author Alexander Sankevich
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
-    private final LoggedAccountHolder loggedAccountHolder;
+    private final LoggedAccountDetailsHolder loggedAccountDetailsHolder;
     private final AccountFinderService accountFinderService;
+    private final AccountMapper accountMapper;
 
+    /**
+     * Creates new {@link AccountEntity} with info from parameter {@code dto}.
+     *
+     * @param dto the new {@link AccountEntity} details
+     */
     @Override
     @Transactional
-    public boolean existsByIdAndStatusAndRoles(UUID id, Account.Status status, Account.Role[] role) {
-        return accountRepository.existsByIdAndStatusAndRoleIn(id, status, List.of(role));
+    public void createAccount(final AccountTransferDto dto) {
+        log.info("Creating account '{}'", dto.id());
+        PersonalInfoEntity personalInfoEntity = new PersonalInfoEntity();
+        personalInfoEntity.setId(dto.id());
+        AccountEntity accountEntity = accountMapper.transferDtoToAccount(dto);
+        accountEntity.setStatus(AccountEntity.Status.ACTIVE);
+        accountEntity.setPersonalInfoEntity(personalInfoEntity);
+        accountRepository.save(accountEntity);
+        log.info("Account '{}' created", dto.id());
     }
 
+    /**
+     * Provides current {@link LoggedAccountDetailsHolder logged} {@link AccountEntity} info.
+     *
+     * @return the {@link AccountResponseDto}
+     */
     @Override
     @Transactional
-    public void createAccount(Account account) {
-        log.info("Creating account '{}'", account.getId());
-
-        PersonalInfo personalInfo=new PersonalInfo();
-        personalInfo.setId(account.getId());
-        account.setStatus(Account.Status.ACTIVE);
-        account.setPersonalInfo(personalInfo);
-        accountRepository.saveAndFlush(account);
-
-        log.info("Account '{}' created", account.getId());
+    public AccountResponseDto getAccount() {
+        return accountMapper.accountToDto(accountFinderService.findActiveAny(loggedAccountDetailsHolder.getAccountId()));
     }
 
+    /**
+     * Provides all {@link AccountEntity} info.
+     *
+     * @return the {@link List} of {@link AccountResponseDto}
+     */
     @Override
     @Transactional
-    public Account getAccount() {
-        log.info("User '{}' requested account info", loggedAccountHolder.getId());
-
-        return accountRepository.findById(loggedAccountHolder.getId()).orElseThrow();
+    public List<AccountResponseDto> getAll() {
+        log.info("User '{}' requested all accounts info", loggedAccountDetailsHolder.getAccountId());
+        return accountMapper.accountListToDtoList(accountRepository.findAll());
     }
 
+    /**
+     * Deletes an {@link AccountEntity} identified by
+     * the provided parameter {@code accountId}.
+     */
     @Override
     @Transactional
-    public List<Account> getAll() {
-        log.info("User '{}' requested all accounts info", loggedAccountHolder.getId());
-
-        return accountRepository.findAll();
-    }
-
-    @Override
-    @Transactional
-    public void delete(final UUID accountId) {
+    public void deleteAccount(final UUID accountId) {
         log.info("Deleting account '{}'", accountId);
-
-        Account account=accountFinderService.findActiveAny(accountId);
-        account.setStatus(Account.Status.DELETED);
-        account.setDeletedDate(LocalDateTime.now());
-        accountRepository.saveAndFlush(account);
-
+        AccountEntity accountEntity = accountFinderService.findActiveAny(accountId);
+        accountEntity.setStatus(AccountEntity.Status.DELETED);
+        accountEntity.setDeletedDate(LocalDateTime.now());
+        accountRepository.save(accountEntity);
         log.info("Account '{}' deleted", accountId);
     }
 
+    /**
+     * Blocks an {@link AccountEntity account} identified by
+     * the provided parameter {@code accountId}.
+     *
+     * @param accountId the being blocked {@link AccountEntity} id
+     * @param adminId   the admin id, who blocked {@link AccountEntity}
+     */
     @Override
     @Transactional
-    public void block(final UUID accountId, final UUID adminId) {
+    public void blockAccount(final UUID accountId, final UUID adminId) {
         log.info("Blocking account '{}' by '{}'", accountId, adminId);
-
-        Account account=accountFinderService.findActiveNotAdmin(accountId);
-        account.setStatus(Account.Status.BLOCKED);
-        account.setBlockedBy(adminId);
-        account.setBlockedDate(LocalDateTime.now());
-        accountRepository.saveAndFlush(account);
-
+        AccountEntity accountEntity = accountFinderService.findActiveNotAdmin(accountId);
+        accountEntity.setStatus(AccountEntity.Status.BLOCKED);
+        accountEntity.setBlockedBy(adminId);
+        accountEntity.setBlockedDate(LocalDateTime.now());
+        accountRepository.save(accountEntity);
         log.info("Account '{}' blocked", accountId);
     }
 
+    /**
+     * Unblocks an {@link AccountEntity} identified by
+     * the provided parameter {@code accountId}.
+     *
+     * @param accountId the being unblocked {@link AccountEntity} id
+     */
     @Override
     @Transactional
-    public void unblock(final UUID accountId) {
+    public void unblockAccount(final UUID accountId) {
         log.info("Unblocking account '{}'", accountId);
-
-        Account account=accountFinderService.findBlockedNotAdmin(accountId);
-        account.setStatus(Account.Status.ACTIVE);
-        account.setBlockedBy(null);
-        account.setBlockedDate(null);
-        accountRepository.saveAndFlush(account);
-
+        AccountEntity accountEntity = accountFinderService.findBlockedNotAdmin(accountId);
+        accountEntity.setStatus(AccountEntity.Status.ACTIVE);
+        accountEntity.setBlockedBy(null);
+        accountEntity.setBlockedDate(null);
+        accountRepository.save(accountEntity);
         log.info("Account '{}' unblocked", accountId);
     }
 
+    /**
+     * Updates an {@link AccountEntity} identified by the id
+     * provided by the parameter {@code dto} with info provided
+     * by the parameter {@code dto}.
+     *
+     * @param dto the {@link AccountEntity} new details.
+     */
     @Override
-    @Transactional
-    public boolean existByEmail(final String email) {
-        return accountRepository.existsByEmail(email);
+    public void updateCredentials(final CredentialsTransferDto dto) {
+        log.info("Updating '{}' account credentials", dto.id());
+        AccountEntity accountEntity = accountFinderService.findActiveAny(dto.id());
+        accountEntity.setEmail(dto.email());
+        accountRepository.save(accountEntity);
+        log.info("Account '{}' credentials updated", dto.id());
     }
 }

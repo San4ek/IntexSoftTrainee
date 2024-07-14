@@ -10,7 +10,7 @@ import static java.lang.annotation.ElementType.METHOD;
 
 @Target(METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Parameter(name = "accountId",
+@Parameter(name = "id",
         description = "Account id",
         required = true)
 public @interface AccountIdParameter {

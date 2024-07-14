@@ -1,10 +1,20 @@
 package me.inquis1tor.userservice.configs;
 
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.AnonymousQueue;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * {@link Configuration} for {@link RabbitTemplate RabbitMQ} support
+ *
+ * @author Alexander Sankevich
+ */
 @Configuration
 public class RabbitConfig {
 
@@ -19,7 +29,7 @@ public class RabbitConfig {
     }
 
     @Bean
-    public Binding binding1(FanoutExchange fanout, Queue autoDeleteQueue) {
+    public Binding binding(FanoutExchange fanout, Queue autoDeleteQueue) {
         return BindingBuilder.bind(autoDeleteQueue).to(fanout);
     }
 

@@ -1,21 +1,16 @@
 package me.inquis1tor.userservice.rabbit;
 
-import lombok.RequiredArgsConstructor;
-import me.inquis1tor.userservice.services.AccountService;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.stereotype.Component;
+import me.inquis1tor.userservice.entities.AccountEntity;
 
 import java.util.UUID;
 
-@Component
-@RequiredArgsConstructor
-public class AccountDeletedReceiver {
+/**
+ * Implementations of this interface are responsible for receiving
+ * notification about {@link AccountEntity} deleting.
+ *
+ * @author Alexander Sankevich
+ */
+public interface AccountDeletedReceiver {
 
-    private final AccountService accountService;
-
-    @RabbitListener(queues = "#{autoDeleteQueue.name}")
-    public void receive(UUID accountId) {
-        accountService.delete(accountId);
-    }
-
+    void receive(UUID accountId);
 }
