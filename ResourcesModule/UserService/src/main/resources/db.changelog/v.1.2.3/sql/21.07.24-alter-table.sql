@@ -1,0 +1,1 @@
+alter table account add constraint unique_email unique(email);
