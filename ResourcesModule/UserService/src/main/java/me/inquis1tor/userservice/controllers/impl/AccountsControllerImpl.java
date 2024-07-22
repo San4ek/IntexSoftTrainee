@@ -9,7 +9,6 @@ import me.inquis1tor.userservice.dtos.AccountTransferDto;
 import me.inquis1tor.userservice.dtos.CredentialsTransferDto;
 import me.inquis1tor.userservice.services.AccountService;
 import me.inquis1tor.userservice.utils.LoggedAccountDetailsHolder;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -17,7 +16,6 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/accounts")
 @RequiredArgsConstructor
 @Tag(name = "Accounts", description = "Account management APIs")
 public class AccountsControllerImpl implements AccountsController {

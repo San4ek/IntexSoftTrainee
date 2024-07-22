@@ -17,5 +17,9 @@ public interface AccountRepository extends BaseRepository<AccountEntity, UUID> {
     Optional<AccountEntity> findByIdAndRoleNotAndStatus(UUID accountId, AccountEntity.Role role, AccountEntity.Status status);
 
     boolean existsByEmail(String email);
+
+    AccountEntity findByEmail(String email);
+
+    Optional<AccountEntity> findByIdAndStatus(UUID accountId, AccountEntity.Status status);
 }
 

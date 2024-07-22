@@ -18,8 +18,6 @@ import me.inquis1tor.userservice.dtos.AccountResponseDto;
 import me.inquis1tor.userservice.dtos.AccountTransferDto;
 import me.inquis1tor.userservice.dtos.CredentialsTransferDto;
 import me.inquis1tor.userservice.exceptions.EndpointNotImplementedException;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -30,7 +28,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.UUID;
 
-@Validated
 @Tag(name = "Account", description = "Account management APIs")
 @RequestMapping("/api/accounts")
 public interface AccountsController {
@@ -45,7 +42,6 @@ public interface AccountsController {
         throw new EndpointNotImplementedException();
     }
 
-    @PreAuthorize("@securityService.hasAuthCode()")
     @Operation(summary = "Register new account")
     @NoContentOkResponse
     @ExpectationFailedErrorResponse
@@ -53,11 +49,10 @@ public interface AccountsController {
     @OkResponseStatus
     @PostMapping
     default void registerAccount(@SwaggerRequestBody(description = "Account details")
-                                 @RequestBody AccountTransferDto dto) throws EndpointNotImplementedException {
+                                 @Valid @RequestBody AccountTransferDto dto) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @Oauth2SecurityRequired
     @Operation(summary = "Get all accounts info")
     @AccountDtoArrayOkResponse
@@ -67,7 +62,6 @@ public interface AccountsController {
         throw new EndpointNotImplementedException();
     }
 
-    @PreAuthorize("@securityService.hasAuthCode()")
     @AccountIdParameter
     @AdminIdParameter
     @Operation(summary = "Block account by its id")
@@ -79,7 +73,6 @@ public interface AccountsController {
         throw new EndpointNotImplementedException();
     }
 
-    @PreAuthorize("@securityService.hasAuthCode()")
     @AccountIdParameter
     @Operation(summary = "Unblock account by its id")
     @AccountDtoOkResponse
@@ -90,7 +83,6 @@ public interface AccountsController {
         throw new EndpointNotImplementedException();
     }
 
-    @PreAuthorize("@securityService.hasAuthCode()")
     @Operation(summary = "Update account email")
     @NoContentOkResponse
     @ExpectationFailedErrorResponse

@@ -26,12 +26,13 @@ public class UniqueAccountDtoValidator implements ConstraintValidator<UniqueCred
      *
      * @param value   object to validate
      * @param context context in which the constraint is evaluated
-     * @return {@code false} if {@code value} is {@code null} or contains already registered {@code email}
+     * @return {@code false} if {@code value} is {@code null} or
+     * contains already registered {@code email} and {@code id}
      */
     @Override
     @Transactional
     public boolean isValid(final AccountTransferDto value, ConstraintValidatorContext context) {
         log.info("Validating credentials for uniqueness");
-        return !(value == null || accountRepository.existsByEmail(value.email()));
+        return !(value == null || accountRepository.existsByEmail(value.email()) || accountRepository.existsById(value.id()));
     }
 }

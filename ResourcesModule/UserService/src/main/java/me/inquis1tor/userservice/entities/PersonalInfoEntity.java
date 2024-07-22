@@ -1,7 +1,6 @@
 package me.inquis1tor.userservice.entities;
 
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -12,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -25,7 +25,7 @@ public class PersonalInfoEntity {
     @Column(name = "account_id", nullable = false)
     private UUID id;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToOne
     @JoinColumn(name = "account_id")
     private AccountEntity accountEntity;
 
@@ -40,4 +40,17 @@ public class PersonalInfoEntity {
 
     @Column(name = "phone_number")
     private String phoneNumber;
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        PersonalInfoEntity that = (PersonalInfoEntity) object;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getName(), that.getName()) && Objects.equals(getSurname(), that.getSurname()) && Objects.equals(getPatronymic(), that.getPatronymic()) && Objects.equals(getPhoneNumber(), that.getPhoneNumber());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getSurname(), getPatronymic(), getPhoneNumber());
+    }
 }

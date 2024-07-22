@@ -28,7 +28,7 @@ spring:
       replace: none
 
   liquibase:
-    change-log: classpath:db/changelog/db.changelog-master.xml
+    change-log: classpath:db.changelog/db.changelog-master.xml
     default-schema: user_service
 
   jpa:
