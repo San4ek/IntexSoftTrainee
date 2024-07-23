@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.27.xsd">
+    <changeSet id="1" author="eugene yuntsevich">
+        <addForeignKeyConstraint baseTableName="cart_items"
+                                 baseColumnNames="cart_id"
+                                 constraintName="cartItemsForeignKey"
+                                 referencedTableName="cart"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="2" author="eugene yuntsevich">
+        <addForeignKeyConstraint baseTableName="orders"
+                                 baseColumnNames="cart_id"
+                                 constraintName="ordersForeignKey"
+                                 referencedTableName="cart"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="3" author="eugene yuntsevich">
+        <addForeignKeyConstraint baseTableName="orders"
+                                 baseColumnNames="address_id"
+                                 constraintName="addressForeignKey"
+                                 referencedTableName="address"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>
