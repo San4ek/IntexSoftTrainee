@@ -10,6 +10,7 @@ import org.example.mappers.OrderMapper;
 import org.example.repositories.CartRepository;
 import org.example.repositories.OrderRepository;
 import org.example.services.OrderService;
+import org.example.validation.ValidationOrderService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final CartRepository cartRepository;
+    private final ValidationOrderService validationOrderService;
 
     /**
      * Retrieves an order by its ID.
@@ -51,6 +53,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public OrderResponse createOrder(final OrderRequest orderRequest) {
         log.info("Create order from cart {} ", orderRequest.getCartId());
+        validationOrderService.validateOrderForCreating(orderRequest);
         CartEntity cartEntity = cartRepository.getById(orderRequest.getCartId());
         checkFalse(cartEntity.getCartItems().isEmpty(), "Cart is empty");
         OrderResponse orderResponse = orderMapper.toDto(orderRepository.save(orderMapper.toEntity(orderRequest)));
@@ -69,6 +72,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public void deleteOrdersWithAddress(final UUID addressId) {
         log.info("Delete orders with address {}", addressId);
+        validationOrderService.validateOrdersWithAddressIdForDeleting(addressId);
         orderRepository.deleteByAddressId(addressId);
     }
 }
