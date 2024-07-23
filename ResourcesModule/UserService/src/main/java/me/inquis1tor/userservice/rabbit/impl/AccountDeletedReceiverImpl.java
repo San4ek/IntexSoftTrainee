@@ -33,5 +33,4 @@ public class AccountDeletedReceiverImpl implements AccountDeletedReceiver {
     public void receive(final UUID accountId) {
         accountService.deleteAccount(accountId);
     }
-
 }

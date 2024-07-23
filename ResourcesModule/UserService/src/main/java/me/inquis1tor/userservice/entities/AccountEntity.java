@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -29,7 +30,7 @@ public class AccountEntity extends Audit {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @OneToOne(mappedBy = "accountEntity", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToOne(mappedBy = "accountEntity", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private PersonalInfoEntity personalInfoEntity;
 
@@ -40,6 +41,19 @@ public class AccountEntity extends Audit {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private Status status;
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        AccountEntity account = (AccountEntity) object;
+        return Objects.equals(getId(), account.getId()) && Objects.equals(getEmail(), account.getEmail()) && getRole() == account.getRole() && getStatus() == account.getStatus();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getEmail(), getPersonalInfoEntity(), getRole(), getStatus());
+    }
 
     public enum Status {
         ACTIVE,

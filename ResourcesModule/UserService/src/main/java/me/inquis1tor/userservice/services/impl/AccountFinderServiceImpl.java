@@ -66,7 +66,7 @@ public class AccountFinderServiceImpl implements AccountFinderService {
     @Transactional
     public AccountEntity findActiveAny(final UUID accountId) {
         return accountRepository.
-                findById(accountId).
+                findByIdAndStatus(accountId, AccountEntity.Status.ACTIVE).
                 orElseThrow(() -> new AccountNotFoundException(accountId));
     }
 }

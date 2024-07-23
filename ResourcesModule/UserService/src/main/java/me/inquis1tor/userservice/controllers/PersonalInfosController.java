@@ -19,7 +19,6 @@ public interface PersonalInfosController {
     @Operation(summary = "Update user personal info")
     @Oauth2SecurityRequired
     @NoContentOkResponse
-    @BadRequestErrorResponse
     @PutMapping
     default void updatePersonalInfo(@SwaggerRequestBody(description = "User personal info")
                                     @RequestBody PersonalInfoDto personalInfo) throws EndpointNotImplementedException {
