@@ -1,4 +1,4 @@
-package me.inquis1tor.userservice.annotations.swagger.parameters;
+package me.inqu1sitor.annotations.swagger.parameters;
 
 import io.swagger.v3.oas.annotations.Parameter;
 
@@ -10,8 +10,8 @@ import static java.lang.annotation.ElementType.METHOD;
 
 @Target(METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-@Parameter(name ="email",
-        description = "Account email",
+@Parameter(name = "id",
+        description = "Account id",
         required = true)
-public @interface EmailParameter {
+public @interface AccountIdParameter {
 }

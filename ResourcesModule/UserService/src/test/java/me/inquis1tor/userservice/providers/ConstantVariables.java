@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum ConstantVariables {
     UUID("c0a80065-90a2-1cb0-8190-a20de91f0000"),
-    AUTH_CODE("Auth_Code"),
+    AUTH_CODE("Auth-Code"),
     ACCOUNT_ID("accountId"),
     ADMIN_ID("adminId");
 

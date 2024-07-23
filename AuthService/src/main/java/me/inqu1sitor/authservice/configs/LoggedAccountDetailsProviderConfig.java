@@ -4,7 +4,6 @@ import me.inqu1sitor.authservice.entities.AccountEntity;
 import me.inqu1sitor.authservice.utils.LoggedAccountDetailsHolder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.context.annotation.RequestScope;
@@ -27,7 +26,7 @@ public class LoggedAccountDetailsProviderConfig {
 
     @Bean
     @RequestScope
-    public LoggedAccountDetailsHolder loggedAccountHolder(@AuthenticationPrincipal Jwt jwt) {
+    public LoggedAccountDetailsHolder loggedAccountHolder(Jwt jwt) {
         LoggedAccountDetailsHolder loggedAccountDetailsHolder = new LoggedAccountDetailsHolder();
         loggedAccountDetailsHolder.setAccountId(UUID.fromString(jwt.getSubject()));
         loggedAccountDetailsHolder.setAccountRole(AccountEntity.Role.valueOf(jwt.getClaimAsStringList("role").get(0)));
