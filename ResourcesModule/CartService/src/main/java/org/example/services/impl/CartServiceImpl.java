@@ -12,6 +12,7 @@ import org.example.mappers.CartMapper;
 import org.example.repositories.CartItemRepository;
 import org.example.repositories.CartRepository;
 import org.example.services.CartService;
+import org.example.validation.ValidationCartService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +33,7 @@ public class CartServiceImpl implements CartService {
     private final CartItemMapper cartItemMapper;
     private final CartMapper cartMapper;
     private final StockServiceImpl stockService;
+    private final ValidationCartService validationCartService;
 
     /**
      * Retrieves a cart by its ID.
@@ -70,6 +72,7 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public CartEntity updateCart(final UUID cartId, final CartRequest cartRequest) {
         log.info("Updating cart entity with id {}", cartId);
+        validationCartService.validateCartForUpdate(cartId);
         CartEntity cartEntity = cartRepository.getById(cartId);
         cartMapper.toEntity(cartEntity, cartRequest);
         return cartRepository.save(cartEntity);
@@ -84,8 +87,7 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public CartItemEntity addItemInCart(final CartItemRequest cartItemRequest) {
         log.info("Adding item {} in cart with id {}", cartItemRequest.getStockId(),cartItemRequest.getCartId());
-        StockItemAmount stockItemAmount = stockService.getStockItemById(cartItemRequest.getStockId());
-        checkTrue(stockItemAmount.getAmount() >= cartItemRequest.getAmount(), "Not enough items in stock");
+        validationCartService.validateCartForAddItem(cartItemRequest);
         CartItemEntity cartItemEntity = cartItemMapper.toEntity(cartItemRequest);
         stockService.decreaseStock(cartItemRequest.getStockId(), cartItemRequest.getAmount());
         CartEntity cartEntity = cartRepository.getById(cartItemRequest.getCartId());
@@ -104,6 +106,7 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public void deleteItemFromCart(final UUID cartId, final UUID stockItemId) {
         log.info("Deleting item {} from cart with id {}", stockItemId, cartId);
+        validationCartService.validateCartForDeleteItem(cartId, stockItemId);
         CartEntity cartEntity = cartRepository.getById(cartId);
         CartItemEntity cartItemEntity = cartItemRepository.findByCartIdAndStockId(cartId, stockItemId);
         cartEntity.removeItems(cartItemEntity);
@@ -120,6 +123,7 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public void deleteCart(final UUID cartId) {
         log.info("Deleting a cart with id {}", cartId);
+        validationCartService.validateCartForDelete(cartId);
         cartRepository.deleteById(cartId);
     }
 }
