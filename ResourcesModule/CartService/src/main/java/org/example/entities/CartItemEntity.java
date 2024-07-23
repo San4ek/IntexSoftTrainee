@@ -22,9 +22,9 @@ public class CartItemEntity {
     @ManyToOne(optional = false)
     private CartEntity cart;
 
-    @Column(name = "stock_id")
+    @Column(name = "stock_id", nullable = false)
     private UUID stockId;
 
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false)
     private Long amount;
 }
