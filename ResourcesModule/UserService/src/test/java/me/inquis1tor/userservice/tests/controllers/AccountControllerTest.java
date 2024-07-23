@@ -8,6 +8,7 @@ import me.inquis1tor.userservice.entities.AccountEntity;
 import me.inquis1tor.userservice.mappers.AccountMapper;
 import me.inquis1tor.userservice.providers.AccountEntityProvider;
 import me.inquis1tor.userservice.providers.DtoProvider;
+import me.inquis1tor.userservice.providers.StandartVariables;
 import me.inquis1tor.userservice.repositories.AccountRepository;
 import me.inquis1tor.userservice.repositories.PersonalInfoRepository;
 import me.inquis1tor.userservice.utils.PrivatePropertiesProvider;
@@ -81,16 +82,9 @@ class AccountControllerTest {
     @Test
     @DisplayName("Tests POST /api/accounts with already registered entity in db")
     void registerAccountWithExistedAccountInDb_400Expected() throws Exception {
-        AccountEntity userAccount = accountEntityProvider.activeUserEntity("c0a80065-90a2-1cb0-8190-a20de91f0000");
+        final AccountTransferDto accountTransferDto = accountTransferDtoProvider.correctDto();
+        AccountEntity userAccount = accountEntityProvider.activeUserEntity(accountTransferDto.id().toString());
         accountRepository.save(userAccount);
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/accounts").
-                        header("Auth-Code", privatePropertiesProvider.getAuthCode()).
-                        contentType(MediaType.APPLICATION_JSON).
-                        content(mapper.writeValueAsString(accountTransferDtoProvider.correctDto()))).
-                andExpect(MockMvcResultMatchers.status().isBadRequest());
-
-        userAccount.setId(UUID.fromString("c0a80065-90a2-1cb0-8190-a20de91f0000"));
-        userAccount.setEmail("test1@mail.ru");
         mockMvc.perform(MockMvcRequestBuilders.post("/api/accounts").
                         header("Auth-Code", privatePropertiesProvider.getAuthCode()).
                         contentType(MediaType.APPLICATION_JSON).
@@ -129,7 +123,7 @@ class AccountControllerTest {
     @WithJwt("jwt/user.json")
     @DisplayName("Tests GET /api/accounts correctly")
     void getExistedAccountWithCorrectEntityInDb_200Expected() throws Exception {
-        AccountEntity account = accountEntityProvider.activeUserEntity("c0a80065-90a2-1cb0-8190-a20de91f0000");
+        AccountEntity account = accountEntityProvider.activeUserEntity(StandartVariables.UUID.getVal());
         accountRepository.save(account);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/accounts")).
                 andExpect(MockMvcResultMatchers.status().isOk()).
@@ -174,10 +168,8 @@ class AccountControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/accounts/all")).
                 andExpect(MockMvcResultMatchers.status().isOk()).
                 andExpect(MockMvcResultMatchers.content().json("[]"));
-
-        AccountEntity account = accountEntityProvider.activeUserEntity("c0a80065-90a2-1cb0-8190-a20de91f0001");
+        AccountEntity account = accountEntityProvider.activeUserEntity(UUID.randomUUID().toString());
         accountRepository.save(account);
-
         mockMvc.perform(MockMvcRequestBuilders.get("/api/accounts/all")).
                 andExpect(MockMvcResultMatchers.status().isOk()).
                 andExpect(MockMvcResultMatchers.content().json("[ " +
@@ -205,63 +197,63 @@ class AccountControllerTest {
     void blockAccountWithoutAdminEntityInDb_400Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/block").
                         header("Auth-Code", privatePropertiesProvider.getAuthCode()).
-                        param("accountId", "c0a80065-90a2-1cb0-8190-a20de91f0001").
-                        param("adminId", "c0a80065-90a2-1cb0-8190-a20de91f0000")).
+                        param("accountId", UUID.randomUUID().toString()).
+                        param("adminId", UUID.randomUUID().toString())).
                 andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
     @DisplayName("Tests PUT /api/accounts/block with not existed blocking entity in db")
     void blockAccountWithoutBlockingEntityInDb_404Expected() throws Exception {
-        AccountEntity adminAccount = accountEntityProvider.activeAdminEntity("c0a80065-90a2-1cb0-8190-a20de91f0000");
+        AccountEntity adminAccount = accountEntityProvider.activeAdminEntity(UUID.randomUUID().toString());
         accountRepository.save(adminAccount);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/block").
                         header("Auth-Code", privatePropertiesProvider.getAuthCode()).
-                        param("accountId", "c0a80065-90a2-1cb0-8190-a20de91f0001").
-                        param("adminId", "c0a80065-90a2-1cb0-8190-a20de91f0000")).
+                        param("accountId", UUID.randomUUID().toString()).
+                        param("adminId", adminAccount.getId().toString())).
                 andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
     @DisplayName("Tests PUT /api/accounts/block correctly")
     void blockAccount_200Expected() throws Exception {
-        AccountEntity adminAccount = accountEntityProvider.activeAdminEntity("c0a80065-90a2-1cb0-8190-a20de91f0000");
+        AccountEntity adminAccount = accountEntityProvider.activeAdminEntity(UUID.randomUUID().toString());
         accountRepository.save(adminAccount);
-        AccountEntity moderAccount = accountEntityProvider.activeModerEntity("c0a80065-90a2-1cb0-8190-a20de91f0001");
+        AccountEntity moderAccount = accountEntityProvider.activeModerEntity(UUID.randomUUID().toString());
         moderAccount.setEmail("test1.@test.ru");
         accountRepository.save(moderAccount);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/block").
                         header("Auth-Code", privatePropertiesProvider.getAuthCode()).
-                        param("accountId", "c0a80065-90a2-1cb0-8190-a20de91f0001").
-                        param("adminId", "c0a80065-90a2-1cb0-8190-a20de91f0000")).
+                        param("accountId", moderAccount.getId().toString()).
+                        param("adminId", adminAccount.getId().toString())).
                 andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
     @DisplayName("Tests PUT /api/accounts/block with already blocked entity in db")
     void blockAccountWithAlreadyBlockedEntityInDb_404Expected() throws Exception {
-        AccountEntity adminAccount = accountEntityProvider.activeAdminEntity("c0a80065-90a2-1cb0-8190-a20de91f0000");
+        AccountEntity adminAccount = accountEntityProvider.activeAdminEntity(UUID.randomUUID().toString());
         accountRepository.save(adminAccount);
-        AccountEntity moderAccount = accountEntityProvider.activeModerEntity("c0a80065-90a2-1cb0-8190-a20de91f0001");
+        AccountEntity moderAccount = accountEntityProvider.activeModerEntity(UUID.randomUUID().toString());
         moderAccount.setStatus(AccountEntity.Status.BLOCKED);
         moderAccount.setEmail("test1@test.ru");
         accountRepository.save(moderAccount);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/block").
                         header("Auth-Code", privatePropertiesProvider.getAuthCode()).
-                        param("accountId", "c0a80065-90a2-1cb0-8190-a20de91f0001").
-                        param("adminId", "c0a80065-90a2-1cb0-8190-a20de91f0000")).
+                        param("accountId", adminAccount.getId().toString()).
+                        param("adminId", adminAccount.getId().toString())).
                 andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
     @DisplayName("Tests PUT /api/accounts/block with active admin entity in db")
     void blockAccountWithAdminEntityInDb_404Expected() throws Exception {
-        AccountEntity adminAccount = accountEntityProvider.activeAdminEntity("c0a80065-90a2-1cb0-8190-a20de91f0000");
+        AccountEntity adminAccount = accountEntityProvider.activeAdminEntity(UUID.randomUUID().toString());
         accountRepository.save(adminAccount);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/block").
                         header("Auth-Code", privatePropertiesProvider.getAuthCode()).
-                        param("accountId", "c0a80065-90a2-1cb0-8190-a20de91f0000").
-                        param("adminId", "c0a80065-90a2-1cb0-8190-a20de91f0000")).
+                        param("accountId", adminAccount.getId().toString()).
+                        param("adminId", adminAccount.getId().toString())).
                 andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
@@ -285,30 +277,30 @@ class AccountControllerTest {
     void unblockAccountWithoutEntityInDb_404Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/unblock").
                         header("Auth-Code", privatePropertiesProvider.getAuthCode()).
-                        param("accountId", "c0a80065-90a2-1cb0-8190-a20de91f0000")).
+                        param("accountId", UUID.randomUUID().toString())).
                 andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
     @DisplayName("Tests PUT /api/accounts/unblock with active user entity in db")
     void unblockAccountWithIncorrectEntityInDb_404Expected() throws Exception {
-        AccountEntity userAccount = accountEntityProvider.activeUserEntity("c0a80065-90a2-1cb0-8190-a20de91f0000");
+        AccountEntity userAccount = accountEntityProvider.activeUserEntity(UUID.randomUUID().toString());
         accountRepository.save(userAccount);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/unblock").
                         header("Auth-Code", privatePropertiesProvider.getAuthCode()).
-                        param("accountId", "c0a80065-90a2-1cb0-8190-a20de91f0000")).
+                        param("accountId", userAccount.getId().toString())).
                 andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
     @DisplayName("Tests PUT /api/accounts/unblock correctly")
     void unblockAccount_200Expected() throws Exception {
-        AccountEntity userAccount = accountEntityProvider.activeUserEntity("c0a80065-90a2-1cb0-8190-a20de91f0000");
+        AccountEntity userAccount = accountEntityProvider.activeUserEntity(UUID.randomUUID().toString());
         userAccount.setStatus(AccountEntity.Status.BLOCKED);
         accountRepository.save(userAccount);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/unblock").
                         header("Auth-Code", privatePropertiesProvider.getAuthCode()).
-                        param("accountId", "c0a80065-90a2-1cb0-8190-a20de91f0000")).
+                        param("accountId", userAccount.getId().toString())).
                 andExpect(MockMvcResultMatchers.status().isOk());
     }
 

@@ -2,14 +2,16 @@ package me.inquis1tor.userservice.tests.services;
 
 
 import jakarta.validation.ConstraintViolationException;
+import me.inquis1tor.userservice.dtos.AccountResponseDto;
 import me.inquis1tor.userservice.dtos.AccountTransferDto;
 import me.inquis1tor.userservice.dtos.CredentialsTransferDto;
+import me.inquis1tor.userservice.dtos.PersonalInfoDto;
 import me.inquis1tor.userservice.entities.AccountEntity;
+import me.inquis1tor.userservice.entities.PersonalInfoEntity;
 import me.inquis1tor.userservice.exceptions.AccountNotFoundException;
 import me.inquis1tor.userservice.mappers.AccountMapper;
 import me.inquis1tor.userservice.providers.AccountEntityProvider;
 import me.inquis1tor.userservice.providers.DtoProvider;
-import me.inquis1tor.userservice.providers.PersonalInfoEntityProvider;
 import me.inquis1tor.userservice.repositories.AccountRepository;
 import me.inquis1tor.userservice.services.AccountService;
 import me.inquis1tor.userservice.utils.LoggedAccountDetailsHolder;
@@ -47,8 +49,6 @@ class AccountServiceTest {
     private DtoProvider<CredentialsTransferDto> credentialsTransferDtoProvider;
     private static final AccountEntityProvider accountEntityProvider = new AccountEntityProvider();
     @Autowired
-    private PersonalInfoEntityProvider personalInfoEntityProvider;
-    @Autowired
     private AccountMapper accountMapper;
     @MockBean
     private LoggedAccountDetailsHolder holder;
@@ -61,8 +61,8 @@ class AccountServiceTest {
     @Test
     @DisplayName("createAccount with already registered email in db")
     void createAccountWithAlreadyRegisteredEmailInDb_ExceptionExpected() {
-        AccountEntity accountEntity = accountEntityProvider.blockedUserEntity(UUID.randomUUID().toString());
-        AccountTransferDto accountTransferDto = accountTransferDtoDtoProvider.correctDto();
+        final AccountEntity accountEntity = accountEntityProvider.blockedUserEntity(UUID.randomUUID().toString());
+        final AccountTransferDto accountTransferDto = accountTransferDtoDtoProvider.correctDto();
         accountRepository.save(accountEntity);
         Assertions.assertThrows(ConstraintViolationException.class, () -> accountService.createAccount(accountTransferDto));
     }
@@ -70,12 +70,21 @@ class AccountServiceTest {
     @Test
     @DisplayName("createAccount with empty db")
     void createAccountWithEmptyDb_EqualsExpected() {
-        AccountTransferDto accountTransferDto = accountTransferDtoDtoProvider.correctDto();
+        final AccountTransferDto accountTransferDto = accountTransferDtoDtoProvider.correctDto();
         accountService.createAccount(accountTransferDto);
-        AccountEntity accountEntity = accountMapper.transferDtoToAccount(accountTransferDto);
-        accountEntity.setStatus(AccountEntity.Status.ACTIVE);
-        accountEntity.setPersonalInfoEntity(personalInfoEntityProvider.correctEntity(accountEntity.getId().toString()));
-        Assertions.assertEquals(accountEntity, accountRepository.findByEmail(accountTransferDto.email()));
+        final AccountEntity accountEntity = accountRepository.findByEmail(accountTransferDto.email());
+        Assertions.assertNotNull(accountEntity);
+        Assertions.assertEquals(accountTransferDto.id(), accountEntity.getId());
+        Assertions.assertEquals(accountTransferDto.email(), accountEntity.getEmail());
+        Assertions.assertEquals(accountTransferDto.role(), accountEntity.getRole());
+        Assertions.assertEquals(AccountEntity.Status.ACTIVE, accountEntity.getStatus());
+        final PersonalInfoEntity personalInfoEntity = accountEntity.getPersonalInfoEntity();
+        Assertions.assertNotNull(personalInfoEntity);
+        Assertions.assertEquals(accountTransferDto.id(), personalInfoEntity.getId());
+        Assertions.assertNull(personalInfoEntity.getName());
+        Assertions.assertNull(personalInfoEntity.getSurname());
+        Assertions.assertNull(personalInfoEntity.getPatronymic());
+        Assertions.assertNull(personalInfoEntity.getPhoneNumber());
     }
 
     @Test
@@ -88,16 +97,24 @@ class AccountServiceTest {
     @Test
     @DisplayName("getAccount with active user entity in db")
     void getAccountWithCorrectEntityInDb_EqualsExpected() {
-        AccountEntity accountEntity = accountEntityProvider.activeUserEntity(UUID.randomUUID().toString());
+        final UUID accountId = UUID.randomUUID();
+        final AccountEntity accountEntity = accountEntityProvider.activeUserEntity(accountId.toString());
         accountRepository.save(accountEntity);
         Mockito.doReturn(accountEntity.getId()).when(holder).getAccountId();
-        Assertions.assertEquals(accountMapper.accountToDto(accountEntity), accountService.getAccount());
+        final AccountResponseDto accountResponseDto = accountService.getAccount();
+        Assertions.assertNotNull(accountResponseDto);
+        Assertions.assertEquals(accountEntity.getId(), accountResponseDto.id());
+        Assertions.assertEquals(accountEntity.getEmail(), accountResponseDto.email());
+        Assertions.assertEquals(accountEntity.getRole(), accountResponseDto.role());
+        Assertions.assertEquals(accountEntity.getStatus(), accountResponseDto.status());
+        final PersonalInfoDto personalInfoDto = accountResponseDto.personalInfo();
+        Assertions.assertNull(personalInfoDto);
     }
 
     @Test
     @DisplayName("getAllAccounts with entities in db")
     void getAllWithEntitiesInDb_IterableEqualsExpected() {
-        AccountEntity accountEntity = accountEntityProvider.activeUserEntity(UUID.randomUUID().toString());
+        final AccountEntity accountEntity = accountEntityProvider.activeUserEntity(UUID.randomUUID().toString());
         accountRepository.save(accountEntity);
         Assertions.assertIterableEquals(accountService.getAll(), accountMapper.accountListToDtoList(List.of(accountEntity)));
     }
@@ -105,14 +122,14 @@ class AccountServiceTest {
     @Test
     @DisplayName("deleteAccount without entity in db")
     void deleteAccountWithIncorrectEntityInDb_ExceptionExpected() {
-        UUID accountId = UUID.randomUUID();
+        final UUID accountId = UUID.randomUUID();
         Assertions.assertThrows(AccountNotFoundException.class, () -> accountService.deleteAccount(accountId));
     }
 
     @Test
     @DisplayName("deleteAccount with active user entity in db")
     void deleteAccountWithCorrectEntityInDb_EqualsExpected() {
-        AccountEntity accountEntity = accountEntityProvider.activeUserEntity(UUID.randomUUID().toString());
+        final AccountEntity accountEntity = accountEntityProvider.activeUserEntity(UUID.randomUUID().toString());
         accountRepository.save(accountEntity);
         accountService.deleteAccount(accountEntity.getId());
         Assertions.assertEquals(AccountEntity.Status.DELETED, accountRepository.findByEmail(accountEntity.getEmail()).getStatus());
@@ -121,32 +138,32 @@ class AccountServiceTest {
     @Test
     @DisplayName("blockAccount without blocking entity and active admin entity in db")
     void blockAccountWithIncorrectBlockingEntityAndCorrectAdminInDb_ExceptionExpected() {
-        AccountEntity adminEntity = accountEntityProvider.activeAdminEntity(UUID.randomUUID().toString());
+        final AccountEntity adminEntity = accountEntityProvider.activeAdminEntity(UUID.randomUUID().toString());
         accountRepository.save(adminEntity);
-        UUID adminId = adminEntity.getId();
-        UUID userId = UUID.randomUUID();
+        final UUID adminId = adminEntity.getId();
+        final UUID userId = UUID.randomUUID();
         Assertions.assertThrows(AccountNotFoundException.class, () -> accountService.blockAccount(userId, adminId));
     }
 
     @Test
     @DisplayName("blockAccount with blocked user entity and without admin entity in db")
     void blockAccountWithCorrectBlockingEntityAndIncorrectAdminInDb_ExceptionExpected() {
-        AccountEntity userEntity = accountEntityProvider.blockedUserEntity(UUID.randomUUID().toString());
+        final AccountEntity userEntity = accountEntityProvider.blockedUserEntity(UUID.randomUUID().toString());
         accountRepository.save(userEntity);
-        UUID adminId = UUID.randomUUID();
-        UUID userId = userEntity.getId();
+        final UUID adminId = UUID.randomUUID();
+        final UUID userId = userEntity.getId();
         Assertions.assertThrows(ConstraintViolationException.class, () -> accountService.blockAccount(userId, adminId));
     }
 
     @Test
     @DisplayName("blockAccount with active user and active admin entities in db")
     void blockAccountWithCorrectBlockingEntityAndCorrectAdminInDb_ExceptionExpected() {
-        AccountEntity adminEntity = accountEntityProvider.activeAdminEntity(UUID.randomUUID().toString());
+        final AccountEntity adminEntity = accountEntityProvider.activeAdminEntity(UUID.randomUUID().toString());
         adminEntity.setEmail("test1@test.ru");
-        AccountEntity userEntity = accountEntityProvider.activeUserEntity(UUID.randomUUID().toString());
+        final AccountEntity userEntity = accountEntityProvider.activeUserEntity(UUID.randomUUID().toString());
         accountRepository.saveAll(List.of(adminEntity, userEntity));
-        UUID adminId = adminEntity.getId();
-        UUID userId = userEntity.getId();
+        final UUID adminId = adminEntity.getId();
+        final UUID userId = userEntity.getId();
         accountService.blockAccount(userId, adminId);
         Assertions.assertEquals(AccountEntity.Status.BLOCKED, accountRepository.findByEmail(userEntity.getEmail()).getStatus());
     }
@@ -154,14 +171,14 @@ class AccountServiceTest {
     @Test
     @DisplayName("unblockAccount without entity in db")
     void unblockAccountWithIncorrectEntityInDb_ExceptionExpected() {
-        UUID accountId = UUID.randomUUID();
+        final UUID accountId = UUID.randomUUID();
         Assertions.assertThrows(AccountNotFoundException.class, () -> accountService.unblockAccount(accountId));
     }
 
     @Test
     @DisplayName("unblockAccount with blocked user entity in db")
     void unblockAccountWithCorrectEntityInDb_ExceptionExpected() {
-        AccountEntity userEntity = accountEntityProvider.blockedUserEntity(UUID.randomUUID().toString());
+        final AccountEntity userEntity = accountEntityProvider.blockedUserEntity(UUID.randomUUID().toString());
         accountRepository.save(userEntity);
         Assertions.assertEquals(AccountEntity.Status.BLOCKED, accountRepository.findByEmail(userEntity.getEmail()).getStatus());
     }
@@ -169,15 +186,15 @@ class AccountServiceTest {
     @Test
     @DisplayName("updateCredentials without entity in db")
     void updateCredentialsWithIncorrectEntityInDb_ExceptionExpected() {
-        CredentialsTransferDto dto = credentialsTransferDtoProvider.correctDto();
+        final CredentialsTransferDto dto = credentialsTransferDtoProvider.correctDto();
         Assertions.assertThrows(AccountNotFoundException.class, () -> accountService.updateCredentials(dto));
     }
 
     @Test
     @DisplayName("updateCredentials with active user entity in db")
     void updateCredentialsWithCorrectEntityInDb_EqualsExpected() {
-        CredentialsTransferDto credentialsTransferDto = credentialsTransferDtoProvider.correctDto();
-        AccountEntity accountEntity = accountEntityProvider.activeUserEntity(credentialsTransferDto.id().toString());
+        final CredentialsTransferDto credentialsTransferDto = credentialsTransferDtoProvider.correctDto();
+        final AccountEntity accountEntity = accountEntityProvider.activeUserEntity(credentialsTransferDto.id().toString());
         accountEntity.setEmail("test1@test.ru");
         accountRepository.save(accountEntity);
         accountService.updateCredentials(credentialsTransferDto);
@@ -187,9 +204,9 @@ class AccountServiceTest {
     @Test
     @DisplayName("updateCredentials with already registered email in db")
     void updateCredentialsWithAlreadyRegisteredEmailInDb_EqualsExpected() {
-        AccountEntity accountEntity = accountEntityProvider.activeUserEntity(UUID.randomUUID().toString());
+        final AccountEntity accountEntity = accountEntityProvider.activeUserEntity(UUID.randomUUID().toString());
         accountRepository.save(accountEntity);
-        CredentialsTransferDto credentialsTransferDto = credentialsTransferDtoProvider.correctDto();
+        final CredentialsTransferDto credentialsTransferDto = credentialsTransferDtoProvider.correctDto();
         Assertions.assertThrows(ConstraintViolationException.class, () -> accountService.updateCredentials(credentialsTransferDto));
     }
 }

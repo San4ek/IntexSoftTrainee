@@ -53,10 +53,10 @@ class PersonalInfoServiceTest {
     @Test
     @DisplayName("updatePersonalInfo with active user entity in db")
     void updatePersonalInfoWithCorrectEntityInDb_EqualsExpected() {
-        UUID accountId = UUID.fromString("c0a80065-90a2-1cb0-8190-a20de91f0000");
+        UUID accountId = UUID.randomUUID();
         Mockito.doReturn(accountId).when(holder).getAccountId();
-        accountRepository.save(accountEntityProvider.activeUserEntity("c0a80065-90a2-1cb0-8190-a20de91f0000"));
-        PersonalInfoEntity personalInfoEntity = personalInfoEntityProvider.correctEntity("c0a80065-90a2-1cb0-8190-a20de91f0000");
+        accountRepository.save(accountEntityProvider.activeUserEntity(accountId.toString()));
+        PersonalInfoEntity personalInfoEntity = personalInfoEntityProvider.correctEntity(accountId.toString());
         personalInfoRepository.save(personalInfoEntity);
         PersonalInfoDto personalInfoDto = personalInfoDtoProvider.correctDto();
         personalInfoService.updatePersonalInfo(personalInfoDto);
