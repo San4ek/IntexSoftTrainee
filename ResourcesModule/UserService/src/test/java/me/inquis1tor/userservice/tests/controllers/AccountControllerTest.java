@@ -7,8 +7,9 @@ import me.inquis1tor.userservice.dtos.CredentialsTransferDto;
 import me.inquis1tor.userservice.entities.AccountEntity;
 import me.inquis1tor.userservice.mappers.AccountMapper;
 import me.inquis1tor.userservice.providers.AccountEntityProvider;
+import me.inquis1tor.userservice.providers.EndpointsUrls;
 import me.inquis1tor.userservice.providers.DtoProvider;
-import me.inquis1tor.userservice.providers.StandartVariables;
+import me.inquis1tor.userservice.providers.ConstantVariables;
 import me.inquis1tor.userservice.repositories.AccountRepository;
 import me.inquis1tor.userservice.repositories.PersonalInfoRepository;
 import me.inquis1tor.userservice.utils.PrivatePropertiesProvider;
@@ -67,15 +68,15 @@ class AccountControllerTest {
     @Test
     @DisplayName("Tests POST /api/accounts without auth")
     void registerAccountWithoutAuth_401Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/accounts")).
+        mockMvc.perform(MockMvcRequestBuilders.post(EndpointsUrls.ACCOUNTS.getPath())).
                 andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
     @Test
     @DisplayName("Tests POST /api/accounts without body")
     void registerAccountWithoutBody_409Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/accounts").
-                        header("Auth-Code", privatePropertiesProvider.getAuthCode())).
+        mockMvc.perform(MockMvcRequestBuilders.post(EndpointsUrls.ACCOUNTS.getPath()).
+                        header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode())).
                 andExpect(MockMvcResultMatchers.status().isConflict());
     }
 
@@ -85,8 +86,8 @@ class AccountControllerTest {
         final AccountTransferDto accountTransferDto = accountTransferDtoProvider.correctDto();
         AccountEntity userAccount = accountEntityProvider.activeUserEntity(accountTransferDto.id().toString());
         accountRepository.save(userAccount);
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/accounts").
-                        header("Auth-Code", privatePropertiesProvider.getAuthCode()).
+        mockMvc.perform(MockMvcRequestBuilders.post(EndpointsUrls.ACCOUNTS.getPath()).
+                        header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode()).
                         contentType(MediaType.APPLICATION_JSON).
                         content(mapper.writeValueAsString(accountTransferDtoProvider.correctDto()))).
                 andExpect(MockMvcResultMatchers.status().isBadRequest());
@@ -95,8 +96,8 @@ class AccountControllerTest {
     @Test
     @DisplayName("Tests POST /api/accounts with incorrect body")
     void registerAccountWithIncorrectBody_417Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/accounts").
-                        header("Auth-Code", privatePropertiesProvider.getAuthCode()).
+        mockMvc.perform(MockMvcRequestBuilders.post(EndpointsUrls.ACCOUNTS.getPath()).
+                        header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode()).
                         contentType(MediaType.APPLICATION_JSON).
                         content(mapper.writeValueAsString(accountTransferDtoProvider.incorrectDto()))).
                 andExpect(MockMvcResultMatchers.status().isExpectationFailed());
@@ -105,8 +106,8 @@ class AccountControllerTest {
     @Test
     @DisplayName("Tests POST /api/accounts correctly")
     void registerAccountWithCorrectBody_200Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/accounts").
-                        header("Auth-Code", privatePropertiesProvider.getAuthCode()).
+        mockMvc.perform(MockMvcRequestBuilders.post(EndpointsUrls.ACCOUNTS.getPath()).
+                        header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode()).
                         contentType(MediaType.APPLICATION_JSON).
                         content(mapper.writeValueAsString(accountTransferDtoProvider.correctDto()))).
                 andExpect(MockMvcResultMatchers.status().isOk());
@@ -115,7 +116,7 @@ class AccountControllerTest {
     @Test
     @DisplayName("Tests GET /api/accounts without auth")
     void getAccountWithoutAuth_401Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/accounts")).
+        mockMvc.perform(MockMvcRequestBuilders.get(EndpointsUrls.ACCOUNTS.getPath())).
                 andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
@@ -123,9 +124,9 @@ class AccountControllerTest {
     @WithJwt("jwt/user.json")
     @DisplayName("Tests GET /api/accounts correctly")
     void getExistedAccountWithCorrectEntityInDb_200Expected() throws Exception {
-        AccountEntity account = accountEntityProvider.activeUserEntity(StandartVariables.UUID.getVal());
+        AccountEntity account = accountEntityProvider.activeUserEntity(ConstantVariables.UUID.getVal());
         accountRepository.save(account);
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/accounts")).
+        mockMvc.perform(MockMvcRequestBuilders.get(EndpointsUrls.ACCOUNTS.getPath())).
                 andExpect(MockMvcResultMatchers.status().isOk()).
                 andExpect(MockMvcResultMatchers.content().json(mapper.writeValueAsString(accountMapper.accountToDto(account))));
     }
@@ -134,14 +135,14 @@ class AccountControllerTest {
     @WithJwt("jwt/user.json")
     @DisplayName("Tests GET /api/accounts without entity in db")
     void getAccountWithoutEntityInDb_400Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/accounts")).
+        mockMvc.perform(MockMvcRequestBuilders.get(EndpointsUrls.ACCOUNTS.getPath())).
                 andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
     @DisplayName("Tests GET /api/accounts/all without auth")
     void getAllAccountsWithoutAuth_401Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/accounts/all")).
+        mockMvc.perform(MockMvcRequestBuilders.get(EndpointsUrls.ACCOUNTS_ALL.getPath())).
                 andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
@@ -149,7 +150,7 @@ class AccountControllerTest {
     @WithJwt("jwt/user.json")
     @DisplayName("Tests GET /api/accounts/all with user role in jwt")
     void getAllAccountsByUser_403Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/accounts/all")).
+        mockMvc.perform(MockMvcRequestBuilders.get(EndpointsUrls.ACCOUNTS_ALL.getPath())).
                 andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
@@ -157,7 +158,7 @@ class AccountControllerTest {
     @WithJwt("jwt/moder.json")
     @DisplayName("Tests GET /api/accounts/all with moder role in jwt")
     void getAllAccountsByModer_403Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/accounts/all")).
+        mockMvc.perform(MockMvcRequestBuilders.get(EndpointsUrls.ACCOUNTS_ALL.getPath())).
                 andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
@@ -165,12 +166,12 @@ class AccountControllerTest {
     @WithJwt("jwt/admin.json")
     @DisplayName("Tests GET /api/accounts/all correctly")
     void getAllAccounts_200Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/accounts/all")).
+        mockMvc.perform(MockMvcRequestBuilders.get(EndpointsUrls.ACCOUNTS_ALL.getPath())).
                 andExpect(MockMvcResultMatchers.status().isOk()).
                 andExpect(MockMvcResultMatchers.content().json("[]"));
         AccountEntity account = accountEntityProvider.activeUserEntity(UUID.randomUUID().toString());
         accountRepository.save(account);
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/accounts/all")).
+        mockMvc.perform(MockMvcRequestBuilders.get(EndpointsUrls.ACCOUNTS_ALL.getPath())).
                 andExpect(MockMvcResultMatchers.status().isOk()).
                 andExpect(MockMvcResultMatchers.content().json("[ " +
                         mapper.writeValueAsString(accountMapper.accountToDto(account)) +
@@ -180,25 +181,25 @@ class AccountControllerTest {
     @Test
     @DisplayName("Tests PUT /api/accounts/block without auth")
     void blockAccountWithoutAuth_401Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/block")).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_BLOCK.getPath())).
                 andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
     @Test
     @DisplayName("Tests PUT /api/accounts/block without params")
     void blockAccountWithoutParams_417Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/block").
-                        header("Auth-Code", privatePropertiesProvider.getAuthCode())).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_BLOCK.getPath()).
+                        header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode())).
                 andExpect(MockMvcResultMatchers.status().isConflict());
     }
 
     @Test
     @DisplayName("Tests PUT /api/accounts/block by not existed admin entity")
     void blockAccountWithoutAdminEntityInDb_400Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/block").
-                        header("Auth-Code", privatePropertiesProvider.getAuthCode()).
-                        param("accountId", UUID.randomUUID().toString()).
-                        param("adminId", UUID.randomUUID().toString())).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_BLOCK.getPath()).
+                        header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode()).
+                        param(ConstantVariables.ACCOUNT_ID.getVal(), UUID.randomUUID().toString()).
+                        param(ConstantVariables.ADMIN_ID.getVal(), UUID.randomUUID().toString())).
                 andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
@@ -207,10 +208,10 @@ class AccountControllerTest {
     void blockAccountWithoutBlockingEntityInDb_404Expected() throws Exception {
         AccountEntity adminAccount = accountEntityProvider.activeAdminEntity(UUID.randomUUID().toString());
         accountRepository.save(adminAccount);
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/block").
-                        header("Auth-Code", privatePropertiesProvider.getAuthCode()).
-                        param("accountId", UUID.randomUUID().toString()).
-                        param("adminId", adminAccount.getId().toString())).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_BLOCK.getPath()).
+                        header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode()).
+                        param(ConstantVariables.ACCOUNT_ID.getVal(), UUID.randomUUID().toString()).
+                        param(ConstantVariables.ADMIN_ID.getVal(), adminAccount.getId().toString())).
                 andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
@@ -222,10 +223,10 @@ class AccountControllerTest {
         AccountEntity moderAccount = accountEntityProvider.activeModerEntity(UUID.randomUUID().toString());
         moderAccount.setEmail("test1.@test.ru");
         accountRepository.save(moderAccount);
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/block").
-                        header("Auth-Code", privatePropertiesProvider.getAuthCode()).
-                        param("accountId", moderAccount.getId().toString()).
-                        param("adminId", adminAccount.getId().toString())).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_BLOCK.getPath()).
+                        header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode()).
+                        param(ConstantVariables.ACCOUNT_ID.getVal(), moderAccount.getId().toString()).
+                        param(ConstantVariables.ADMIN_ID.getVal(), adminAccount.getId().toString())).
                 andExpect(MockMvcResultMatchers.status().isOk());
     }
 
@@ -238,10 +239,10 @@ class AccountControllerTest {
         moderAccount.setStatus(AccountEntity.Status.BLOCKED);
         moderAccount.setEmail("test1@test.ru");
         accountRepository.save(moderAccount);
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/block").
-                        header("Auth-Code", privatePropertiesProvider.getAuthCode()).
-                        param("accountId", adminAccount.getId().toString()).
-                        param("adminId", adminAccount.getId().toString())).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_BLOCK.getPath()).
+                        header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode()).
+                        param(ConstantVariables.ACCOUNT_ID.getVal(), adminAccount.getId().toString()).
+                        param(ConstantVariables.ADMIN_ID.getVal(), adminAccount.getId().toString())).
                 andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
@@ -250,34 +251,34 @@ class AccountControllerTest {
     void blockAccountWithAdminEntityInDb_404Expected() throws Exception {
         AccountEntity adminAccount = accountEntityProvider.activeAdminEntity(UUID.randomUUID().toString());
         accountRepository.save(adminAccount);
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/block").
-                        header("Auth-Code", privatePropertiesProvider.getAuthCode()).
-                        param("accountId", adminAccount.getId().toString()).
-                        param("adminId", adminAccount.getId().toString())).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_BLOCK.getPath()).
+                        header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode()).
+                        param(ConstantVariables.ACCOUNT_ID.getVal(), adminAccount.getId().toString()).
+                        param(ConstantVariables.ADMIN_ID.getVal(), adminAccount.getId().toString())).
                 andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
     @DisplayName("Tests PUT /api/accounts/unblock without auth")
     void unblockAccountWithoutAuth_401Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/unblock")).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_UNBLOCK.getPath())).
                 andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
     @Test
     @DisplayName("Tests PUT /api/accounts/unblock without params")
     void unblockAccountWithoutParams_409Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/unblock").
-                        header("Auth-Code", privatePropertiesProvider.getAuthCode())).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_UNBLOCK.getPath()).
+                        header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode())).
                 andExpect(MockMvcResultMatchers.status().isConflict());
     }
 
     @Test
     @DisplayName("Tests PUT /api/accounts/unblock without entity in db")
     void unblockAccountWithoutEntityInDb_404Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/unblock").
-                        header("Auth-Code", privatePropertiesProvider.getAuthCode()).
-                        param("accountId", UUID.randomUUID().toString())).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_UNBLOCK.getPath()).
+                        header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode()).
+                        param(ConstantVariables.ACCOUNT_ID.getVal(), UUID.randomUUID().toString())).
                 andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
@@ -286,9 +287,9 @@ class AccountControllerTest {
     void unblockAccountWithIncorrectEntityInDb_404Expected() throws Exception {
         AccountEntity userAccount = accountEntityProvider.activeUserEntity(UUID.randomUUID().toString());
         accountRepository.save(userAccount);
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/unblock").
-                        header("Auth-Code", privatePropertiesProvider.getAuthCode()).
-                        param("accountId", userAccount.getId().toString())).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_UNBLOCK.getPath()).
+                        header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode()).
+                        param(ConstantVariables.ACCOUNT_ID.getVal(), userAccount.getId().toString())).
                 andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
@@ -298,32 +299,32 @@ class AccountControllerTest {
         AccountEntity userAccount = accountEntityProvider.activeUserEntity(UUID.randomUUID().toString());
         userAccount.setStatus(AccountEntity.Status.BLOCKED);
         accountRepository.save(userAccount);
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/unblock").
-                        header("Auth-Code", privatePropertiesProvider.getAuthCode()).
-                        param("accountId", userAccount.getId().toString())).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_UNBLOCK.getPath()).
+                        header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode()).
+                        param(ConstantVariables.ACCOUNT_ID.getVal(), userAccount.getId().toString())).
                 andExpect(MockMvcResultMatchers.status().isOk());
     }
 
     @Test
     @DisplayName("Tests PUT /api/accounts/credentials without auth")
     void updateCredentialsWithoutAuth_401Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/credentials")).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_CREDENTIALS.getPath())).
                 andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
     @Test
     @DisplayName("Tests PUT /api/accounts/credentials without body")
     void updateCredentialsWithoutBody_409Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/credentials").
-                        header("Auth-Code", privatePropertiesProvider.getAuthCode())).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_CREDENTIALS.getPath()).
+                        header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode())).
                 andExpect(MockMvcResultMatchers.status().isConflict());
     }
 
     @Test
     @DisplayName("Tests PUT /api/accounts/credentials with incorrect body")
     void updateCredentialsWithIncorrectBody_417Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/credentials").
-                        header("Auth-Code", privatePropertiesProvider.getAuthCode()).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_CREDENTIALS.getPath()).
+                        header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode()).
                         contentType(MediaType.APPLICATION_JSON).
                         content(mapper.writeValueAsString(credentialsTransferDtoDtoProvider.incorrectDto()))).
                 andExpect(MockMvcResultMatchers.status().isExpectationFailed());
@@ -332,8 +333,8 @@ class AccountControllerTest {
     @Test
     @DisplayName("Tests PUT /api/accounts/credentials without entity in db")
     void updateCredentialsWithoutEntityInDb_404Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/credentials").
-                        header("Auth-Code", privatePropertiesProvider.getAuthCode()).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_CREDENTIALS.getPath()).
+                        header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode()).
                         contentType(MediaType.APPLICATION_JSON).
                         content(mapper.writeValueAsString(credentialsTransferDtoDtoProvider.correctDto()))).
                 andExpect(MockMvcResultMatchers.status().isNotFound());
@@ -344,8 +345,8 @@ class AccountControllerTest {
     void updateCredentialsWithAlreadyRegisteredEmailInDb_400Expected() throws Exception {
         CredentialsTransferDto dto = credentialsTransferDtoDtoProvider.correctDto();
         accountRepository.save(accountEntityProvider.activeUserEntity(String.valueOf(dto.id())));
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/credentials").
-                        header("Auth-Code", privatePropertiesProvider.getAuthCode()).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_CREDENTIALS.getPath()).
+                        header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode()).
                         contentType(MediaType.APPLICATION_JSON).
                         content(mapper.writeValueAsString(dto))).
                 andExpect(MockMvcResultMatchers.status().isBadRequest());
@@ -358,8 +359,8 @@ class AccountControllerTest {
         AccountEntity accountEntity = accountEntityProvider.activeUserEntity(String.valueOf(dto.id()));
         accountEntity.setEmail("test2@test.ru");
         accountRepository.save(accountEntity);
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/credentials").
-                        header("Auth-Code", privatePropertiesProvider.getAuthCode()).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_CREDENTIALS.getPath()).
+                        header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode()).
                         contentType(MediaType.APPLICATION_JSON).
                         content(mapper.writeValueAsString(dto))).
                 andExpect(MockMvcResultMatchers.status().isOk());

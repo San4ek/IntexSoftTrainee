@@ -3,6 +3,7 @@ package me.inquis1tor.userservice.tests.controllers;
 import com.c4_soft.springaddons.security.oauth2.test.annotations.WithJwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.inquis1tor.userservice.dtos.PersonalInfoDto;
+import me.inquis1tor.userservice.providers.EndpointsUrls;
 import me.inquis1tor.userservice.providers.DtoProvider;
 import me.inquis1tor.userservice.services.PersonalInfoService;
 import org.junit.jupiter.api.DisplayName;
@@ -45,7 +46,7 @@ class PersonalInfoControllerTest {
     @Test
     @DisplayName("Tests PUT /api/personal-infos without auth")
     void updatePersonalInfoWithoutAuth_401Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/personal-infos"))
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.PERSONAL_INFOS.getPath()))
                 .andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
@@ -53,7 +54,7 @@ class PersonalInfoControllerTest {
     @WithJwt("jwt/user.json")
     @DisplayName("Tests PUT /api/personal-infos without body")
     void updatePersonalInfoWithoutBody_409Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/personal-infos")).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.PERSONAL_INFOS.getPath())).
                 andExpect(MockMvcResultMatchers.status().isConflict());
     }
 
@@ -62,7 +63,7 @@ class PersonalInfoControllerTest {
     @DisplayName("Tests PUT /api/personal-infos correctly")
     void updatePersonalInfo_200Expected() throws Exception {
         Mockito.doNothing().when(personalInfoService).updatePersonalInfo(ArgumentMatchers.any(PersonalInfoDto.class));
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/personal-infos").
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.PERSONAL_INFOS.getPath()).
                         contentType(MediaType.APPLICATION_JSON).
                         content(mapper.writeValueAsString(dtoProvider.correctDto()))).
                 andExpect(MockMvcResultMatchers.status().isOk());
