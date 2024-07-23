@@ -9,7 +9,7 @@ import me.inquis1tor.userservice.providers.PersonalInfoEntityProvider;
 import me.inquis1tor.userservice.repositories.AccountRepository;
 import me.inquis1tor.userservice.repositories.PersonalInfoRepository;
 import me.inquis1tor.userservice.services.PersonalInfoService;
-import me.inquis1tor.userservice.utils.LoggedAccountDetailsHolder;
+import me.inquis1tor.userservice.utils.LoggedAccountDetailsProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -48,7 +48,7 @@ class PersonalInfoServiceTest {
     private PersonalInfoMapper mapper;
 
     @MockBean
-    private LoggedAccountDetailsHolder holder;
+    private LoggedAccountDetailsProvider holder;
 
     @Test
     @DisplayName("updatePersonalInfo with active user entity in db")

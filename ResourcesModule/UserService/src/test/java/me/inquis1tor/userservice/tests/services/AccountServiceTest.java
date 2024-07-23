@@ -14,7 +14,7 @@ import me.inquis1tor.userservice.providers.AccountEntityProvider;
 import me.inquis1tor.userservice.providers.DtoProvider;
 import me.inquis1tor.userservice.repositories.AccountRepository;
 import me.inquis1tor.userservice.services.AccountService;
-import me.inquis1tor.userservice.utils.LoggedAccountDetailsHolder;
+import me.inquis1tor.userservice.utils.LoggedAccountDetailsProvider;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -51,7 +51,7 @@ class AccountServiceTest {
     @Autowired
     private AccountMapper accountMapper;
     @MockBean
-    private LoggedAccountDetailsHolder holder;
+    private LoggedAccountDetailsProvider holder;
 
     @AfterEach
     void afterEach() {

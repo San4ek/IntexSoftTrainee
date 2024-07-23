@@ -12,7 +12,7 @@ services:
       rabbitmq:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://auth-postgres:5432/auth_service
+      SPRING_DATASOURCE_URL: jdbc:postgresql://auth-postgres/auth_service
       SPRING_DATA_REDIS_HOST: auth-redis
       SPRING_RABBITMQ_HOST: rabbitmq
     networks:
@@ -29,8 +29,21 @@ services:
       rabbitmq:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://user-postgres:5432/user_service
+      SPRING_DATASOURCE_URL: jdbc:postgresql://user-postgres/user_service
       SPRING_RABBITMQ_HOST: rabbitmq
+    networks:
+      - bridge_network
+
+  gateway:
+    image: inqu1sitor/gateway:latest
+    ports:
+      - "8080:8080"
+    container_name: gateway
+    depends_on:
+      auth-redis:
+        condition: service_healthy
+    environment:
+      SPRING_DATA_REDIS_HOST: auth-redis
     networks:
       - bridge_network
 
@@ -39,7 +52,7 @@ services:
     container_name: auth-postgres-server
     restart: on-failure
     ports:
-      - "5432:5432"
+      - "5431:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Utermybest1
@@ -60,7 +73,7 @@ services:
     container_name: user-postgres-server
     restart: on-failure
     ports:
-      - "5433:5432"
+      - "5430:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: Utermybest1

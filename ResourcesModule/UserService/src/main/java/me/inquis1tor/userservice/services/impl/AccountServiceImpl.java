@@ -11,7 +11,7 @@ import me.inquis1tor.userservice.mappers.AccountMapper;
 import me.inquis1tor.userservice.repositories.AccountRepository;
 import me.inquis1tor.userservice.services.AccountFinderService;
 import me.inquis1tor.userservice.services.AccountService;
-import me.inquis1tor.userservice.utils.LoggedAccountDetailsHolder;
+import me.inquis1tor.userservice.utils.LoggedAccountDetailsProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +30,7 @@ import java.util.UUID;
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
-    private final LoggedAccountDetailsHolder loggedAccountDetailsHolder;
+    private final LoggedAccountDetailsProvider loggedAccountDetailsProvider;
     private final AccountFinderService accountFinderService;
     private final AccountMapper accountMapper;
 
@@ -53,14 +53,14 @@ public class AccountServiceImpl implements AccountService {
     }
 
     /**
-     * Provides current {@link LoggedAccountDetailsHolder logged} {@link AccountEntity} info.
+     * Provides current {@link LoggedAccountDetailsProvider logged} {@link AccountEntity} info.
      *
      * @return the {@link AccountResponseDto}
      */
     @Override
     @Transactional
     public AccountResponseDto getAccount() {
-        return accountMapper.accountToDto(accountFinderService.findActiveAny(loggedAccountDetailsHolder.getAccountId()));
+        return accountMapper.accountToDto(accountFinderService.findActiveAny(loggedAccountDetailsProvider.getAccountId()));
     }
 
     /**
@@ -71,7 +71,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public List<AccountResponseDto> getAll() {
-        log.info("User '{}' requested all accounts info", loggedAccountDetailsHolder.getAccountId());
+        log.info("User '{}' requested all accounts info", loggedAccountDetailsProvider.getAccountId());
         return accountMapper.accountListToDtoList(accountRepository.findAll());
     }
 
