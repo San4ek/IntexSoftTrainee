@@ -1,6 +1,5 @@
 package me.inquis1tor.userservice.providers;
 
-import lombok.RequiredArgsConstructor;
 import me.inquis1tor.userservice.entities.AccountEntity;
 import me.inquis1tor.userservice.entities.PersonalInfoEntity;
 import org.springframework.stereotype.Component;
@@ -8,7 +7,6 @@ import org.springframework.stereotype.Component;
 import java.util.UUID;
 
 @Component
-@RequiredArgsConstructor
 public class AccountEntityProvider {
 
     public AccountEntity activeUserEntity(final String accountId) {

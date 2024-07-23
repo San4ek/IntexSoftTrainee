@@ -15,6 +15,7 @@ import me.inquis1tor.userservice.services.AccountService;
 import me.inquis1tor.userservice.utils.LoggedAccountDetailsHolder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,7 @@ class AccountServiceTest {
     }
 
     @Test
+    @DisplayName("createAccount with already registered email in db")
     void createAccountWithAlreadyRegisteredEmailInDb_ExceptionExpected() {
         AccountEntity accountEntity = accountEntityProvider.blockedUserEntity(UUID.randomUUID().toString());
         AccountTransferDto accountTransferDto = accountTransferDtoDtoProvider.correctDto();
@@ -66,6 +68,7 @@ class AccountServiceTest {
     }
 
     @Test
+    @DisplayName("createAccount with empty db")
     void createAccountWithEmptyDb_EqualsExpected() {
         AccountTransferDto accountTransferDto = accountTransferDtoDtoProvider.correctDto();
         accountService.createAccount(accountTransferDto);
@@ -76,12 +79,14 @@ class AccountServiceTest {
     }
 
     @Test
+    @DisplayName("getAccount without entity in db")
     void getAccountWithIncorrectEntityInDb_EqualsExpected() {
         Mockito.doReturn(UUID.randomUUID()).when(holder).getAccountId();
         Assertions.assertThrows(AccountNotFoundException.class, () -> accountService.getAccount());
     }
 
     @Test
+    @DisplayName("getAccount with active user entity in db")
     void getAccountWithCorrectEntityInDb_EqualsExpected() {
         AccountEntity accountEntity = accountEntityProvider.activeUserEntity(UUID.randomUUID().toString());
         accountRepository.save(accountEntity);
@@ -90,6 +95,7 @@ class AccountServiceTest {
     }
 
     @Test
+    @DisplayName("getAllAccounts with entities in db")
     void getAllWithEntitiesInDb_IterableEqualsExpected() {
         AccountEntity accountEntity = accountEntityProvider.activeUserEntity(UUID.randomUUID().toString());
         accountRepository.save(accountEntity);
@@ -97,12 +103,14 @@ class AccountServiceTest {
     }
 
     @Test
+    @DisplayName("deleteAccount without entity in db")
     void deleteAccountWithIncorrectEntityInDb_ExceptionExpected() {
         UUID accountId = UUID.randomUUID();
         Assertions.assertThrows(AccountNotFoundException.class, () -> accountService.deleteAccount(accountId));
     }
 
     @Test
+    @DisplayName("deleteAccount with active user entity in db")
     void deleteAccountWithCorrectEntityInDb_EqualsExpected() {
         AccountEntity accountEntity = accountEntityProvider.activeUserEntity(UUID.randomUUID().toString());
         accountRepository.save(accountEntity);
@@ -111,6 +119,7 @@ class AccountServiceTest {
     }
 
     @Test
+    @DisplayName("blockAccount without blocking entity and active admin entity in db")
     void blockAccountWithIncorrectBlockingEntityAndCorrectAdminInDb_ExceptionExpected() {
         AccountEntity adminEntity = accountEntityProvider.activeAdminEntity(UUID.randomUUID().toString());
         accountRepository.save(adminEntity);
@@ -120,6 +129,7 @@ class AccountServiceTest {
     }
 
     @Test
+    @DisplayName("blockAccount with blocked user entity and without admin entity in db")
     void blockAccountWithCorrectBlockingEntityAndIncorrectAdminInDb_ExceptionExpected() {
         AccountEntity userEntity = accountEntityProvider.blockedUserEntity(UUID.randomUUID().toString());
         accountRepository.save(userEntity);
@@ -129,6 +139,7 @@ class AccountServiceTest {
     }
 
     @Test
+    @DisplayName("blockAccount with active user and active admin entities in db")
     void blockAccountWithCorrectBlockingEntityAndCorrectAdminInDb_ExceptionExpected() {
         AccountEntity adminEntity = accountEntityProvider.activeAdminEntity(UUID.randomUUID().toString());
         adminEntity.setEmail("test1@test.ru");
@@ -141,12 +152,14 @@ class AccountServiceTest {
     }
 
     @Test
+    @DisplayName("unblockAccount without entity in db")
     void unblockAccountWithIncorrectEntityInDb_ExceptionExpected() {
         UUID accountId = UUID.randomUUID();
         Assertions.assertThrows(AccountNotFoundException.class, () -> accountService.unblockAccount(accountId));
     }
 
     @Test
+    @DisplayName("unblockAccount with blocked user entity in db")
     void unblockAccountWithCorrectEntityInDb_ExceptionExpected() {
         AccountEntity userEntity = accountEntityProvider.blockedUserEntity(UUID.randomUUID().toString());
         accountRepository.save(userEntity);
@@ -154,12 +167,14 @@ class AccountServiceTest {
     }
 
     @Test
+    @DisplayName("updateCredentials without entity in db")
     void updateCredentialsWithIncorrectEntityInDb_ExceptionExpected() {
         CredentialsTransferDto dto = credentialsTransferDtoProvider.correctDto();
         Assertions.assertThrows(AccountNotFoundException.class, () -> accountService.updateCredentials(dto));
     }
 
     @Test
+    @DisplayName("updateCredentials with active user entity in db")
     void updateCredentialsWithCorrectEntityInDb_EqualsExpected() {
         CredentialsTransferDto credentialsTransferDto = credentialsTransferDtoProvider.correctDto();
         AccountEntity accountEntity = accountEntityProvider.activeUserEntity(credentialsTransferDto.id().toString());
@@ -170,6 +185,7 @@ class AccountServiceTest {
     }
 
     @Test
+    @DisplayName("updateCredentials with already registered email in db")
     void updateCredentialsWithAlreadyRegisteredEmailInDb_EqualsExpected() {
         AccountEntity accountEntity = accountEntityProvider.activeUserEntity(UUID.randomUUID().toString());
         accountRepository.save(accountEntity);

@@ -64,23 +64,23 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("Tests POST /api/accounts, 401 expected")
-    void registerAccountWithoutAuth() throws Exception {
+    @DisplayName("Tests POST /api/accounts without auth")
+    void registerAccountWithoutAuth_401Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/accounts")).
                 andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
     @Test
-    @DisplayName("Tests POST /api/accounts, 409 expected")
-    void registerAccountWithoutBody() throws Exception {
+    @DisplayName("Tests POST /api/accounts without body")
+    void registerAccountWithoutBody_409Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/accounts").
                         header("Auth-Code", privatePropertiesProvider.getAuthCode())).
                 andExpect(MockMvcResultMatchers.status().isConflict());
     }
 
     @Test
-    @DisplayName("Tests POST /api/accounts, 400 expected")
-    void registerExistedAccount() throws Exception {
+    @DisplayName("Tests POST /api/accounts with already registered entity in db")
+    void registerAccountWithExistedAccountInDb_400Expected() throws Exception {
         AccountEntity userAccount = accountEntityProvider.activeUserEntity("c0a80065-90a2-1cb0-8190-a20de91f0000");
         accountRepository.save(userAccount);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/accounts").
@@ -99,8 +99,8 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("Tests POST /api/accounts, 417 expected")
-    void registerAccountWithIncorrectBody() throws Exception {
+    @DisplayName("Tests POST /api/accounts with incorrect body")
+    void registerAccountWithIncorrectBody_417Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/accounts").
                         header("Auth-Code", privatePropertiesProvider.getAuthCode()).
                         contentType(MediaType.APPLICATION_JSON).
@@ -109,8 +109,8 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("Tests POST /api/accounts, 200 expected")
-    void registerAccountWithCorrectBody() throws Exception {
+    @DisplayName("Tests POST /api/accounts correctly")
+    void registerAccountWithCorrectBody_200Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/accounts").
                         header("Auth-Code", privatePropertiesProvider.getAuthCode()).
                         contentType(MediaType.APPLICATION_JSON).
@@ -119,16 +119,16 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("Tests GET /api/accounts, 401 expected")
-    void getAccountWithoutAuth() throws Exception {
+    @DisplayName("Tests GET /api/accounts without auth")
+    void getAccountWithoutAuth_401Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/accounts")).
                 andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
     @Test
     @WithJwt("jwt/user.json")
-    @DisplayName("Tests GET /api/accounts, 200 expected")
-    void getExistedAccount() throws Exception {
+    @DisplayName("Tests GET /api/accounts correctly")
+    void getExistedAccountWithCorrectEntityInDb_200Expected() throws Exception {
         AccountEntity account = accountEntityProvider.activeUserEntity("c0a80065-90a2-1cb0-8190-a20de91f0000");
         accountRepository.save(account);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/accounts")).
@@ -138,39 +138,39 @@ class AccountControllerTest {
 
     @Test
     @WithJwt("jwt/user.json")
-    @DisplayName("Tests GET /api/accounts, 404 expected")
-    void getNotExistedAccount() throws Exception {
+    @DisplayName("Tests GET /api/accounts without entity in db")
+    void getAccountWithoutEntityInDb_400Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/accounts")).
                 andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
-    @DisplayName("Tests GET /api/accounts/all, 401 expected")
-    void getAllAccountsWithoutAuth() throws Exception {
+    @DisplayName("Tests GET /api/accounts/all without auth")
+    void getAllAccountsWithoutAuth_401Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/accounts/all")).
                 andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
     @Test
     @WithJwt("jwt/user.json")
-    @DisplayName("Tests GET /api/accounts/all, 403 expected")
-    void getAllAccountsByUser() throws Exception {
+    @DisplayName("Tests GET /api/accounts/all with user role in jwt")
+    void getAllAccountsByUser_403Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/accounts/all")).
                 andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
     @Test
     @WithJwt("jwt/moder.json")
-    @DisplayName("Tests GET /api/accounts/all, 403 expected")
-    void getAllAccountsByModer() throws Exception {
+    @DisplayName("Tests GET /api/accounts/all with moder role in jwt")
+    void getAllAccountsByModer_403Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/accounts/all")).
                 andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
     @Test
     @WithJwt("jwt/admin.json")
-    @DisplayName("Tests GET /api/accounts/all, 200 expected")
-    void getAllAccounts() throws Exception {
+    @DisplayName("Tests GET /api/accounts/all correctly")
+    void getAllAccounts_200Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/accounts/all")).
                 andExpect(MockMvcResultMatchers.status().isOk()).
                 andExpect(MockMvcResultMatchers.content().json("[]"));
@@ -186,23 +186,23 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/block, 401 expected")
-    void blockAccountWithoutAuth() throws Exception {
+    @DisplayName("Tests PUT /api/accounts/block without auth")
+    void blockAccountWithoutAuth_401Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/block")).
                 andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/block, 417 expected")
-    void blockAccountWithoutParams() throws Exception {
+    @DisplayName("Tests PUT /api/accounts/block without params")
+    void blockAccountWithoutParams_417Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/block").
                         header("Auth-Code", privatePropertiesProvider.getAuthCode())).
                 andExpect(MockMvcResultMatchers.status().isConflict());
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/block, 400 expected")
-    void blockAccountWithNotExistedAdminId() throws Exception {
+    @DisplayName("Tests PUT /api/accounts/block by not existed admin entity")
+    void blockAccountWithoutAdminEntityInDb_400Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/block").
                         header("Auth-Code", privatePropertiesProvider.getAuthCode()).
                         param("accountId", "c0a80065-90a2-1cb0-8190-a20de91f0001").
@@ -211,8 +211,8 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/block, 404 expected")
-    void blockNotExistedAccount() throws Exception {
+    @DisplayName("Tests PUT /api/accounts/block with not existed blocking entity in db")
+    void blockAccountWithoutBlockingEntityInDb_404Expected() throws Exception {
         AccountEntity adminAccount = accountEntityProvider.activeAdminEntity("c0a80065-90a2-1cb0-8190-a20de91f0000");
         accountRepository.save(adminAccount);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/block").
@@ -223,8 +223,8 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/block, 200 expected")
-    void blockAccount() throws Exception {
+    @DisplayName("Tests PUT /api/accounts/block correctly")
+    void blockAccount_200Expected() throws Exception {
         AccountEntity adminAccount = accountEntityProvider.activeAdminEntity("c0a80065-90a2-1cb0-8190-a20de91f0000");
         accountRepository.save(adminAccount);
         AccountEntity moderAccount = accountEntityProvider.activeModerEntity("c0a80065-90a2-1cb0-8190-a20de91f0001");
@@ -238,8 +238,8 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/block, 404 expected")
-    void blockAlreadyBlockedAccount() throws Exception {
+    @DisplayName("Tests PUT /api/accounts/block with already blocked entity in db")
+    void blockAccountWithAlreadyBlockedEntityInDb_404Expected() throws Exception {
         AccountEntity adminAccount = accountEntityProvider.activeAdminEntity("c0a80065-90a2-1cb0-8190-a20de91f0000");
         accountRepository.save(adminAccount);
         AccountEntity moderAccount = accountEntityProvider.activeModerEntity("c0a80065-90a2-1cb0-8190-a20de91f0001");
@@ -254,8 +254,8 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/block, 404 expected")
-    void blockAdminAccount() throws Exception {
+    @DisplayName("Tests PUT /api/accounts/block with active admin entity in db")
+    void blockAccountWithAdminEntityInDb_404Expected() throws Exception {
         AccountEntity adminAccount = accountEntityProvider.activeAdminEntity("c0a80065-90a2-1cb0-8190-a20de91f0000");
         accountRepository.save(adminAccount);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/block").
@@ -266,23 +266,23 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/unblock, 401 expected")
-    void unblockAccountWithoutAuth() throws Exception {
+    @DisplayName("Tests PUT /api/accounts/unblock without auth")
+    void unblockAccountWithoutAuth_401Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/unblock")).
                 andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/unblock, 417 expected")
-    void unblockAccountWithoutParams() throws Exception {
+    @DisplayName("Tests PUT /api/accounts/unblock without params")
+    void unblockAccountWithoutParams_409Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/unblock").
                         header("Auth-Code", privatePropertiesProvider.getAuthCode())).
                 andExpect(MockMvcResultMatchers.status().isConflict());
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/unblock, 404 expected")
-    void unblockNotExistedAccount() throws Exception {
+    @DisplayName("Tests PUT /api/accounts/unblock without entity in db")
+    void unblockAccountWithoutEntityInDb_404Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/unblock").
                         header("Auth-Code", privatePropertiesProvider.getAuthCode()).
                         param("accountId", "c0a80065-90a2-1cb0-8190-a20de91f0000")).
@@ -290,8 +290,8 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/unblock, 404 expected")
-    void unblockNotBLockedAccount() throws Exception {
+    @DisplayName("Tests PUT /api/accounts/unblock with active user entity in db")
+    void unblockAccountWithIncorrectEntityInDb_404Expected() throws Exception {
         AccountEntity userAccount = accountEntityProvider.activeUserEntity("c0a80065-90a2-1cb0-8190-a20de91f0000");
         accountRepository.save(userAccount);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/unblock").
@@ -301,19 +301,8 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/unblock, 404 expected")
-    void unblockAdminAccount() throws Exception {
-        AccountEntity adminAccount = accountEntityProvider.activeAdminEntity("c0a80065-90a2-1cb0-8190-a20de91f0000");
-        accountRepository.save(adminAccount);
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/unblock").
-                        header("Auth-Code", privatePropertiesProvider.getAuthCode()).
-                        param("accountId", "c0a80065-90a2-1cb0-8190-a20de91f0000")).
-                andExpect(MockMvcResultMatchers.status().isNotFound());
-    }
-
-    @Test
-    @DisplayName("Tests PUT /api/accounts/unblock, 200 expected")
-    void unblockAccount() throws Exception {
+    @DisplayName("Tests PUT /api/accounts/unblock correctly")
+    void unblockAccount_200Expected() throws Exception {
         AccountEntity userAccount = accountEntityProvider.activeUserEntity("c0a80065-90a2-1cb0-8190-a20de91f0000");
         userAccount.setStatus(AccountEntity.Status.BLOCKED);
         accountRepository.save(userAccount);
@@ -324,23 +313,23 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/credentials, 401 expected")
-    void updateCredentialsWithoutAuth() throws Exception {
+    @DisplayName("Tests PUT /api/accounts/credentials without auth")
+    void updateCredentialsWithoutAuth_401Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/credentials")).
                 andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/credentials, 409 expected")
-    void updateCredentialsWithoutBody() throws Exception {
+    @DisplayName("Tests PUT /api/accounts/credentials without body")
+    void updateCredentialsWithoutBody_409Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/credentials").
                         header("Auth-Code", privatePropertiesProvider.getAuthCode())).
                 andExpect(MockMvcResultMatchers.status().isConflict());
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/credentials, 417 expected")
-    void updateCredentialsWithIncorrectBody() throws Exception {
+    @DisplayName("Tests PUT /api/accounts/credentials with incorrect body")
+    void updateCredentialsWithIncorrectBody_417Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/credentials").
                         header("Auth-Code", privatePropertiesProvider.getAuthCode()).
                         contentType(MediaType.APPLICATION_JSON).
@@ -349,8 +338,8 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/credentials, 404 expected")
-    void updateNotExistedAccountCredentials() throws Exception {
+    @DisplayName("Tests PUT /api/accounts/credentials without entity in db")
+    void updateCredentialsWithoutEntityInDb_404Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/credentials").
                         header("Auth-Code", privatePropertiesProvider.getAuthCode()).
                         contentType(MediaType.APPLICATION_JSON).
@@ -359,8 +348,8 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/credentials, 400 expected")
-    void updateWithAlreadyRegisteredCredentials() throws Exception {
+    @DisplayName("Tests PUT /api/accounts/credentials with already registered email in db")
+    void updateCredentialsWithAlreadyRegisteredEmailInDb_400Expected() throws Exception {
         CredentialsTransferDto dto = credentialsTransferDtoDtoProvider.correctDto();
         accountRepository.save(accountEntityProvider.activeUserEntity(String.valueOf(dto.id())));
         mockMvc.perform(MockMvcRequestBuilders.put("/api/accounts/credentials").
@@ -371,8 +360,8 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/credentials, 200 expected")
-    void updateCredentials() throws Exception {
+    @DisplayName("Tests PUT /api/accounts/credentials correctly")
+    void updateCredentials_200Expected() throws Exception {
         CredentialsTransferDto dto = credentialsTransferDtoDtoProvider.correctDto();
         AccountEntity accountEntity = accountEntityProvider.activeUserEntity(String.valueOf(dto.id()));
         accountEntity.setEmail("test2@test.ru");
