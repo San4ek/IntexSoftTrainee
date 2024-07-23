@@ -7,6 +7,7 @@ import me.inquis1tor.userservice.exceptions.EndpointNotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -40,10 +41,10 @@ public interface ExceptionHandlingController {
     List<ErrorResponseDto> onMethodArgumentNotValidException(MethodArgumentNotValidException e);
 
     @ResponseStatus(HttpStatus.CONFLICT)
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    ErrorResponseDto onHttpMessageNotReadableException(HttpMessageNotReadableException e);
+    @ExceptionHandler({HttpMessageNotReadableException.class, MissingServletRequestParameterException.class})
+    ErrorResponseDto onHttpMessageException(Exception e);
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(Throwable.class)
-    ErrorResponseDto onAnyException(Exception e);
+    @ExceptionHandler(Exception.class)
+    ErrorResponseDto onAnyException(Exception e) throws Exception;
 }

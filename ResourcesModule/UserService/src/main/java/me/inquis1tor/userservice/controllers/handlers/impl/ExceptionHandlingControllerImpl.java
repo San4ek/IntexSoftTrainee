@@ -7,7 +7,8 @@ import me.inquis1tor.userservice.dtos.ErrorResponseDto;
 import me.inquis1tor.userservice.exceptions.AccountNotFoundException;
 import me.inquis1tor.userservice.exceptions.EndpointNotImplementedException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -72,7 +73,8 @@ public class ExceptionHandlingControllerImpl implements ExceptionHandlingControl
     }
 
     @Override
-    public ErrorResponseDto onHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+    public ErrorResponseDto onHttpMessageException(Exception e) {
+        logWarn(e.getMessage());
         return new ErrorResponseDto(HttpStatus.CONFLICT.value(), HttpStatus.CONFLICT.getReasonPhrase(), e.getMessage());
     }
 
@@ -83,7 +85,10 @@ public class ExceptionHandlingControllerImpl implements ExceptionHandlingControl
      * @return the {@link ErrorResponseDto}
      */
     @Override
-    public ErrorResponseDto onAnyException(final Exception e) {
+    public ErrorResponseDto onAnyException(final Exception e) throws Exception {
+        if (e instanceof AccessDeniedException || e instanceof AuthenticationException) {
+            throw e;
+        }
         logError(e);
         return new ErrorResponseDto(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), "Unhandled error");
     }

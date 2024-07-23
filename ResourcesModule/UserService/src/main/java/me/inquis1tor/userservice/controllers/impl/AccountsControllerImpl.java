@@ -8,8 +8,7 @@ import me.inquis1tor.userservice.dtos.AccountResponseDto;
 import me.inquis1tor.userservice.dtos.AccountTransferDto;
 import me.inquis1tor.userservice.dtos.CredentialsTransferDto;
 import me.inquis1tor.userservice.services.AccountService;
-import me.inquis1tor.userservice.utils.LoggedAccountDetailsHolder;
-import org.springframework.web.bind.annotation.RequestMapping;
+import me.inquis1tor.userservice.utils.LoggedAccountDetailsProvider;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -17,17 +16,16 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/accounts")
 @RequiredArgsConstructor
 @Tag(name = "Accounts", description = "Account management APIs")
 public class AccountsControllerImpl implements AccountsController {
 
     private final AccountService accountService;
-    private final LoggedAccountDetailsHolder loggedAccountDetailsHolder;
+    private final LoggedAccountDetailsProvider loggedAccountDetailsProvider;
 
     @Override
     public AccountResponseDto getAccount() {
-        log.info("Received '{}' request for getting account info", loggedAccountDetailsHolder.getAccountId());
+        log.info("Received '{}' request for getting account info", loggedAccountDetailsProvider.getAccountId());
         return accountService.getAccount();
     }
 
@@ -39,7 +37,7 @@ public class AccountsControllerImpl implements AccountsController {
 
     @Override
     public List<AccountResponseDto> getAllAccounts() {
-        log.info("Received '{}' request for getting all accounts info", loggedAccountDetailsHolder.getAccountId());
+        log.info("Received '{}' request for getting all accounts info", loggedAccountDetailsProvider.getAccountId());
         return accountService.getAll();
     }
 

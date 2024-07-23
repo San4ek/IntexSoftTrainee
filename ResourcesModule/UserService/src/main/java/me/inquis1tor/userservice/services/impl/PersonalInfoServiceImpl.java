@@ -8,7 +8,7 @@ import me.inquis1tor.userservice.entities.PersonalInfoEntity;
 import me.inquis1tor.userservice.mappers.PersonalInfoMapper;
 import me.inquis1tor.userservice.repositories.PersonalInfoRepository;
 import me.inquis1tor.userservice.services.PersonalInfoService;
-import me.inquis1tor.userservice.utils.LoggedAccountDetailsHolder;
+import me.inquis1tor.userservice.utils.LoggedAccountDetailsProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,11 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class PersonalInfoServiceImpl implements PersonalInfoService {
 
     private final PersonalInfoRepository personalInfoRepository;
-    private final LoggedAccountDetailsHolder loggedAccountDetailsHolder;
+    private final LoggedAccountDetailsProvider loggedAccountDetailsProvider;
     private final PersonalInfoMapper personalInfoMapper;
 
     /**
-     * Updates current {@link LoggedAccountDetailsHolder logged} {@link AccountEntity} with
+     * Updates current {@link LoggedAccountDetailsProvider logged} {@link AccountEntity} with
      * personal info provided by the parameter {@code dto}.
      *
      * @param dto the {@link AccountEntity} new personal info
@@ -35,10 +35,10 @@ public class PersonalInfoServiceImpl implements PersonalInfoService {
     @Override
     @Transactional
     public void updatePersonalInfo(final PersonalInfoDto dto) {
-        log.info("Updating '{}' personal info", loggedAccountDetailsHolder.getAccountId());
+        log.info("Updating '{}' personal info", loggedAccountDetailsProvider.getAccountId());
         PersonalInfoEntity personalInfoEntity = personalInfoMapper.dtoToPersonalInfo(dto);
-        personalInfoEntity.setId(loggedAccountDetailsHolder.getAccountId());
+        personalInfoEntity.setId(loggedAccountDetailsProvider.getAccountId());
         personalInfoRepository.save(personalInfoEntity);
-        log.info("Personal info '{}' updated", loggedAccountDetailsHolder.getAccountId());
+        log.info("Personal info '{}' updated", loggedAccountDetailsProvider.getAccountId());
     }
 }

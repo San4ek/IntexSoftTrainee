@@ -13,7 +13,7 @@ import java.util.UUID;
  */
 @Data
 @NoArgsConstructor
-public class LoggedAccountDetailsHolder {
+public class LoggedAccountDetailsProvider {
 
     /**
      * The current logged {@link AccountEntity} id.

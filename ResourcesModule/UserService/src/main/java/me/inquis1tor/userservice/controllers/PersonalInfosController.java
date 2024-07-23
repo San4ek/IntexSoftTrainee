@@ -3,7 +3,6 @@ package me.inquis1tor.userservice.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import me.inquis1tor.userservice.annotations.swagger.requests.SwaggerRequestBody;
-import me.inquis1tor.userservice.annotations.swagger.responses.BadRequestErrorResponse;
 import me.inquis1tor.userservice.annotations.swagger.responses.NoContentOkResponse;
 import me.inquis1tor.userservice.annotations.swagger.security.Oauth2SecurityRequired;
 import me.inquis1tor.userservice.dtos.PersonalInfoDto;
@@ -19,7 +18,6 @@ public interface PersonalInfosController {
     @Operation(summary = "Update user personal info")
     @Oauth2SecurityRequired
     @NoContentOkResponse
-    @BadRequestErrorResponse
     @PutMapping
     default void updatePersonalInfo(@SwaggerRequestBody(description = "User personal info")
                                     @RequestBody PersonalInfoDto personalInfo) throws EndpointNotImplementedException {
