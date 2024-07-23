@@ -2,7 +2,6 @@ package org.example.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.enums.AddressEnum;
 
 import java.util.UUID;
 
@@ -24,8 +23,8 @@ public class OrderEntity {
     @ManyToOne(optional = false)
     private CartEntity cart;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "address")
-    private AddressEnum address;
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    private AddressEntity address;
 
 }

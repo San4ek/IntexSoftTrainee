@@ -7,4 +7,8 @@ import java.util.UUID;
 
 @Repository
 public interface OrderRepository extends BaseRepository<OrderEntity, UUID> {
+
+    boolean existsByAddressId(UUID addressId);
+
+    void deleteByAddressId(UUID addressId);
 }
