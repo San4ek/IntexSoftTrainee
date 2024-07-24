@@ -22,9 +22,9 @@ public class OrderController implements OrderOperationsController {
     private final OrderService orderService;
 
     /**
-     * Retrieve the details of a specific order by its unique identifier.
+     * Retrieve the order by its id.
      *
-     * @param orderId the unique identifier of the order to retrieve.
+     * @param orderId the id of the order to retrieve.
      * @return an {@link OrderResponse} containing the details of the order.
      */
     @Override
@@ -44,9 +44,19 @@ public class OrderController implements OrderOperationsController {
     }
 
     /**
-     * Delete all orders associated with a specific address by the address's unique identifier.
+     * Delete order with specified id.
      *
-     * @param addressId the unique identifier of the address.
+     * @param orderId the id of the order to delete
+     */
+    @Override
+    public void deleteOrder(final UUID orderId) {
+        orderService.deleteOrderWithId(orderId);
+    }
+
+    /**
+     * Delete all orders by the address's id.
+     *
+     * @param addressId the id of the address.
      */
     @Override
     public void deleteOrdersWithAddress(final UUID addressId) {

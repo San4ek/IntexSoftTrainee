@@ -34,28 +34,15 @@ public class StockServiceImpl implements StockService {
     }
 
     /**
-     * Increases the stock amount of a specific stock item.
+     * Change the stock amount of a specific stock item.
      *
      * @param stockItemId the ID of the stock item.
-     * @param amount the amount to increase the stock by.
+     * @param amount the amount to change the stock by.
      */
     @Override
     @Transactional
-    public void increaseStock(final UUID stockItemId, final Long amount) {
-        log.info("Increasing stock item amount by {} with id {} ", amount, stockItemId);
-        stockClient.increaseStock(stockItemId, amount);
-    }
-
-    /**
-     * Decreases the stock amount of a specific stock item.
-     *
-     * @param stockItemId the ID of the stock item.
-     * @param amount the amount to decrease the stock by.
-     */
-    @Override
-    @Transactional
-    public void decreaseStock(final UUID stockItemId, final Long amount) {
-        log.info("Decreasing stock item amount by {} with id {}", amount, stockItemId);
-        stockClient.decreaseStock(stockItemId, amount);
+    public void changeStockAmount(final UUID stockItemId, final Long amount, final String operation) {
+        log.info("Changing stock item amount by {} with id {} ", amount, stockItemId);
+        stockClient.changeStockAmount(stockItemId, amount, operation);
     }
 }

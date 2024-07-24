@@ -9,30 +9,30 @@ import java.util.UUID;
 /**
  * Interface for controller with cart operations.
  */
-@RequestMapping("/api/cart")
+@RequestMapping("/api/carts")
 public interface CartOperationsController {
 
-    @GetMapping("/get/{cartId}")
+    @GetMapping("/{cartId}")
     default @ResponseBody CartWithItemsResponse getCart(@PathVariable UUID cartId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
-    @PostMapping("/create")
+    @PostMapping
     default @ResponseBody CartResponse createCart(@RequestBody CartRequest cartRequest) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
-    @PutMapping("/update/{cartId}")
+    @PutMapping("/{cartId}")
     default @ResponseBody CartResponse updateCart(@PathVariable UUID cartId, @RequestBody CartRequest cartRequest) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
-    @PostMapping("/add")
+    @PostMapping("/item")
     default CartItemResponse addItemInCart(@RequestBody CartItemRequest cartItemRequest) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
-    @DeleteMapping("/remove")
+    @DeleteMapping("/item")
     default void deleteItemFromCart(@RequestParam UUID cartId, @RequestParam UUID stockItemId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }

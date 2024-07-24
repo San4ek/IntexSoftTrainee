@@ -21,7 +21,7 @@ public interface StockClient {
      * @param stockItemId the ID of the stock item to retrieve.
      * @return the stock item amount and price.
      */
-    @GetMapping("/check/{stockItemId}")
+    @GetMapping("/{stockItemId}")
     StockItemAmount getStockItemById(@PathVariable UUID stockItemId);
 
     /**
@@ -30,15 +30,6 @@ public interface StockClient {
      * @param stockItemId the ID of the stock item to increase.
      * @param amount the amount to increase.
      */
-    @PutMapping("/increase/{stockItemId}")
-    void increaseStock(@PathVariable UUID stockItemId, @RequestParam Long amount);
-
-    /**
-     * Decreases the stock amount for a specific stock item.
-     *
-     * @param stockItemId the ID of the stock item to decrease.
-     * @param amount      the amount to decrease.
-     */
-    @PutMapping("/decrease/{stockItemId}")
-    void decreaseStock(@PathVariable UUID stockItemId, @RequestParam Long amount);
+    @PutMapping("/{stockItemId}")
+    void changeStockAmount(@PathVariable UUID stockItemId, @RequestParam Long amount, @RequestParam String operation);
 }

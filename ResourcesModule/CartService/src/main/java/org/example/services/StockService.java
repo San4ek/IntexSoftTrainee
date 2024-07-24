@@ -11,7 +11,5 @@ public interface StockService {
 
     StockItemAmount getStockItemById(UUID id);
 
-    void increaseStock(UUID stockItemId, Long amount);
-
-    void decreaseStock(UUID stockItemId, Long amount);
+    void changeStockAmount(UUID stockItemId, Long amount, String operation);
 }

@@ -26,9 +26,11 @@ public class ValidationOrderService {
         checkTrue(addressRepository.existsById(orderRequest.getAddressId()), "Address is not exist");
     }
 
+    public void validateOrderForDeleting(final UUID orderId) {
+        checkTrue(orderRepository.existsById(orderId));
+    }
+
     public void validateOrdersWithAddressIdForDeleting(final UUID addressId) {
         checkTrue(orderRepository.existsByAddressId(addressId), "Addresses with this id are not exist");
     }
-
-
 }
