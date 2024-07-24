@@ -18,7 +18,7 @@ import java.util.UUID;
  */
 @FeignClient(
         value = "userservice",
-        url = "http://user-service:8081/api/accounts/",
+        url = "http://user-service:8081/api/accounts",
         configuration = ClientConfig.class
 )
 public interface UserServiceClient {

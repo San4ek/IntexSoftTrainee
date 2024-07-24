@@ -47,7 +47,7 @@ public class AccountServiceImpl implements AccountService {
         personalInfoEntity.setId(dto.id());
         AccountEntity accountEntity = accountMapper.transferDtoToAccount(dto);
         accountEntity.setStatus(AccountEntity.Status.ACTIVE);
-        accountEntity.setPersonalInfoEntity(personalInfoEntity);
+        accountEntity.setPersonalInfo(personalInfoEntity);
         accountRepository.save(accountEntity);
         log.info("Account '{}' created", dto.id());
     }

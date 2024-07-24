@@ -7,7 +7,8 @@ import me.inqu1sitor.authservice.dtos.ErrorResponseDto;
 import me.inqu1sitor.authservice.exceptions.AccountNotFoundException;
 import me.inqu1sitor.authservice.exceptions.EndpointNotImplementedException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -72,18 +73,22 @@ public class ExceptionHandlingControllerImpl implements ExceptionHandlingControl
     }
 
     @Override
-    public ErrorResponseDto onHttpMessageNotReadableException(HttpMessageNotReadableException e) {
+    public ErrorResponseDto onHttpMessageException(final Exception e) {
+        logWarn(e.getMessage());
         return new ErrorResponseDto(HttpStatus.CONFLICT.value(), HttpStatus.CONFLICT.getReasonPhrase(), e.getMessage());
     }
 
     /**
-     * Handles any {@link Throwable}
+     * Handles any {@link Exception}
      *
      * @param e the thrown {@link Throwable}
      * @return the {@link ErrorResponseDto}
      */
     @Override
-    public ErrorResponseDto onAnyException(final Exception e) {
+    public ErrorResponseDto onAnyException(final Exception e) throws Exception {
+        if (e instanceof AccessDeniedException || e instanceof AuthenticationException) {
+            throw e;
+        }
         logError(e);
         return new ErrorResponseDto(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), "Unhandled error");
     }

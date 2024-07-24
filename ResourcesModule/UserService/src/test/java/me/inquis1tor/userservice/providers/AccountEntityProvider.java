@@ -53,7 +53,7 @@ public class AccountEntityProvider {
         accountEntity.setEmail("test@test.ru");
         accountEntity.setRole(role);
         accountEntity.setStatus(status);
-        accountEntity.setPersonalInfoEntity(personalInfoEntity);
+        accountEntity.setPersonalInfo(personalInfoEntity);
         return accountEntity;
     }
 }

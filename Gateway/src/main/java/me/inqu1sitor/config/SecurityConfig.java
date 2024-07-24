@@ -33,9 +33,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
         RequestMatcher requestMatcher = new AntPathRequestMatcher("/api/**");
-
         return http.securityMatcher(requestMatcher).
                 csrf(AbstractHttpConfigurer::disable).
                 authorizeHttpRequests(authorize -> authorize.

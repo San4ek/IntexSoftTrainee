@@ -15,6 +15,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://auth-postgres/auth_service
       SPRING_DATA_REDIS_HOST: auth-redis
       SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: http://auth-service:9000/oauth2/jwks
     networks:
       - bridge_network
 
@@ -31,6 +32,7 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://user-postgres/user_service
       SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: http://auth-service:9000/oauth2/jwks
     networks:
       - bridge_network
 

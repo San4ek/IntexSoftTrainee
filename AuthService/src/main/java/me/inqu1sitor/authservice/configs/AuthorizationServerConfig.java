@@ -70,7 +70,6 @@ public class AuthorizationServerConfig {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         return http.
                 csrf(AbstractHttpConfigurer::disable).
-                formLogin(Customizer.withDefaults()).
                 formLogin(login -> login.failureHandler((request, response, exception) -> response.setStatus(HttpServletResponse.SC_UNAUTHORIZED))).
                 logout(Customizer.withDefaults()).
                 build();

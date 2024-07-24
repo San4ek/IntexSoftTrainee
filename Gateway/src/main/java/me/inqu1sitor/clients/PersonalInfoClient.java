@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(
         name = "personalinfos",
-        url = "http://localhost:8081/api/personal-infos",
+        url = "http://user-service:8081/api/personal-infos",
         configuration = FeignClientConfig.class
 )
 public interface PersonalInfoClient {
