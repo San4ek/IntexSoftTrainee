@@ -78,7 +78,7 @@ class AccountServiceTest {
         Assertions.assertEquals(accountTransferDto.email(), accountEntity.getEmail());
         Assertions.assertEquals(accountTransferDto.role(), accountEntity.getRole());
         Assertions.assertEquals(AccountEntity.Status.ACTIVE, accountEntity.getStatus());
-        final PersonalInfoEntity personalInfoEntity = accountEntity.getPersonalInfoEntity();
+        final PersonalInfoEntity personalInfoEntity = accountEntity.getPersonalInfo();
         Assertions.assertNotNull(personalInfoEntity);
         Assertions.assertEquals(accountTransferDto.id(), personalInfoEntity.getId());
         Assertions.assertNull(personalInfoEntity.getName());
@@ -108,7 +108,7 @@ class AccountServiceTest {
         Assertions.assertEquals(accountEntity.getRole(), accountResponseDto.role());
         Assertions.assertEquals(accountEntity.getStatus(), accountResponseDto.status());
         final PersonalInfoDto personalInfoDto = accountResponseDto.personalInfo();
-        Assertions.assertNull(personalInfoDto);
+        Assertions.assertNotNull(personalInfoDto);
     }
 
     @Test

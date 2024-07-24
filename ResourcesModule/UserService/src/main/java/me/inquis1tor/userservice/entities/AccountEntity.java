@@ -32,7 +32,7 @@ public class AccountEntity extends Audit {
 
     @OneToOne(mappedBy = "accountEntity", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
-    private PersonalInfoEntity personalInfoEntity;
+    private PersonalInfoEntity personalInfo;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
@@ -52,7 +52,7 @@ public class AccountEntity extends Audit {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getEmail(), getPersonalInfoEntity(), getRole(), getStatus());
+        return Objects.hash(getId(), getEmail(), getPersonalInfo(), getRole(), getStatus());
     }
 
     public enum Status {

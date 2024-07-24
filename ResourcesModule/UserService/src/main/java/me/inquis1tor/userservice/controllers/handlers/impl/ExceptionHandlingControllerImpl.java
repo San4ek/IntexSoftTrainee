@@ -8,6 +8,7 @@ import me.inquis1tor.userservice.exceptions.AccountNotFoundException;
 import me.inquis1tor.userservice.exceptions.EndpointNotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -79,14 +80,14 @@ public class ExceptionHandlingControllerImpl implements ExceptionHandlingControl
     }
 
     /**
-     * Handles any {@link Throwable}
+     * Handles any {@link Exception}
      *
-     * @param e the thrown {@link Throwable}
+     * @param e the thrown {@link Exception}
      * @return the {@link ErrorResponseDto}
      */
     @Override
     public ErrorResponseDto onAnyException(final Exception e) throws Exception {
-        if (e instanceof AccessDeniedException || e instanceof AuthenticationException) {
+        if (e instanceof AccessDeniedException || e instanceof AuthenticationException && !(e instanceof AuthenticationServiceException)) {
             throw e;
         }
         logError(e);

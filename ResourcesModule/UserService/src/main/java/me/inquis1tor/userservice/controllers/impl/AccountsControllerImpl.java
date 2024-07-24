@@ -26,7 +26,8 @@ public class AccountsControllerImpl implements AccountsController {
     @Override
     public AccountResponseDto getAccount() {
         log.info("Received '{}' request for getting account info", loggedAccountDetailsProvider.getAccountId());
-        return accountService.getAccount();
+        throw new RuntimeException();
+        //return accountService.getAccount();
     }
 
     @Override

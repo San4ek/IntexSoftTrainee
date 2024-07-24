@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @FeignClient(
         name = "useraccounts",
-        url = "http://localhost:8081/api/accounts",
+        url = "http://user-service:8081/api/accounts",
         configuration = FeignClientConfig.class
 )
 public interface UserAccountsClient {

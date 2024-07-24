@@ -77,6 +77,7 @@ class AuthCodeAuthorizationManager implements AuthorizationManager<RequestAuthor
     @Override
     public AuthorizationDecision check(Supplier<Authentication> authentication, RequestAuthorizationContext object) {
         String authCode = object.getRequest().getHeader("Auth-Code");
+        System.out.println("|||||||||||||||||||||||||"+authCode);
         return new AuthorizationDecision(authCode != null && authCode.equals(privatePropertiesProvider.getAuthCode()));
     }
 }
