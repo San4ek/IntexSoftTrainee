@@ -1,6 +1,7 @@
 package org.example.services.client;
 
 import org.example.dtos.StockItemAmount;
+import org.example.enums.StockOperationEnum;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,5 +32,5 @@ public interface StockClient {
      * @param amount the amount to increase.
      */
     @PutMapping("/{stockItemId}")
-    void changeStockAmount(@PathVariable UUID stockItemId, @RequestParam Long amount, @RequestParam String operation);
+    void changeStockAmount(@PathVariable UUID stockItemId, @RequestParam Long amount, @RequestParam StockOperationEnum operation);
 }

@@ -3,6 +3,7 @@ package org.example.services.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dtos.StockItemAmount;
+import org.example.enums.StockOperationEnum;
 import org.example.services.client.StockClient;
 import org.example.services.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class StockServiceImpl implements StockService {
      */
     @Override
     @Transactional
-    public void changeStockAmount(final UUID stockItemId, final Long amount, final String operation) {
+    public void changeStockAmount(final UUID stockItemId, final Long amount, final StockOperationEnum operation) {
         log.info("Changing stock item amount by {} with id {} ", amount, stockItemId);
         stockClient.changeStockAmount(stockItemId, amount, operation);
     }

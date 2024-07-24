@@ -7,6 +7,7 @@ import org.example.dtos.CartRequest;
 import org.example.dtos.StockItemAmount;
 import org.example.entities.CartEntity;
 import org.example.entities.CartItemEntity;
+import org.example.enums.StockOperationEnum;
 import org.example.mappers.CartItemMapper;
 import org.example.mappers.CartMapper;
 import org.example.repositories.CartItemRepository;
@@ -89,7 +90,7 @@ public class CartServiceImpl implements CartService {
         log.info("Adding item {} in cart with id {}", cartItemRequest.getStockId(),cartItemRequest.getCartId());
         validationCartService.validateCartForAddItem(cartItemRequest);
         CartItemEntity cartItemEntity = cartItemMapper.toEntity(cartItemRequest);
-        stockService.changeStockAmount(cartItemRequest.getStockId(), cartItemRequest.getAmount(), "decrease");
+        stockService.changeStockAmount(cartItemRequest.getStockId(), cartItemRequest.getAmount(), StockOperationEnum.DECREASE);
         CartEntity cartEntity = cartRepository.getById(cartItemRequest.getCartId());
         cartEntity.addItems(cartItemEntity);
         cartRepository.save(cartEntity);
@@ -111,7 +112,7 @@ public class CartServiceImpl implements CartService {
         CartItemEntity cartItemEntity = cartItemRepository.findByCartIdAndStockId(cartId, stockItemId);
         cartEntity.removeItems(cartItemEntity);
         cartRepository.save(cartEntity);
-        stockService.changeStockAmount(stockItemId, cartItemEntity.getAmount(), "increase");
+        stockService.changeStockAmount(stockItemId, cartItemEntity.getAmount(), StockOperationEnum.INCREASE);
     }
 
     /**
