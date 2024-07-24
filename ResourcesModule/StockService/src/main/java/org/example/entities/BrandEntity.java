@@ -5,7 +5,6 @@ import lombok.*;
 
 import java.util.UUID;
 
-
 @Getter
 @Setter
 @ToString
@@ -20,6 +19,6 @@ public class BrandEntity {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 }

@@ -8,8 +8,10 @@ import org.example.dtos.StockItemAmount;
 import org.example.dtos.StockItemResponse;
 import org.example.enums.ColorEnum;
 import org.example.enums.SizeEnum;
+import org.example.enums.StockOperationEnum;
 import org.example.enums.TypeEnum;
 import org.example.exceptions.EndpointNotImplementedException;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,47 +21,37 @@ import java.util.UUID;
  * Interface with operations for user stock controller
  */
 @Tag(name = "UserStock", description = "User's stock APIs")
-@RequestMapping("/user-stock")
+@RequestMapping("/api/user-stock")
 public interface StockUserOperations {
 
-    @SneakyThrows
     @Operation(summary = "Get product by name")
     @ApiResponse(responseCode = "501")
     @ApiResponse(responseCode = "200")
-    @GetMapping("/find/{name}")
-    default @ResponseBody List<StockItemResponse> getStockItemsByName(@PathVariable String name) {
+    @GetMapping("/name/{name}")
+    default @ResponseBody List<StockItemResponse> getStockItemsByName(@PathVariable String name) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
-    @SneakyThrows
     @Operation(summary = "Get products by attributes")
     @ApiResponse(responseCode = "501")
     @ApiResponse(responseCode = "200")
-    @GetMapping("/find/attributes")
+    @GetMapping("/attributes")
     default List<StockItemResponse> getStockItemsByAttributes(@RequestParam(required = false) String brand,
                                                               @RequestParam(required = false) ColorEnum color,
                                                               @RequestParam(required = false) SizeEnum size,
                                                               @RequestParam(required = false) TypeEnum type,
                                                               @RequestParam(required = false) Float minPrice,
-                                                              @RequestParam(required = false) Float maxPrice) {
+                                                              @RequestParam(required = false) Float maxPrice) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
-    @SneakyThrows
-    @GetMapping("/check/{stockItemId}")
-    default StockItemAmount checkStockItemAmount(@PathVariable UUID stockItemId) {
+    @GetMapping("/{stockItemId}")
+    default StockItemAmount checkStockItemAmount(@PathVariable UUID stockItemId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
-    @SneakyThrows
-    @PutMapping("/decrease/{stockItemId}")
-    default void decreaseStock(@PathVariable UUID stockItemId, @RequestParam Long amount) {
-        throw new EndpointNotImplementedException();
-    }
-
-    @SneakyThrows
-    @PutMapping("/increase/{stockItemId}")
-    default void increaseStock(@PathVariable UUID stockItemId, @RequestParam Long amount) {
+    @PutMapping("/{stockItemId}")
+    default void changeStockAmount(@PathVariable UUID stockItemId, @RequestParam Long amount, @RequestParam StockOperationEnum operation) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 }

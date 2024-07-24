@@ -1,6 +1,5 @@
 package org.example.controllers;
 
-import lombok.SneakyThrows;
 import org.example.dtos.BrandRequest;
 import org.example.dtos.BrandResponse;
 import org.example.exceptions.EndpointNotImplementedException;
@@ -11,30 +10,26 @@ import java.util.UUID;
 /**
  * Interface with operations for brand moderator controller
  */
-@RequestMapping("/brands")
+@RequestMapping("/api/brands")
 public interface BrandModeratorOperations {
 
-    @SneakyThrows
-    @GetMapping("/find/{brandId}")
-    default BrandResponse getBrandById(@PathVariable UUID brandId){
+    @GetMapping("/{brandId}")
+    default BrandResponse getBrandById(@PathVariable UUID brandId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
-    @SneakyThrows
-    @PostMapping("/create")
-    default BrandResponse createBrand(@RequestBody BrandRequest brandRequest){
+    @PostMapping
+    default BrandResponse createBrand(@RequestBody BrandRequest brandRequest) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
-    @SneakyThrows
-    @PutMapping("/update/{brandId}")
-    default BrandResponse updateBrand(@PathVariable UUID brandId, @RequestBody BrandRequest brandRequest){
+    @PutMapping("/{brandId}")
+    default BrandResponse updateBrand(@PathVariable UUID brandId, @RequestBody BrandRequest brandRequest) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
-    @SneakyThrows
-    @DeleteMapping("/delete/{brandId}")
-    default void deleteBrand(@PathVariable UUID brandId){
+    @DeleteMapping("/{brandId}")
+    default void deleteBrand(@PathVariable UUID brandId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 }

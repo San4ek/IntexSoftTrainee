@@ -57,6 +57,6 @@ public class ValidationProductService {
     @Transactional(readOnly = true)
     public void validateProductForDelete(final UUID productId) {
         checkTrue(productRepository.existsById(productId), "Product doesn't exist with id: " + productId);
-        checkFalse(stockRepository.existsByProductIdAndAmountGreaterThan(productId, 0), "Product amount must be 0");
+        checkFalse(stockRepository.existsByProductIdAndAmountGreaterThan(productId, 0L), "Product amount must be 0");
     }
 }

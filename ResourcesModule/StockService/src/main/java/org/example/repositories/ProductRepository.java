@@ -13,8 +13,7 @@ public interface ProductRepository extends BaseRepository<ProductEntity, UUID> {
 
     Boolean existsByNameAndTypeAndBrand(String name, TypeEnum type, BrandEntity brand);
 
-    Boolean existsByNameAndTypeAndBrandAndPriceAndCurrency(String name, TypeEnum type, BrandEntity brand, Float price, CurrencyEnum currency);
+    Boolean existsByNameAndTypeAndBrandAndPriceAndCurrency(String name, TypeEnum type, BrandEntity brand, Double price, CurrencyEnum currency);
 
-    boolean existsByBrandId(UUID brandId);
-
+    Boolean existsByBrandId(UUID brandId);
 }

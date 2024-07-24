@@ -22,9 +22,9 @@ public interface StockRepository extends BaseRepository<StockEntity, UUID> {
                 .orElseThrow(() -> new ObjectNotFoundException("Stock item not found with name " + name));
     }
 
-    Boolean existsByIdAndAmountEquals(UUID id, long amount);
+    Boolean existsByIdAndAmountEquals(UUID id, Long amount);
 
-    Boolean existsByProductIdAndAmountGreaterThan(UUID productId, long amount);
+    Boolean existsByProductIdAndAmountGreaterThan(UUID productId, Long amount);
 
     Boolean existsByColorAndSizeAndProduct(ColorEnum color, SizeEnum size, ProductEntity product);
 }

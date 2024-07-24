@@ -23,7 +23,7 @@ public class ProductResponse {
 
     private CurrencyEnum currency;
 
-    private float price;
+    private Double price;
 
     private BrandResponse brand;
 }

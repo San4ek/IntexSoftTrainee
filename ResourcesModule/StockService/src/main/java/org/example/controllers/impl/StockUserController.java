@@ -7,6 +7,7 @@ import org.example.dtos.StockItemResponse;
 import org.example.entities.StockEntity;
 import org.example.enums.ColorEnum;
 import org.example.enums.SizeEnum;
+import org.example.enums.StockOperationEnum;
 import org.example.enums.TypeEnum;
 import org.example.mappers.StockItemMapper;
 import org.example.services.impl.StockUserServiceImpl;
@@ -59,12 +60,7 @@ public class StockUserController implements StockUserOperations {
     }
 
     @Override
-    public void decreaseStock(final UUID stockItemId, final Long amount) {
-        stockUserService.decreaseStockItemAmount(stockItemId, amount);
-    }
-
-    @Override
-    public void increaseStock(final UUID stockItemId, final Long amount) {
-        stockUserService.increaseStockItemAmount(stockItemId, amount);
+    public void changeStockAmount(final UUID stockItemId, final Long amount, final StockOperationEnum operation) {
+        stockUserService.changeStockItemAmount(stockItemId, amount, operation);
     }
 }

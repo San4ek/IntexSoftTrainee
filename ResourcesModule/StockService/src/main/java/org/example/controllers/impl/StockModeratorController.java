@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.controllers.StockModeratorOperations;
 import org.example.dtos.StockItemRequest;
 import org.example.dtos.StockItemResponse;
+import org.example.exceptions.EndpointNotImplementedException;
 import org.example.mappers.StockItemMapper;
 import org.example.services.impl.StockModeratorServiceImpl;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,6 +53,16 @@ public class StockModeratorController implements StockModeratorOperations {
     @Override
     public StockItemResponse updateStockItem(final UUID stockItemId, final StockItemRequest stockItemRequest) {
         return stockItemCreateRequestMapper.toDto(stockModeratorService.updateStockItem(stockItemId, stockItemRequest));
+    }
+
+    /**
+     * Remove all amount of stock items identified by its ID.
+     *
+     * @param stockItemId The ID of the stock item to remove.
+     */
+    @Override
+    public void removeStockItems(final UUID stockItemId) {
+        stockModeratorService.removeStockItems(stockItemId);
     }
 
     /**

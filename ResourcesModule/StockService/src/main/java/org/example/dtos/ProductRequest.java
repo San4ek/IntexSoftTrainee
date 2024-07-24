@@ -1,5 +1,7 @@
 package org.example.dtos;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,14 +17,19 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ProductRequest {
 
+    @NotNull
     private String name;
 
+    @NotNull
     private TypeEnum type;
 
+    @NotNull
     private CurrencyEnum currency;
 
-    private float price;
+    @NotNull
+    @Positive
+    private Double price;
 
+    @NotNull
     private UUID brandId;
-
 }
