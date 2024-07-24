@@ -64,9 +64,21 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
+     * Deletes order with specified id
+     *
+     * @param orderId the ID of the order to delete
+     */
+    @Override
+    public void deleteOrderWithId(final UUID orderId) {
+        log.info("Delete order with id {}", orderId);
+        validationOrderService.validateOrderForDeleting(orderId);
+        orderRepository.deleteById(orderId);
+    }
+
+    /**
      * Deletes all orders with specified address id.
      *
-     * @param addressId the ID of the address to delete.
+     * @param addressId the ID of the order address to delete.
      */
     @Override
     @Transactional

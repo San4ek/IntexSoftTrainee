@@ -16,4 +16,6 @@ public interface OrderService {
     OrderResponse createOrder(OrderRequest orderRequest);
 
     void deleteOrdersWithAddress(UUID addressId);
+
+    void deleteOrderWithId(UUID orderId);
 }

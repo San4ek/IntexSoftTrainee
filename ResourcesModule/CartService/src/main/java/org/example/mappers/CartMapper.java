@@ -3,7 +3,7 @@ package org.example.mappers;
 import org.example.dtos.CartRequest;
 import org.example.dtos.CartResponse;
 import org.example.entities.CartEntity;
-import org.example.utils.security.LoggedAccountDetailsHolder;
+import org.example.utils.security.LoggedAccountDetailsProvider;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class CartMapper {
 
     @Autowired
-    private LoggedAccountDetailsHolder loggedAccountDetailsHolder;
+    private LoggedAccountDetailsProvider loggedAccountDetailsProvider;
 
     public abstract CartResponse toDto(final CartEntity cartEntity);
 
@@ -24,7 +24,7 @@ public abstract class CartMapper {
 
     @AfterMapping
     public void setUserId(@MappingTarget CartEntity cartEntity) {
-        cartEntity.setUserId(loggedAccountDetailsHolder.getAccountId());
+        cartEntity.setUserId(loggedAccountDetailsProvider.getAccountId());
     }
 
     public abstract void toDto(@MappingTarget CartResponse cartResponse, final CartEntity cartEntity);

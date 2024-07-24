@@ -11,25 +11,25 @@ import java.util.UUID;
 /**
  * Interface for controller with address operations.
  */
-@RequestMapping("/api/address")
+@RequestMapping("/api/addresses")
 public interface AddressOperationsController {
 
-    @GetMapping("/get/all")
+    @GetMapping
     default @ResponseBody List<AddressResponse> getAddresses() throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
-    @PostMapping("/create")
+    @PostMapping
     default @ResponseBody AddressResponse createAddress(@RequestBody AddressRequest addressRequest) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
-    @PutMapping("/update/{addressId}")
+    @PutMapping("/{addressId}")
     default @ResponseBody AddressResponse updateAddress(@PathVariable UUID addressId, @RequestBody AddressRequest addressRequest) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
-    @DeleteMapping("/delete/{addressId}")
+    @DeleteMapping("/{addressId}")
     default void deleteAddress(@PathVariable UUID addressId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }

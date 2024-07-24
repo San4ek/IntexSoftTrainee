@@ -1,6 +1,5 @@
 package org.example.controllers;
 
-import lombok.SneakyThrows;
 import org.example.dtos.OrderRequest;
 import org.example.dtos.OrderResponse;
 import org.example.exceptions.EndpointNotImplementedException;
@@ -14,17 +13,22 @@ import java.util.UUID;
 @RequestMapping("/api/orders")
 public interface OrderOperationsController {
 
-    @GetMapping("/get/{orderId}")
+    @GetMapping("/{orderId}")
     default @ResponseBody OrderResponse getOrder(@PathVariable UUID orderId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
-    @PostMapping("/create")
+    @PostMapping
     default @ResponseBody OrderResponse createOrder(@RequestBody OrderRequest orderRequest) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
-    @DeleteMapping("/delete/{addressId}")
+    @DeleteMapping("/{orderId}")
+    default void deleteOrder(@PathVariable UUID orderId) throws EndpointNotImplementedException {
+        throw new EndpointNotImplementedException();
+    }
+
+    @DeleteMapping("/address/{addressId}")
     default void deleteOrdersWithAddress(@PathVariable UUID addressId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }

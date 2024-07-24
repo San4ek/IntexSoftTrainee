@@ -89,7 +89,7 @@ public class CartServiceImpl implements CartService {
         log.info("Adding item {} in cart with id {}", cartItemRequest.getStockId(),cartItemRequest.getCartId());
         validationCartService.validateCartForAddItem(cartItemRequest);
         CartItemEntity cartItemEntity = cartItemMapper.toEntity(cartItemRequest);
-        stockService.decreaseStock(cartItemRequest.getStockId(), cartItemRequest.getAmount());
+        stockService.changeStockAmount(cartItemRequest.getStockId(), cartItemRequest.getAmount(), "decrease");
         CartEntity cartEntity = cartRepository.getById(cartItemRequest.getCartId());
         cartEntity.addItems(cartItemEntity);
         cartRepository.save(cartEntity);
@@ -111,7 +111,7 @@ public class CartServiceImpl implements CartService {
         CartItemEntity cartItemEntity = cartItemRepository.findByCartIdAndStockId(cartId, stockItemId);
         cartEntity.removeItems(cartItemEntity);
         cartRepository.save(cartEntity);
-        stockService.increaseStock(stockItemId, cartItemEntity.getAmount());
+        stockService.changeStockAmount(stockItemId, cartItemEntity.getAmount(), "increase");
     }
 
     /**
