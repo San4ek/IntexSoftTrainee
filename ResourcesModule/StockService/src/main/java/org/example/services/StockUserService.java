@@ -17,7 +17,7 @@ public interface StockUserService {
 
     List<StockEntity> findStockItemsByName(String name);
 
-    List<StockEntity> findByAttributes(String brand, ColorEnum color, SizeEnum size, TypeEnum type, Float minPrice, Float maxPrice);
+    List<StockEntity> findByAttributes(String brand, ColorEnum color, SizeEnum size, TypeEnum type, Double minPrice, Double maxPrice);
 
     StockItemAmount checkStockItemAmount(UUID stockItemId);
 

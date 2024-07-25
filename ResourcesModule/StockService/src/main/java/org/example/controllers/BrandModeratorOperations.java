@@ -14,22 +14,22 @@ import java.util.UUID;
 public interface BrandModeratorOperations {
 
     @GetMapping("/{brandId}")
-    default BrandResponse getBrandById(@PathVariable UUID brandId) throws EndpointNotImplementedException {
+    default @ResponseBody BrandResponse getBrandById(@PathVariable("brandId") UUID brandId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
     @PostMapping
-    default BrandResponse createBrand(@RequestBody BrandRequest brandRequest) throws EndpointNotImplementedException {
+    default @ResponseBody BrandResponse createBrand(@RequestBody BrandRequest brandRequest) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
     @PutMapping("/{brandId}")
-    default BrandResponse updateBrand(@PathVariable UUID brandId, @RequestBody BrandRequest brandRequest) throws EndpointNotImplementedException {
+    default @ResponseBody BrandResponse updateBrand(@PathVariable("brandId") UUID brandId, @RequestBody BrandRequest brandRequest) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
     @DeleteMapping("/{brandId}")
-    default void deleteBrand(@PathVariable UUID brandId) throws EndpointNotImplementedException {
+    default void deleteBrand(@PathVariable("brandId") UUID brandId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 }

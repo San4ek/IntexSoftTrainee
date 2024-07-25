@@ -29,7 +29,6 @@ public interface AccountsController {
     @Oauth2SecurityRequired
     @AccountDtoOkResponse
     @NotFoundErrorResponse
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping
     default ResponseEntity<Object> getAccount() throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
@@ -38,7 +37,6 @@ public interface AccountsController {
     @Oauth2SecurityRequired
     @Operation(summary = "Get all accounts info")
     @AccountDtoArrayOkResponse
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all")
     default ResponseEntity<Object> getAllAccounts() throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
@@ -49,7 +47,6 @@ public interface AccountsController {
     @BadRequestErrorResponse
     @NoContentOkResponse
     @AccountIdParameter
-    @ResponseStatus(HttpStatus.OK)
     @PutMapping("/block")
     default ResponseEntity<Object> blockAccount(@RequestParam("accountId") UUID accountId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
@@ -59,7 +56,6 @@ public interface AccountsController {
     @BadRequestErrorResponse
     @NoContentOkResponse
     @AccountIdParameter
-    @ResponseStatus(HttpStatus.OK)
     @PutMapping("/unblock")
     default ResponseEntity<Object> unblockAccount(@RequestParam("accountId") UUID accountId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
@@ -67,7 +63,6 @@ public interface AccountsController {
 
     @Oauth2SecurityRequired
     @NoContentOkResponse
-    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping
     default ResponseEntity<Object> deleteAccount() throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
@@ -75,7 +70,6 @@ public interface AccountsController {
 
     @Oauth2SecurityRequired
     @NoContentOkResponse
-    @ResponseStatus(HttpStatus.OK)
     @PutMapping("/logout")
     default ResponseEntity<Object> logout() throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
@@ -83,7 +77,6 @@ public interface AccountsController {
 
     @Oauth2SecurityRequired
     @NoContentOkResponse
-    @ResponseStatus(HttpStatus.OK)
     @PutMapping("/logout/all")
     default ResponseEntity<Object> logoutAll() throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();

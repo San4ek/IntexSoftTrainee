@@ -22,7 +22,7 @@ public interface StockModeratorOperations {
     @ApiResponse(responseCode = "501")
     @ApiResponse(responseCode = "200")
     @GetMapping("/{stockItemId}")
-    default @ResponseBody StockItemResponse getStockItemById(@PathVariable UUID stockItemId) throws EndpointNotImplementedException {
+    default @ResponseBody StockItemResponse getStockItemById(@PathVariable("stockItemId") UUID stockItemId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
@@ -38,7 +38,7 @@ public interface StockModeratorOperations {
     @ApiResponse(responseCode = "501")
     @ApiResponse(responseCode = "200")
     @PutMapping("/{stockItemId}")
-    default @ResponseBody StockItemResponse updateStockItem(@PathVariable UUID stockItemId, @RequestBody StockItemRequest stockItemDto) throws EndpointNotImplementedException {
+    default @ResponseBody StockItemResponse updateStockItem(@PathVariable("stockItemId") UUID stockItemId, @RequestBody StockItemRequest stockItemDto) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
@@ -46,7 +46,7 @@ public interface StockModeratorOperations {
     @ApiResponse(responseCode = "501")
     @ApiResponse(responseCode = "200")
     @PutMapping("/{stockItemId}/utilization")
-    default void removeStockItems(@PathVariable UUID stockItemId) throws EndpointNotImplementedException {
+    default void removeStockItems(@PathVariable("stockItemId") UUID stockItemId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
@@ -54,7 +54,7 @@ public interface StockModeratorOperations {
     @ApiResponse(responseCode = "501")
     @ApiResponse(responseCode = "200")
     @DeleteMapping("/{stockItemId}")
-    default void deleteStockItem(@PathVariable UUID stockItemId) throws EndpointNotImplementedException {
+    default void deleteStockItem(@PathVariable("stockItemId") UUID stockItemId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 }

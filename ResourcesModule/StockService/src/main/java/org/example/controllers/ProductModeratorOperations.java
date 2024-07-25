@@ -16,22 +16,22 @@ import java.util.UUID;
 public interface ProductModeratorOperations {
 
     @GetMapping("/{productId}")
-    default ProductResponse getProductById(@PathVariable UUID productId) throws EndpointNotImplementedException {
+    default @ResponseBody ProductResponse getProductById(@PathVariable("productId") UUID productId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
     @PostMapping
-    default ProductResponse createProduct(@RequestBody ProductRequest productRequest) throws EndpointNotImplementedException {
+    default @ResponseBody ProductResponse createProduct(@RequestBody ProductRequest productRequest) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
     @PutMapping("/{productId}")
-    default ProductResponse updateProduct(@PathVariable UUID productId, @RequestBody ProductRequest productRequest) throws EndpointNotImplementedException {
+    default @ResponseBody ProductResponse updateProduct(@PathVariable("productId") UUID productId, @RequestBody ProductRequest productRequest) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
-    @DeleteMapping("{productId}")
-    default void deleteProduct(@PathVariable UUID productId) throws EndpointNotImplementedException {
+    @DeleteMapping("/{productId}")
+    default void deleteProduct(@PathVariable("productId") UUID productId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 }

@@ -60,8 +60,8 @@ public class StockUserServiceImpl implements StockUserService {
                                               final ColorEnum color,
                                               final SizeEnum size,
                                               final TypeEnum type,
-                                              final Float minPrice,
-                                              final Float maxPrice) {
+                                              final Double minPrice,
+                                              final Double maxPrice) {
         QStockEntity stockItem = QStockEntity.stockEntity;
         BooleanBuilder builder = new BooleanBuilder();
         Optional.ofNullable(brand).ifPresent(b -> builder.and(stockItem.product.brand.name.likeIgnoreCase("%" + b + "%")));

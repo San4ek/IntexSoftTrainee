@@ -49,7 +49,7 @@ public class StockUserController implements StockUserOperations {
      * @return List of StockItemResponse matching the specified attributes.
      */
     @Override
-    public List<StockItemResponse> getStockItemsByAttributes(final String brand, final ColorEnum color, final SizeEnum size, final TypeEnum type, final Float minPrice, final Float maxPrice) {
+    public List<StockItemResponse> getStockItemsByAttributes(final String brand, final ColorEnum color, final SizeEnum size, final TypeEnum type, final Double minPrice, final Double maxPrice) {
         List<StockEntity> stockEntities = stockUserService.findByAttributes(brand, color, size, type, minPrice, maxPrice);
         return stockItemMapper.toDto(stockEntities);
     }
