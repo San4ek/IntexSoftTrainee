@@ -49,6 +49,37 @@ services:
     networks:
       - bridge_network
 
+  cart-service:
+    image: eexxlliinn/cart-service:latest
+    ports:
+      - "8082:8082"
+    container_name: cart-service
+    depends_on:
+      cart-postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://cart-postgres/cart-service
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: http://auth-service:9000/oauth2/jwks
+    networks:
+      - bridge_network
+
+  stock-service:
+    image: eexxlliinn/stock-service:latest
+    ports:
+      - "8083:8083"
+    container_name: stock-service
+    depends_on:
+      stock-postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://stock-postgres/stock-service
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: http://auth-service:9000/oauth2/jwks
+    networks:
+      - bridge_network
+
   auth-postgres:
     image: postgres:latest
     container_name: auth-postgres-server
@@ -85,6 +116,48 @@ services:
       - bridge_network
     volumes:
       - ./backup/user-postgres:/var/lib/postgresql
+    healthcheck:
+      test: pg_isready
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  cart-postgres:
+    image: postgres:latest
+    container_name: cart-postgres-server
+    restart: on-failure
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cart-service
+      PGUSER: postgres
+    networks:
+      - bridge_network
+    volumes:
+      - ./backup/cart-postgres:/var/lib/postgresql
+    healthcheck:
+      test: pg_isready
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  stock-postgres:
+    image: postgres:latest
+    container_name: stock-postgres-server
+    restart: on-failure
+    ports:
+      - "5434:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: stock-service
+      PGUSER: postgres
+    networks:
+      - bridge_network
+    volumes:
+      - ./backup/stock-postgres:/var/lib/postgresql
     healthcheck:
       test: pg_isready
       interval: 5s

@@ -7,12 +7,16 @@ import org.example.entities.ProductEntity;
 import org.example.mappers.ProductMapper;
 import org.example.repositories.ProductRepository;
 import org.example.services.ProductService;
+import org.example.utils.security.LoggedAccountDetailsProvider;
 import org.example.validation.ValidationProductService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
+/**
+ * Service implementation for products
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -21,6 +25,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
     private final ValidationProductService validationProductService;
+    private final LoggedAccountDetailsProvider loggedAccountDetailsProvider;
 
     /**
      * Finds a product by its id.
@@ -45,7 +50,9 @@ public class ProductServiceImpl implements ProductService {
     public ProductEntity createProduct(final ProductRequest productRequest) {
         log.info("Creating product with name {}", productRequest.getName());
         validationProductService.validateProductRequestForCreate(productRequest);
-        return productRepository.save(productMapper.toEntity(productRequest));
+        ProductEntity productEntity = productMapper.toEntity(productRequest);
+        productEntity.setCreatedBy(loggedAccountDetailsProvider.getAccountId());
+        return productRepository.save(productEntity);
     }
 
     /**
@@ -62,6 +69,7 @@ public class ProductServiceImpl implements ProductService {
         validationProductService.validateProductRequestForUpdate(productId, productRequest);
         ProductEntity existingProductEntity = productRepository.getById(productId);
         productMapper.toEntity(existingProductEntity, productRequest);
+        existingProductEntity.setEditedBy(loggedAccountDetailsProvider.getAccountId());
         return productRepository.save(existingProductEntity);
     }
 
@@ -77,6 +85,4 @@ public class ProductServiceImpl implements ProductService {
         validationProductService.validateProductForDelete(productId);
         productRepository.deleteById(productId);
     }
-
-
 }

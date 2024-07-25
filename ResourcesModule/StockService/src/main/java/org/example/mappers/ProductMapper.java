@@ -20,22 +20,21 @@ public abstract class ProductMapper {
     private BrandRepository brandRepository;
 
     @Mapping(target = "brand", source = "brand")
-    public abstract ProductResponse toDto(ProductEntity productEntity);
+    public abstract ProductResponse toDto(final ProductEntity productEntity);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "brand", source = "brandId", qualifiedByName = "mapBrand")
-    public abstract ProductEntity toEntity(ProductRequest productRequest);
+    public abstract ProductEntity toEntity(final ProductRequest productRequest);
 
     @Mapping(target = "brand", source = "brand")
-    public abstract void toDto(@MappingTarget ProductResponse productResponse, ProductEntity productEntity);
+    public abstract void toDto(@MappingTarget ProductResponse productResponse, final ProductEntity productEntity);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "brand", source = "brandId", qualifiedByName = "mapBrand")
-    public abstract void toEntity(@MappingTarget ProductEntity productEntity, ProductRequest productRequest);
+    public abstract void toEntity(@MappingTarget ProductEntity productEntity, final ProductRequest productRequest);
 
     @Named("mapBrand")
-    public BrandEntity mapBrand(UUID brandId) {
+    public BrandEntity mapBrand(final UUID brandId) {
         return brandRepository.getById(brandId);
     }
-
 }

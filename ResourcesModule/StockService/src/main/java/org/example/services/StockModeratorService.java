@@ -16,5 +16,7 @@ public interface StockModeratorService {
 
     StockEntity updateStockItem(UUID stockItemId, StockItemRequest stockItemRequest);
 
+    void removeStockItems(UUID stockItemId);
+
     void deleteStockItem(UUID stockItemId);
 }

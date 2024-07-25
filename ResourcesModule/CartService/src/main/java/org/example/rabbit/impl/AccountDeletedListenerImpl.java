@@ -18,7 +18,7 @@ public class AccountDeletedListenerImpl implements AccountDeletedListener {
     private final CartRepository cartRepository;
 
     @Override
-    @RabbitListener(queues = "account.deleted.queue")
+    @RabbitListener(queues = "#{autoDeleteQueue.name}")
     public void handleAccountDeletedMessage(UUID accountId) {
         CartEntity cart = cartRepository.findByUserId(accountId);
         cartService.deleteCart(cart.getId());

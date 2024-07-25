@@ -11,5 +11,5 @@ public abstract class StockItemAmountMapper {
     @Mapping(source = "id", target = "stockItemId")
     @Mapping(source = "amount", target = "amount")
     @Mapping(source = "product.price", target = "price")
-    public abstract StockItemAmount toDto(StockEntity stockEntity);
+    public abstract StockItemAmount toDto(final StockEntity stockEntity);
 }

@@ -19,5 +19,4 @@ public interface BaseRepository<T, UUID> extends
     default T getById(UUID uuid) {
         return findById(uuid).orElseThrow(() -> new ObjectNotFoundException("Object not found with id " + uuid));
     }
-
 }

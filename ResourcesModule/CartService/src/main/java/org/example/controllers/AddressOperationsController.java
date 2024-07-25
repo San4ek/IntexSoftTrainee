@@ -25,12 +25,12 @@ public interface AddressOperationsController {
     }
 
     @PutMapping("/{addressId}")
-    default @ResponseBody AddressResponse updateAddress(@PathVariable UUID addressId, @RequestBody AddressRequest addressRequest) throws EndpointNotImplementedException {
+    default @ResponseBody AddressResponse updateAddress(@PathVariable("addressId") UUID addressId, @RequestBody AddressRequest addressRequest) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
     @DeleteMapping("/{addressId}")
-    default void deleteAddress(@PathVariable UUID addressId) throws EndpointNotImplementedException {
+    default void deleteAddress(@PathVariable("addressId") UUID addressId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 }

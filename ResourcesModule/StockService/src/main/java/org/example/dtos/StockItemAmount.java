@@ -11,7 +11,7 @@ public class StockItemAmount {
 
     private UUID stockItemId;
 
-    private Float amount;
+    private Long amount;
 
-    private Float price;
+    private Double price;
 }
