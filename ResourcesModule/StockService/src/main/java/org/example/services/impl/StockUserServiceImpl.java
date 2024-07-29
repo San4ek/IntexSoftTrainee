@@ -8,6 +8,7 @@ import org.example.entities.QStockEntity;
 import org.example.entities.StockEntity;
 import org.example.enums.ColorEnum;
 import org.example.enums.SizeEnum;
+import org.example.enums.StockOperationEnum;
 import org.example.enums.TypeEnum;
 import org.example.mappers.StockItemAmountMapper;
 import org.example.repositories.StockRepository;
@@ -19,7 +20,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-
+/**
+ * Service implementation for user and stock
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -57,8 +60,8 @@ public class StockUserServiceImpl implements StockUserService {
                                               final ColorEnum color,
                                               final SizeEnum size,
                                               final TypeEnum type,
-                                              final Float minPrice,
-                                              final Float maxPrice) {
+                                              final Double minPrice,
+                                              final Double maxPrice) {
         QStockEntity stockItem = QStockEntity.stockEntity;
         BooleanBuilder builder = new BooleanBuilder();
         Optional.ofNullable(brand).ifPresent(b -> builder.and(stockItem.product.brand.name.likeIgnoreCase("%" + b + "%")));
@@ -78,35 +81,30 @@ public class StockUserServiceImpl implements StockUserService {
      */
     @Override
     @Transactional(readOnly = true)
-    public StockItemAmount checkStockItemAmount(UUID stockItemId) {
+    public StockItemAmount checkStockItemAmount(final UUID stockItemId) {
         return stockItemAmountMapper.toDto(stockRepository.getById(stockItemId));
     }
 
     /**
-     * Decreases the amount of a stock item by the specified quantity.
+     * Changes the amount of a stock item by the specified quantity.
      *
      * @param stockItemId The ID of the stock item.
-     * @param amount The amount to decrease from the stock item.
+     * @param amount The amount to change the stock item.
      */
     @Override
     @Transactional
-    public void decreaseStockItemAmount(UUID stockItemId, Long amount) {
+    public void changeStockItemAmount(final UUID stockItemId, final Long amount, final StockOperationEnum operation) {
+        log.info("Changing amount by {} of stock item with id {} ", amount, stockItemId);
         StockEntity stockEntity = stockRepository.getById(stockItemId);
-        stockEntity.removeFromStock(amount);
-        stockRepository.save(stockEntity);
-    }
-
-    /**
-     * Increases the amount of a stock item by the specified quantity.
-     *
-     * @param stockItemId The ID of the stock item.
-     * @param amount The amount to increase to the stock item.
-     */
-    @Override
-    @Transactional
-    public void increaseStockItemAmount(UUID stockItemId, Long amount) {
-        StockEntity stockEntity = stockRepository.getById(stockItemId);
-        stockEntity.addToStock(amount);
-        stockRepository.save(stockEntity);
+        switch (operation) {
+            case INCREASE:
+                stockEntity.addToStock(amount);
+                stockRepository.save(stockEntity);
+                break;
+            case DECREASE:
+                stockEntity.removeFromStock(amount);
+                stockRepository.save(stockEntity);
+                break;
+        }
     }
 }

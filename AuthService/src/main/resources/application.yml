@@ -39,15 +39,19 @@ spring:
     properties:
       hibernate:
         default_schema: auth_service
-        format_sql: true
     open-in-view: false
 
     hibernate:
       ddl-auto: validate
 
-    show-sql: true
     generate-ddl: false
 
 logging:
   level:
     src.main.java.me.inqu1sitor.authservice.clients: DEBUG
+
+remote-services:
+  user-service:
+    host: user-service
+    port: 8081
+    url: http://${remote-services.user-service.host}:${remote-services.user-service.port}

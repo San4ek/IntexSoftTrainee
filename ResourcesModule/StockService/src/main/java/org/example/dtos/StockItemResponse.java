@@ -24,6 +24,4 @@ public class StockItemResponse {
     private ProductResponse product;
 
     private Long amount;
-
-
 }

@@ -7,9 +7,11 @@ import me.inquis1tor.userservice.dtos.ErrorResponseDto;
 import me.inquis1tor.userservice.exceptions.AccountNotFoundException;
 import me.inquis1tor.userservice.exceptions.EndpointNotImplementedException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
@@ -72,6 +74,12 @@ public class ExceptionHandlingControllerImpl implements ExceptionHandlingControl
                 }).toList();
     }
 
+    /**
+     * Handles an {@link HttpMessageNotReadableException} and {@link MissingServletRequestParameterException}
+     *
+     * @param e the thrown {@link MethodArgumentNotValidException} or {@link MissingServletRequestParameterException}
+     * @return a {@link List} of the {@link ErrorResponseDto}
+     */
     @Override
     public ErrorResponseDto onHttpMessageException(Exception e) {
         logWarn(e.getMessage());
@@ -79,10 +87,12 @@ public class ExceptionHandlingControllerImpl implements ExceptionHandlingControl
     }
 
     /**
-     * Handles any {@link Throwable}
+     * Handles any {@link Exception}
      *
-     * @param e the thrown {@link Throwable}
+     * @param e the thrown {@link Exception}
      * @return the {@link ErrorResponseDto}
+     * @throws AccessDeniedException or {@link AuthenticationException}
+     *                               if {@code e} is an instance of this exceptions
      */
     @Override
     public ErrorResponseDto onAnyException(final Exception e) throws Exception {
@@ -98,6 +108,6 @@ public class ExceptionHandlingControllerImpl implements ExceptionHandlingControl
     }
 
     private void logError(final Exception e) {
-        e.printStackTrace();
+        log.error(e.getMessage(), e);
     }
 }

@@ -45,7 +45,7 @@ public class ValidationBrandService {
     }
 
     /**
-     * Validates a brand deletion request.
+     * Validates a brand delete request.
      *
      * @param brandId The ID of the brand to be deleted.
      */

@@ -21,11 +21,11 @@ public class ProductEntity extends Audit {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private TypeEnum type;
 
     @JoinColumn(name = "brand", referencedColumnName = "id")
@@ -33,9 +33,9 @@ public class ProductEntity extends Audit {
     private BrandEntity brand;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "currency")
+    @Column(name = "currency", nullable = false)
     private CurrencyEnum currency;
 
-    @Column(name = "price")
-    private float price;
+    @Column(name = "price", nullable = false)
+    private Double price;
 }

@@ -2,6 +2,7 @@ package me.inqu1sitor.authservice.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import me.inqu1sitor.authservice.entities.AccountEntity;
+import me.inqu1sitor.authservice.entities.AccountRole;
 
 import java.util.UUID;
 
@@ -18,6 +19,6 @@ public record AccountTransferDto(
         @Schema(description = "Account email", example = "test@test.ru")
         String email,
         @Schema(description = "Account role")
-        AccountEntity.Role role
+        AccountRole role
 ) {
 }

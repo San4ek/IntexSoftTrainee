@@ -32,15 +32,15 @@ public class AccountEntity extends Audit {
 
     @OneToOne(mappedBy = "accountEntity", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
-    private PersonalInfoEntity personalInfoEntity;
+    private PersonalInfoEntity personalInfo;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    private Role role;
+    private AccountRole role;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private Status status;
+    private AccountStatus status;
 
     @Override
     public boolean equals(Object object) {
@@ -52,18 +52,6 @@ public class AccountEntity extends Audit {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getEmail(), getPersonalInfoEntity(), getRole(), getStatus());
-    }
-
-    public enum Status {
-        ACTIVE,
-        BLOCKED,
-        DELETED
-    }
-
-    public enum Role {
-        USER,
-        ADMIN,
-        MODER
+        return Objects.hash(getId(), getEmail(), getPersonalInfo(), getRole(), getStatus());
     }
 }

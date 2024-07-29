@@ -1,6 +1,8 @@
 package me.inquis1tor.userservice.providers;
 
 import me.inquis1tor.userservice.entities.AccountEntity;
+import me.inquis1tor.userservice.entities.AccountRole;
+import me.inquis1tor.userservice.entities.AccountStatus;
 import me.inquis1tor.userservice.entities.PersonalInfoEntity;
 import org.springframework.stereotype.Component;
 
@@ -10,42 +12,42 @@ import java.util.UUID;
 public class AccountEntityProvider {
 
     public AccountEntity activeUserEntity(final String accountId) {
-        return correctEntity(accountId, AccountEntity.Role.USER, AccountEntity.Status.ACTIVE);
+        return correctEntity(accountId, AccountRole.USER, AccountStatus.ACTIVE);
     }
 
     public AccountEntity activeAdminEntity(final String accountId) {
-        return correctEntity(accountId, AccountEntity.Role.ADMIN, AccountEntity.Status.ACTIVE);
+        return correctEntity(accountId, AccountRole.ADMIN, AccountStatus.ACTIVE);
     }
 
     public AccountEntity activeModerEntity(final String accountId) {
-        return correctEntity(accountId, AccountEntity.Role.MODER, AccountEntity.Status.ACTIVE);
+        return correctEntity(accountId, AccountRole.MODER, AccountStatus.ACTIVE);
     }
 
     public AccountEntity blockedUserEntity(final String accountId) {
-        return correctEntity(accountId, AccountEntity.Role.USER, AccountEntity.Status.BLOCKED);
+        return correctEntity(accountId, AccountRole.USER, AccountStatus.BLOCKED);
     }
 
     public AccountEntity blockedAdminEntity(final String accountId) {
-        return correctEntity(accountId, AccountEntity.Role.ADMIN, AccountEntity.Status.BLOCKED);
+        return correctEntity(accountId, AccountRole.ADMIN, AccountStatus.BLOCKED);
     }
 
     public AccountEntity blockedModerEntity(final String accountId) {
-        return correctEntity(accountId, AccountEntity.Role.MODER, AccountEntity.Status.BLOCKED);
+        return correctEntity(accountId, AccountRole.MODER, AccountStatus.BLOCKED);
     }
 
     public AccountEntity deletedUserEntity(final String accountId) {
-        return correctEntity(accountId, AccountEntity.Role.USER, AccountEntity.Status.DELETED);
+        return correctEntity(accountId, AccountRole.USER, AccountStatus.DELETED);
     }
 
     public AccountEntity deletedAdminEntity(final String accountId) {
-        return correctEntity(accountId, AccountEntity.Role.ADMIN, AccountEntity.Status.DELETED);
+        return correctEntity(accountId, AccountRole.ADMIN, AccountStatus.DELETED);
     }
 
     public AccountEntity deletedModerEntity(final String accountId) {
-        return correctEntity(accountId, AccountEntity.Role.MODER, AccountEntity.Status.DELETED);
+        return correctEntity(accountId, AccountRole.MODER, AccountStatus.DELETED);
     }
 
-    public AccountEntity correctEntity(final String accountId, final AccountEntity.Role role, final AccountEntity.Status status) {
+    public AccountEntity correctEntity(final String accountId, final AccountRole role, final AccountStatus status) {
         PersonalInfoEntity personalInfoEntity = new PersonalInfoEntity();
         personalInfoEntity.setId(UUID.fromString(accountId));
         AccountEntity accountEntity = new AccountEntity();
@@ -53,7 +55,7 @@ public class AccountEntityProvider {
         accountEntity.setEmail("test@test.ru");
         accountEntity.setRole(role);
         accountEntity.setStatus(status);
-        accountEntity.setPersonalInfoEntity(personalInfoEntity);
+        accountEntity.setPersonalInfo(personalInfoEntity);
         return accountEntity;
     }
 }

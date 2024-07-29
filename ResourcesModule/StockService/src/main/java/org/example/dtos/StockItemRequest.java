@@ -29,5 +29,4 @@ public class StockItemRequest {
     @PositiveOrZero(message = "Amount can't be negative")
     @NotNull(message = "Amount can't be null")
     private Long amount;
-
 }

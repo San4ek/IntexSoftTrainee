@@ -15,7 +15,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
-
 /**
  * {@link Configuration} for OAuth 2.0 Resource Server support.
  *
@@ -39,7 +38,7 @@ public class ResourceServerConfig {
                 csrf(csrf -> csrf.ignoringRequestMatchers(requestMatcher)).
                 authorizeHttpRequests(authorize ->
                         authorize.
-                                requestMatchers(HttpMethod.POST, "api/accounts/user").permitAll().
+                                requestMatchers(HttpMethod.POST, "/api/accounts/user").permitAll().
                                 requestMatchers("/api/accounts/moder", "/api/accounts/admin", "/api/accounts/block", "/api/accounts/unblock").hasAuthority("ROLE_ADMIN").
                                 anyRequest().authenticated()).
                 sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).

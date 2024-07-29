@@ -3,7 +3,7 @@ package me.inqu1sitor.authservice.services.impl;
 import lombok.RequiredArgsConstructor;
 import me.inqu1sitor.authservice.services.LogoutService;
 import me.inqu1sitor.authservice.services.ext.OAuth2AuthorizationServiceExt;
-import me.inqu1sitor.authservice.utils.LoggedAccountDetailsHolder;
+import me.inqu1sitor.authservice.utils.LoggedAccountDetailsProvider;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class LogoutServiceImpl implements LogoutService {
 
-    private final LoggedAccountDetailsHolder loggedAccountDetailsHolder;
+    private final LoggedAccountDetailsProvider loggedAccountDetailsProvider;
     private final OAuth2AuthorizationServiceExt authorizationService;
 
     /**
@@ -35,11 +35,11 @@ public class LogoutServiceImpl implements LogoutService {
     }
 
     /**
-     * Logout current {@link LoggedAccountDetailsHolder logged} {@link OAuth2Authorization authorization}.
+     * Logout current {@link LoggedAccountDetailsProvider logged} {@link OAuth2Authorization authorization}.
      */
     @Override
     public void logout() {
-        logout(loggedAccountDetailsHolder.getTokenValue());
+        logout(loggedAccountDetailsProvider.getTokenValue());
     }
 
     /**
@@ -54,11 +54,11 @@ public class LogoutServiceImpl implements LogoutService {
     }
 
     /**
-     * Logout current {@link LoggedAccountDetailsHolder logged} {@link OAuth2Authorization authorization}
+     * Logout current {@link LoggedAccountDetailsProvider logged} {@link OAuth2Authorization authorization}
      * from all devices.
      */
     @Override
     public void logoutAll() {
-        logoutAll(loggedAccountDetailsHolder.getAccountId());
+        logoutAll(loggedAccountDetailsProvider.getAccountId());
     }
 }

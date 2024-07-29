@@ -1,7 +1,8 @@
 package me.inqu1sitor.authservice.repositories;
 
 import me.inqu1sitor.authservice.entities.AccountEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
+import me.inqu1sitor.authservice.entities.AccountRole;
+import me.inqu1sitor.authservice.entities.AccountStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -14,5 +15,7 @@ public interface AccountRepository extends BaseRepository<AccountEntity, UUID> {
 
     boolean existsByEmail(String email);
 
-    Optional<AccountEntity> findByIdAndRoleNotAndStatus(UUID accountId, AccountEntity.Role role, AccountEntity.Status status);
+    Optional<AccountEntity> findByIdAndStatus(UUID id, AccountStatus status);
+
+    Optional<AccountEntity> findByIdAndRoleNotAndStatus(UUID accountId, AccountRole role, AccountStatus status);
 }

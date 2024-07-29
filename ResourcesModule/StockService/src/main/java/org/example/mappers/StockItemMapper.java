@@ -21,26 +21,23 @@ public abstract class StockItemMapper {
     private ProductRepository productRepository;
 
     @Mapping(target = "product", source = "product")
-    public abstract StockItemResponse toDto(StockEntity stockEntity);
+    public abstract StockItemResponse toDto(final StockEntity stockEntity);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "product", source = "productId",qualifiedByName = "mapProduct")
-    public abstract StockEntity toEntity(StockItemRequest stockItemRequest);
+    @Mapping(target = "product", source = "productId", qualifiedByName = "mapProduct")
+    public abstract StockEntity toEntity(final StockItemRequest stockItemRequest);
 
     @Mapping(target = "product", source = "product")
-    public abstract void toDto(@MappingTarget StockItemResponse stockItemResponse, StockEntity stockEntity);
+    public abstract void toDto(@MappingTarget StockItemResponse stockItemResponse, final StockEntity stockEntity);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "product", source = "productId",qualifiedByName = "mapProduct")
-    public abstract void toEntity(@MappingTarget StockEntity stockEntity, StockItemRequest stockItemCreateRequest);
+    @Mapping(target = "product", source = "productId", qualifiedByName = "mapProduct")
+    public abstract void toEntity(@MappingTarget StockEntity stockEntity, final StockItemRequest stockItemCreateRequest);
 
-    public abstract List<StockItemResponse> toDto(List<StockEntity> stockEntityList);
-
-    public abstract List<StockEntity> toEntity(List<StockItemRequest> stockItemRequestList);
+    public abstract List<StockItemResponse> toDto(final List<StockEntity> stockEntityList);
 
     @Named("mapProduct")
-    public ProductEntity mapProduct(UUID productId) {
+    public ProductEntity mapProduct(final UUID productId) {
         return productRepository.getById(productId);
     }
-
 }

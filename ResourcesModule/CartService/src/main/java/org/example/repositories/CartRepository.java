@@ -7,4 +7,6 @@ import java.util.UUID;
 
 @Repository
 public interface CartRepository extends BaseRepository<CartEntity, UUID> {
+
+    CartEntity findByUserId(UUID userId);
 }

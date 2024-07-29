@@ -43,5 +43,4 @@ public class ExceptionHandlingController {
     public @ResponseBody ErrorResponse handleAllExceptions(Exception ex) {
         return new ErrorResponse("An unexpected error occurred: " + ex.getMessage());
     }
-
 }

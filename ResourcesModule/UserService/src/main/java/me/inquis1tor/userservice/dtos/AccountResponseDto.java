@@ -2,6 +2,8 @@ package me.inquis1tor.userservice.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import me.inquis1tor.userservice.entities.AccountEntity;
+import me.inquis1tor.userservice.entities.AccountRole;
+import me.inquis1tor.userservice.entities.AccountStatus;
 
 import java.util.UUID;
 
@@ -15,11 +17,12 @@ public record AccountResponseDto(
         @Schema(description = "Account id", example = "c0a80067-907f-19d0-8190-7f09f40e0000")
         UUID id,
         @Schema(description = "Account role")
-        AccountEntity.Role role,
+        AccountRole role,
         @Schema(description = "Account status")
-        AccountEntity.Status status,
+        AccountStatus status,
         @Schema(description = "Account email", example = "test@test.ru")
         String email,
         @Schema(description = "User personal info")
         PersonalInfoDto personalInfo
-) {}
+) {
+}

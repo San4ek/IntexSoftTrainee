@@ -6,6 +6,7 @@ import me.inquis1tor.userservice.dtos.AccountResponseDto;
 import me.inquis1tor.userservice.dtos.AccountTransferDto;
 import me.inquis1tor.userservice.dtos.CredentialsTransferDto;
 import me.inquis1tor.userservice.entities.AccountEntity;
+import me.inquis1tor.userservice.entities.AccountStatus;
 import me.inquis1tor.userservice.entities.PersonalInfoEntity;
 import me.inquis1tor.userservice.mappers.AccountMapper;
 import me.inquis1tor.userservice.repositories.AccountRepository;
@@ -46,8 +47,8 @@ public class AccountServiceImpl implements AccountService {
         PersonalInfoEntity personalInfoEntity = new PersonalInfoEntity();
         personalInfoEntity.setId(dto.id());
         AccountEntity accountEntity = accountMapper.transferDtoToAccount(dto);
-        accountEntity.setStatus(AccountEntity.Status.ACTIVE);
-        accountEntity.setPersonalInfoEntity(personalInfoEntity);
+        accountEntity.setStatus(AccountStatus.ACTIVE);
+        accountEntity.setPersonalInfo(personalInfoEntity);
         accountRepository.save(accountEntity);
         log.info("Account '{}' created", dto.id());
     }
@@ -84,7 +85,7 @@ public class AccountServiceImpl implements AccountService {
     public void deleteAccount(final UUID accountId) {
         log.info("Deleting account '{}'", accountId);
         AccountEntity accountEntity = accountFinderService.findActiveAny(accountId);
-        accountEntity.setStatus(AccountEntity.Status.DELETED);
+        accountEntity.setStatus(AccountStatus.DELETED);
         accountEntity.setDeletedDate(LocalDateTime.now());
         accountRepository.save(accountEntity);
         log.info("Account '{}' deleted", accountId);
@@ -102,7 +103,7 @@ public class AccountServiceImpl implements AccountService {
     public void blockAccount(final UUID accountId, final UUID adminId) {
         log.info("Blocking account '{}' by '{}'", accountId, adminId);
         AccountEntity accountEntity = accountFinderService.findActiveNotAdmin(accountId);
-        accountEntity.setStatus(AccountEntity.Status.BLOCKED);
+        accountEntity.setStatus(AccountStatus.BLOCKED);
         accountEntity.setBlockedBy(adminId);
         accountEntity.setBlockedDate(LocalDateTime.now());
         accountRepository.save(accountEntity);
@@ -120,7 +121,7 @@ public class AccountServiceImpl implements AccountService {
     public void unblockAccount(final UUID accountId) {
         log.info("Unblocking account '{}'", accountId);
         AccountEntity accountEntity = accountFinderService.findBlockedNotAdmin(accountId);
-        accountEntity.setStatus(AccountEntity.Status.ACTIVE);
+        accountEntity.setStatus(AccountStatus.ACTIVE);
         accountEntity.setBlockedBy(null);
         accountEntity.setBlockedDate(null);
         accountRepository.save(accountEntity);

@@ -23,12 +23,12 @@ public class BrandModeratorController implements BrandModeratorOperations {
     /**
      * Finds a brand by its id.
      *
-     * @param id The id of the brand to find.
+     * @param brandId The id of the brand to find.
      * @return BrandResponse containing the found brand.
      */
     @Override
-    public BrandResponse getBrandById(final UUID id) {
-        return brandMapper.toDto(brandService.getBrandById(id));
+    public BrandResponse getBrandById(final UUID brandId) {
+        return brandMapper.toDto(brandService.getBrandById(brandId));
     }
 
     /**

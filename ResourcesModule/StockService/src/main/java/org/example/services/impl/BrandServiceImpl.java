@@ -13,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
+/**
+ * Service implementation for brands
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor

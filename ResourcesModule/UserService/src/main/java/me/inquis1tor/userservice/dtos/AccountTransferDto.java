@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import me.inquis1tor.userservice.entities.AccountEntity;
+import me.inquis1tor.userservice.entities.AccountRole;
 
 import java.util.UUID;
 
@@ -24,6 +25,6 @@ public record AccountTransferDto(
         String email,
         @NotNull(message = "Role is required")
         @Schema(description = "Account role")
-        AccountEntity.Role role
+        AccountRole role
 ) {
 }

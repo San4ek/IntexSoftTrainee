@@ -13,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
+/**
+ * Service implementation for stock and moderator
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -63,6 +66,20 @@ public class StockModeratorServiceImpl implements StockModeratorService {
         StockEntity existingStockEntity = stockRepository.getById(stockItemId);
         stockItemMapper.toEntity(existingStockEntity, stockItemRequest);
         return stockRepository.save(existingStockEntity);
+    }
+
+    /**
+     * Remove all amount of stock items identified by its ID.
+     *
+     * @param stockItemId The ID of the stock item to remove.
+     */
+    @Override
+    @Transactional
+    public void removeStockItems(final UUID stockItemId) {
+        log.info("Remove all items with id: {}", stockItemId);
+        StockEntity stockEntity = stockRepository.getById(stockItemId);
+        stockEntity.setAmount(0L);
+        stockRepository.save(stockEntity);
     }
 
     /**

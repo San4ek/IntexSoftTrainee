@@ -10,14 +10,13 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public abstract class BrandMapper {
 
-    public abstract BrandResponse toDto(BrandEntity brandEntity);
+    public abstract BrandResponse toDto(final BrandEntity brandEntity);
 
     @Mapping(target = "id", ignore = true)
-    public abstract BrandEntity toEntity(BrandRequest brandRequest);
+    public abstract BrandEntity toEntity(final BrandRequest brandRequest);
 
-    public abstract void toDto(@MappingTarget BrandResponse brandResponse, BrandEntity brand);
+    public abstract void toDto(@MappingTarget BrandResponse brandResponse, final BrandEntity brand);
 
     @Mapping(target = "id", ignore = true)
-    public abstract void toEntity(@MappingTarget BrandEntity brandEntity, BrandRequest brandRequest);
-
+    public abstract void toEntity(@MappingTarget BrandEntity brandEntity, final BrandRequest brandRequest);
 }

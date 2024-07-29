@@ -3,6 +3,7 @@ package me.inquis1tor.userservice.utils;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import me.inquis1tor.userservice.entities.AccountEntity;
+import me.inquis1tor.userservice.entities.AccountRole;
 
 import java.util.UUID;
 
@@ -21,7 +22,7 @@ public class LoggedAccountDetailsProvider {
     private UUID accountId;
 
     /**
-     * The current logged {@link AccountEntity} {@link AccountEntity.Role role}.
+     * The current logged {@link AccountEntity} {@link AccountRole role}.
      */
-    private AccountEntity.Role accountRole;
+    private AccountRole accountRole;
 }

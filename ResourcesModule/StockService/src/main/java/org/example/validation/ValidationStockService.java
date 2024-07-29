@@ -54,6 +54,6 @@ public class ValidationStockService {
      */
     @Transactional(readOnly = true)
     public void validateStockItemForDelete(final UUID stockItemId) {
-        checkTrue(stockRepository.existsByIdAndAmountEquals(stockItemId, 0), "Stock item must exist and amount must be 0");
+        checkTrue(stockRepository.existsByIdAndAmountEquals(stockItemId, 0L), "Stock item must exist and amount must be 0");
     }
 }

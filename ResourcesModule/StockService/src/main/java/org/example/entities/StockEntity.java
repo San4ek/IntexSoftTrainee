@@ -17,24 +17,25 @@ import static org.example.utils.validation.ValidatorUtils.checkTrue;
 @Table(name = "stock")
 @Entity
 public class StockEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
     private UUID id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "color")
+    @Column(name = "color", nullable = false)
     private ColorEnum color;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "size")
+    @Column(name = "size", nullable = false)
     private SizeEnum size;
 
     @JoinColumn(name = "product", referencedColumnName = "id")
-    @OneToOne(optional = false)
+    @ManyToOne(optional = false)
     private ProductEntity product;
 
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false)
     private Long amount;
 
     public void addToStock(Long amount) {
