@@ -132,7 +132,7 @@ class AccountFinderServiceTest {
     }
 
     @ParameterizedTest(name = "findActiveAny with {1} entity in db")
-    @MethodSource({"activeNotAdminEntities", "activeAdminEntity", "activeNotAdminEntities"})
+    @MethodSource({"activeNotAdminEntities", "activeAdminEntity"})
     void findActiveAnyWithCorrectEntityInDb_NotNullExpected(final AccountEntity accountEntity, final String description) {
         accountRepository.save(accountEntity);
         Assertions.assertNotNull(accountFinderService.findActiveAny(accountEntity.getId()));

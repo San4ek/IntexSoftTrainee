@@ -1,6 +1,8 @@
 package me.inquis1tor.userservice.repositories;
 
 import me.inquis1tor.userservice.entities.AccountEntity;
+import me.inquis1tor.userservice.entities.AccountRole;
+import me.inquis1tor.userservice.entities.AccountStatus;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,14 +14,14 @@ public interface AccountRepository extends BaseRepository<AccountEntity, UUID> {
 
     boolean existsById(UUID accountId);
 
-    boolean existsByIdAndStatusAndRoleIn(UUID id, AccountEntity.Status status, List<AccountEntity.Role> role);
+    boolean existsByIdAndStatusAndRoleIn(UUID id, AccountStatus status, List<AccountRole> role);
 
-    Optional<AccountEntity> findByIdAndRoleNotAndStatus(UUID accountId, AccountEntity.Role role, AccountEntity.Status status);
+    Optional<AccountEntity> findByIdAndRoleNotAndStatus(UUID accountId, AccountRole role, AccountStatus status);
 
     boolean existsByEmail(String email);
 
     AccountEntity findByEmail(String email);
 
-    Optional<AccountEntity> findByIdAndStatus(UUID accountId, AccountEntity.Status status);
+    Optional<AccountEntity> findByIdAndStatus(UUID accountId, AccountStatus status);
 }
 

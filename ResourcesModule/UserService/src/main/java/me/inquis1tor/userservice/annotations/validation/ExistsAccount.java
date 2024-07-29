@@ -2,7 +2,8 @@ package me.inquis1tor.userservice.annotations.validation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import me.inquis1tor.userservice.entities.AccountEntity;
+import me.inquis1tor.userservice.entities.AccountRole;
+import me.inquis1tor.userservice.entities.AccountStatus;
 import me.inquis1tor.userservice.validators.ExistsAccountValidator;
 
 import java.lang.annotation.ElementType;
@@ -10,7 +11,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.UUID;
-
 
 /**
  * The annotated element must identify registered account.
@@ -27,9 +27,9 @@ import java.util.UUID;
 @Constraint(validatedBy = ExistsAccountValidator.class)
 public @interface ExistsAccount {
 
-    AccountEntity.Status status();
+    AccountStatus status();
 
-    AccountEntity.Role[] roles();
+    AccountRole[] roles();
 
     String message() default "";
 

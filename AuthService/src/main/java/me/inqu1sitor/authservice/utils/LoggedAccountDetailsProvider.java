@@ -3,6 +3,7 @@ package me.inqu1sitor.authservice.utils;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import me.inqu1sitor.authservice.entities.AccountEntity;
+import me.inqu1sitor.authservice.entities.AccountRole;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 
 import java.util.UUID;
@@ -14,7 +15,7 @@ import java.util.UUID;
  */
 @Data
 @NoArgsConstructor
-public class LoggedAccountDetailsHolder {
+public class LoggedAccountDetailsProvider {
 
     /**
      * The current logged {@link AccountEntity} id.
@@ -22,9 +23,9 @@ public class LoggedAccountDetailsHolder {
     private UUID accountId;
 
     /**
-     * The current logged {@link AccountEntity} {@link AccountEntity.Role role}.
+     * The current logged {@link AccountEntity} {@link AccountRole role}.
      */
-    private AccountEntity.Role accountRole;
+    private AccountRole accountRole;
 
     /**
      * The current logged {@link AccountEntity} {@link OAuth2AccessToken OAuth 2.0 Access Token} value.

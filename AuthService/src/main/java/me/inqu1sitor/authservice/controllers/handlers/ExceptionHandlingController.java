@@ -6,6 +6,7 @@ import me.inqu1sitor.authservice.exceptions.AccountNotFoundException;
 import me.inqu1sitor.authservice.exceptions.EndpointNotImplementedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -43,6 +44,10 @@ public interface ExceptionHandlingController {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler({HttpMessageNotReadableException.class, MissingServletRequestParameterException.class})
     ErrorResponseDto onHttpMessageException(Exception e);
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(AuthenticationServiceException.class)
+    ErrorResponseDto onAuthenticationServiceException(final AuthenticationServiceException e);
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)

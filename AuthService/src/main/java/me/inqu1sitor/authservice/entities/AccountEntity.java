@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Getter
@@ -33,11 +34,11 @@ public class AccountEntity implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    private Role role;
+    private AccountRole role;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private Status status;
+    private AccountStatus status;
 
     @Column(name = "email", nullable = false)
     private String email;
@@ -57,19 +58,33 @@ public class AccountEntity implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !status.equals(Status.BLOCKED);
+        return !status.equals(AccountStatus.BLOCKED);
     }
 
     @Override
     public boolean isEnabled() {
-        return !status.equals(Status.DELETED);
+        return !status.equals(AccountStatus.DELETED);
     }
 
-    public enum Role {
-        USER, MODER, ADMIN
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        AccountEntity that = (AccountEntity) object;
+        return Objects.equals(getId(), that.getId()) && getRole() == that.getRole() && getStatus() == that.getStatus() && Objects.equals(getEmail(), that.getEmail()) && Objects.equals(getPassword(), that.getPassword());
     }
 
-    public enum Status {
-        ACTIVE, DELETED, BLOCKED
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getRole(), getStatus(), getEmail(), getPassword());
+    }
+
+    @Override
+    public String toString() {
+        return "AccountEntity{" +
+                "id=" + id +
+                ", role=" + role +
+                ", status=" + status +
+                '}';
     }
 }

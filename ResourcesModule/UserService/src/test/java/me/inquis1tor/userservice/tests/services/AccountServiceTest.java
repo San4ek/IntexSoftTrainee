@@ -7,6 +7,7 @@ import me.inquis1tor.userservice.dtos.AccountTransferDto;
 import me.inquis1tor.userservice.dtos.CredentialsTransferDto;
 import me.inquis1tor.userservice.dtos.PersonalInfoDto;
 import me.inquis1tor.userservice.entities.AccountEntity;
+import me.inquis1tor.userservice.entities.AccountStatus;
 import me.inquis1tor.userservice.entities.PersonalInfoEntity;
 import me.inquis1tor.userservice.exceptions.AccountNotFoundException;
 import me.inquis1tor.userservice.mappers.AccountMapper;
@@ -77,7 +78,7 @@ class AccountServiceTest {
         Assertions.assertEquals(accountTransferDto.id(), accountEntity.getId());
         Assertions.assertEquals(accountTransferDto.email(), accountEntity.getEmail());
         Assertions.assertEquals(accountTransferDto.role(), accountEntity.getRole());
-        Assertions.assertEquals(AccountEntity.Status.ACTIVE, accountEntity.getStatus());
+        Assertions.assertEquals(AccountStatus.ACTIVE, accountEntity.getStatus());
         final PersonalInfoEntity personalInfoEntity = accountEntity.getPersonalInfo();
         Assertions.assertNotNull(personalInfoEntity);
         Assertions.assertEquals(accountTransferDto.id(), personalInfoEntity.getId());
@@ -132,7 +133,7 @@ class AccountServiceTest {
         final AccountEntity accountEntity = accountEntityProvider.activeUserEntity(UUID.randomUUID().toString());
         accountRepository.save(accountEntity);
         accountService.deleteAccount(accountEntity.getId());
-        Assertions.assertEquals(AccountEntity.Status.DELETED, accountRepository.findByEmail(accountEntity.getEmail()).getStatus());
+        Assertions.assertEquals(AccountStatus.DELETED, accountRepository.findByEmail(accountEntity.getEmail()).getStatus());
     }
 
     @Test
@@ -165,7 +166,7 @@ class AccountServiceTest {
         final UUID adminId = adminEntity.getId();
         final UUID userId = userEntity.getId();
         accountService.blockAccount(userId, adminId);
-        Assertions.assertEquals(AccountEntity.Status.BLOCKED, accountRepository.findByEmail(userEntity.getEmail()).getStatus());
+        Assertions.assertEquals(AccountStatus.BLOCKED, accountRepository.findByEmail(userEntity.getEmail()).getStatus());
     }
 
     @Test
@@ -180,7 +181,7 @@ class AccountServiceTest {
     void unblockAccountWithCorrectEntityInDb_ExceptionExpected() {
         final AccountEntity userEntity = accountEntityProvider.blockedUserEntity(UUID.randomUUID().toString());
         accountRepository.save(userEntity);
-        Assertions.assertEquals(AccountEntity.Status.BLOCKED, accountRepository.findByEmail(userEntity.getEmail()).getStatus());
+        Assertions.assertEquals(AccountStatus.BLOCKED, accountRepository.findByEmail(userEntity.getEmail()).getStatus());
     }
 
     @Test

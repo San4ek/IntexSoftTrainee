@@ -38,7 +38,7 @@ public class ResourceServerConfig {
                 csrf(csrf -> csrf.ignoringRequestMatchers(requestMatcher)).
                 authorizeHttpRequests(authorize ->
                         authorize.
-                                requestMatchers(HttpMethod.POST, "api/accounts/user").permitAll().
+                                requestMatchers(HttpMethod.POST, "/api/accounts/user").permitAll().
                                 requestMatchers("/api/accounts/moder", "/api/accounts/admin", "/api/accounts/block", "/api/accounts/unblock").hasAuthority("ROLE_ADMIN").
                                 anyRequest().authenticated()).
                 sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
