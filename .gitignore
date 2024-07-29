@@ -36,3 +36,4 @@ build/
 /AuthService/src/main/resources/gitignore/
 /ResourcesModule/UserService/src/main/resources/gitignore/
 /docker/
+/umls/

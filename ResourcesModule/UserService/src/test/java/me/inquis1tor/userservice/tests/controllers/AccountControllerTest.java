@@ -5,11 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import me.inquis1tor.userservice.dtos.AccountTransferDto;
 import me.inquis1tor.userservice.dtos.CredentialsTransferDto;
 import me.inquis1tor.userservice.entities.AccountEntity;
+import me.inquis1tor.userservice.entities.AccountStatus;
 import me.inquis1tor.userservice.mappers.AccountMapper;
 import me.inquis1tor.userservice.providers.AccountEntityProvider;
-import me.inquis1tor.userservice.providers.EndpointsUrls;
-import me.inquis1tor.userservice.providers.DtoProvider;
 import me.inquis1tor.userservice.providers.ConstantVariables;
+import me.inquis1tor.userservice.providers.DtoProvider;
+import me.inquis1tor.userservice.providers.EndpointsUrls;
 import me.inquis1tor.userservice.repositories.AccountRepository;
 import me.inquis1tor.userservice.repositories.PersonalInfoRepository;
 import me.inquis1tor.userservice.utils.PrivatePropertiesProvider;
@@ -236,7 +237,7 @@ class AccountControllerTest {
         AccountEntity adminAccount = accountEntityProvider.activeAdminEntity(UUID.randomUUID().toString());
         accountRepository.save(adminAccount);
         AccountEntity moderAccount = accountEntityProvider.activeModerEntity(UUID.randomUUID().toString());
-        moderAccount.setStatus(AccountEntity.Status.BLOCKED);
+        moderAccount.setStatus(AccountStatus.BLOCKED);
         moderAccount.setEmail("test1@test.ru");
         accountRepository.save(moderAccount);
         mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_BLOCK.getPath()).
@@ -297,7 +298,7 @@ class AccountControllerTest {
     @DisplayName("Tests PUT /api/accounts/unblock correctly")
     void unblockAccount_200Expected() throws Exception {
         AccountEntity userAccount = accountEntityProvider.activeUserEntity(UUID.randomUUID().toString());
-        userAccount.setStatus(AccountEntity.Status.BLOCKED);
+        userAccount.setStatus(AccountStatus.BLOCKED);
         accountRepository.save(userAccount);
         mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_UNBLOCK.getPath()).
                         header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode()).

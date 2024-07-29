@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.inquis1tor.userservice.annotations.validation.ExistsAccount;
 import me.inquis1tor.userservice.entities.AccountEntity;
+import me.inquis1tor.userservice.entities.AccountRole;
+import me.inquis1tor.userservice.entities.AccountStatus;
 import me.inquis1tor.userservice.repositories.AccountRepository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,8 +24,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ExistsAccountValidator implements ConstraintValidator<ExistsAccount, UUID> {
 
-    private AccountEntity.Status status;
-    private AccountEntity.Role[] roles;
+    private AccountStatus status;
+    private AccountRole[] roles;
 
     private final AccountRepository accountRepository;
 
@@ -51,7 +53,7 @@ public class ExistsAccountValidator implements ConstraintValidator<ExistsAccount
     public boolean isValid(final UUID value, ConstraintValidatorContext context) {
         log.info("Validating account '{}' meeting the requirements", value);
         context.disableDefaultConstraintViolation();
-        context.buildConstraintViolationWithTemplate("Account '"+value+"' not exists or not meet the requirements").addConstraintViolation();
+        context.buildConstraintViolationWithTemplate("Account '" + value + "' not exists or not meet the requirements").addConstraintViolation();
         return accountRepository.existsByIdAndStatusAndRoleIn(value, status, List.of(roles));
     }
 }

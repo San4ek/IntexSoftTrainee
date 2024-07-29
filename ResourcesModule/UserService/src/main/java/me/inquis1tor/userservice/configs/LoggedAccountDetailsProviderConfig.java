@@ -1,6 +1,6 @@
 package me.inquis1tor.userservice.configs;
 
-import me.inquis1tor.userservice.entities.AccountEntity;
+import me.inquis1tor.userservice.entities.AccountRole;
 import me.inquis1tor.userservice.utils.LoggedAccountDetailsProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,7 @@ public class LoggedAccountDetailsProviderConfig {
     public LoggedAccountDetailsProvider userInfoHolder(Jwt jwt) {
         LoggedAccountDetailsProvider loggedAccountDetailsProvider = new LoggedAccountDetailsProvider();
         loggedAccountDetailsProvider.setAccountId(UUID.fromString(jwt.getSubject()));
-        loggedAccountDetailsProvider.setAccountRole(AccountEntity.Role.valueOf(jwt.getClaimAsStringList("role").get(0)));
+        loggedAccountDetailsProvider.setAccountRole(AccountRole.valueOf(jwt.getClaimAsStringList("role").get(0)));
 
         return loggedAccountDetailsProvider;
     }

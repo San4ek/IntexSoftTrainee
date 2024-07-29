@@ -7,9 +7,12 @@ import me.inqu1sitor.authservice.dtos.ErrorResponseDto;
 import me.inqu1sitor.authservice.exceptions.AccountNotFoundException;
 import me.inqu1sitor.authservice.exceptions.EndpointNotImplementedException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
@@ -72,6 +75,12 @@ public class ExceptionHandlingControllerImpl implements ExceptionHandlingControl
                 }).toList();
     }
 
+    /**
+     * Handles an {@link HttpMessageNotReadableException} and {@link MissingServletRequestParameterException}
+     *
+     * @param e the thrown {@link MethodArgumentNotValidException} or {@link MissingServletRequestParameterException}
+     * @return a {@link List} of the {@link ErrorResponseDto}
+     */
     @Override
     public ErrorResponseDto onHttpMessageException(final Exception e) {
         logWarn(e.getMessage());
@@ -81,7 +90,7 @@ public class ExceptionHandlingControllerImpl implements ExceptionHandlingControl
     /**
      * Handles any {@link Exception}
      *
-     * @param e the thrown {@link Throwable}
+     * @param e the thrown {@link Exception}
      * @return the {@link ErrorResponseDto}
      */
     @Override
@@ -93,11 +102,23 @@ public class ExceptionHandlingControllerImpl implements ExceptionHandlingControl
         return new ErrorResponseDto(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), "Unhandled error");
     }
 
+    /**
+     * Handles an {@link AuthenticationServiceException}
+     *
+     * @param e the thrown {@link AuthenticationServiceException}
+     * @return the {@link ErrorResponseDto}
+     */
+    @Override
+    public ErrorResponseDto onAuthenticationServiceException(final AuthenticationServiceException e) {
+        logError(e);
+        return new ErrorResponseDto(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), "Unhandled error");
+    }
+
     private void logWarn(final String message) {
         log.warn("Forbidden: {}", message);
     }
 
     private void logError(final Exception e) {
-        e.printStackTrace();
+        log.error(e.getMessage(), e);
     }
 }

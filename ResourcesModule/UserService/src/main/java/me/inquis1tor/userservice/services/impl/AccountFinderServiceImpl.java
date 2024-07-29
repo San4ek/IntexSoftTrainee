@@ -2,6 +2,8 @@ package me.inquis1tor.userservice.services.impl;
 
 import lombok.RequiredArgsConstructor;
 import me.inquis1tor.userservice.entities.AccountEntity;
+import me.inquis1tor.userservice.entities.AccountRole;
+import me.inquis1tor.userservice.entities.AccountStatus;
 import me.inquis1tor.userservice.exceptions.AccountNotFoundException;
 import me.inquis1tor.userservice.repositories.AccountRepository;
 import me.inquis1tor.userservice.services.AccountFinderService;
@@ -23,8 +25,8 @@ public class AccountFinderServiceImpl implements AccountFinderService {
     private final AccountRepository accountRepository;
 
     /**
-     * Returns the {@link AccountEntity} with {@code ACTIVE} {@link AccountEntity.Status status}
-     * and any not {@code ADMIN} {@link AccountEntity.Role role} identified by the provided parameter
+     * Returns the {@link AccountEntity} with {@code ACTIVE} {@link AccountStatus status}
+     * and any not {@code ADMIN} {@link AccountRole role} identified by the provided parameter
      * {@code accountId} or throws {@link AccountNotFoundException exception} if not found.
      *
      * @param accountId the {@link AccountEntity} id
@@ -34,13 +36,13 @@ public class AccountFinderServiceImpl implements AccountFinderService {
     @Transactional
     public AccountEntity findActiveNotAdmin(final UUID accountId) {
         return accountRepository.
-                findByIdAndRoleNotAndStatus(accountId, AccountEntity.Role.ADMIN, AccountEntity.Status.ACTIVE).
+                findByIdAndRoleNotAndStatus(accountId, AccountRole.ADMIN, AccountStatus.ACTIVE).
                 orElseThrow(() -> new AccountNotFoundException(accountId));
     }
 
     /**
-     * Returns the {@link AccountEntity} with {@code BLOCKED} {@link AccountEntity.Status status}
-     * and any not {@code ADMIN} {@link AccountEntity.Role role} identified by the provided parameter
+     * Returns the {@link AccountEntity} with {@code BLOCKED} {@link AccountStatus status}
+     * and any not {@code ADMIN} {@link AccountRole role} identified by the provided parameter
      * {@code accountId} or throws {@link AccountNotFoundException exception} if not found.
      *
      * @param accountId the {@link AccountEntity} id
@@ -50,13 +52,13 @@ public class AccountFinderServiceImpl implements AccountFinderService {
     @Transactional
     public AccountEntity findBlockedNotAdmin(final UUID accountId) {
         return accountRepository.
-                findByIdAndRoleNotAndStatus(accountId, AccountEntity.Role.ADMIN, AccountEntity.Status.BLOCKED).
+                findByIdAndRoleNotAndStatus(accountId, AccountRole.ADMIN, AccountStatus.BLOCKED).
                 orElseThrow(() -> new AccountNotFoundException(accountId));
     }
 
     /**
-     * Returns the {@link AccountEntity} with {@code ACTIVE} {@link AccountEntity.Status status}
-     * and any {@link AccountEntity.Role role} identified by the provided parameter {@code accountId}
+     * Returns the {@link AccountEntity} with {@code ACTIVE} {@link AccountStatus status}
+     * and any {@link AccountRole role} identified by the provided parameter {@code accountId}
      * or throws {@link AccountNotFoundException exception} if not found.
      *
      * @param accountId the {@link AccountEntity} id
@@ -66,7 +68,7 @@ public class AccountFinderServiceImpl implements AccountFinderService {
     @Transactional
     public AccountEntity findActiveAny(final UUID accountId) {
         return accountRepository.
-                findByIdAndStatus(accountId, AccountEntity.Status.ACTIVE).
+                findByIdAndStatus(accountId, AccountStatus.ACTIVE).
                 orElseThrow(() -> new AccountNotFoundException(accountId));
     }
 }

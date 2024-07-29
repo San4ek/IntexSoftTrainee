@@ -6,6 +6,8 @@ import me.inquis1tor.userservice.dtos.AccountResponseDto;
 import me.inquis1tor.userservice.dtos.AccountTransferDto;
 import me.inquis1tor.userservice.dtos.CredentialsTransferDto;
 import me.inquis1tor.userservice.entities.AccountEntity;
+import me.inquis1tor.userservice.entities.AccountRole;
+import me.inquis1tor.userservice.entities.AccountStatus;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
@@ -28,8 +30,8 @@ public interface AccountService {
 
     void deleteAccount(UUID accountId);
 
-    void blockAccount(UUID accountId, @ExistsAccount(roles = AccountEntity.Role.ADMIN,
-            status = AccountEntity.Status.ACTIVE) UUID adminId);
+    void blockAccount(UUID accountId, @ExistsAccount(roles = AccountRole.ADMIN,
+            status = AccountStatus.ACTIVE) UUID adminId);
 
     void unblockAccount(UUID accountId);
 

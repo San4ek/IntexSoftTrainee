@@ -1,7 +1,7 @@
 package me.inqu1sitor.authservice.configs;
 
-import me.inqu1sitor.authservice.entities.AccountEntity;
-import me.inqu1sitor.authservice.utils.LoggedAccountDetailsHolder;
+import me.inqu1sitor.authservice.entities.AccountRole;
+import me.inqu1sitor.authservice.utils.LoggedAccountDetailsProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,7 +11,7 @@ import org.springframework.web.context.annotation.RequestScope;
 import java.util.UUID;
 
 /**
- * {@link Configuration} for {@link LoggedAccountDetailsHolder} support.
+ * {@link Configuration} for {@link LoggedAccountDetailsProvider} support.
  *
  * @author Alexander Sankevich
  */
@@ -26,11 +26,11 @@ public class LoggedAccountDetailsProviderConfig {
 
     @Bean
     @RequestScope
-    public LoggedAccountDetailsHolder loggedAccountHolder(Jwt jwt) {
-        LoggedAccountDetailsHolder loggedAccountDetailsHolder = new LoggedAccountDetailsHolder();
-        loggedAccountDetailsHolder.setAccountId(UUID.fromString(jwt.getSubject()));
-        loggedAccountDetailsHolder.setAccountRole(AccountEntity.Role.valueOf(jwt.getClaimAsStringList("role").get(0)));
-        loggedAccountDetailsHolder.setTokenValue(jwt.getTokenValue());
-        return loggedAccountDetailsHolder;
+    public LoggedAccountDetailsProvider loggedAccountHolder(Jwt jwt) {
+        LoggedAccountDetailsProvider loggedAccountDetailsProvider = new LoggedAccountDetailsProvider();
+        loggedAccountDetailsProvider.setAccountId(UUID.fromString(jwt.getSubject()));
+        loggedAccountDetailsProvider.setAccountRole(AccountRole.valueOf(jwt.getClaimAsStringList("role").get(0)));
+        loggedAccountDetailsProvider.setTokenValue(jwt.getTokenValue());
+        return loggedAccountDetailsProvider;
     }
 }
