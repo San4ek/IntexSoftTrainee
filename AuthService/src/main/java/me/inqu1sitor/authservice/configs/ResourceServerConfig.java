@@ -31,7 +31,7 @@ public class ResourceServerConfig {
 
     @Bean
     @Order(0)
-    SecurityFilterChain restApiSecurityFilterChain(HttpSecurity http, JwtAuthenticationConverter jwtAuthenticationConverter) throws Exception {
+    public SecurityFilterChain restApiSecurityFilterChain(HttpSecurity http, JwtAuthenticationConverter jwtAuthenticationConverter) throws Exception {
         RequestMatcher requestMatcher = new AntPathRequestMatcher("/api/**");
         return http.
                 securityMatcher(requestMatcher).
@@ -47,7 +47,7 @@ public class ResourceServerConfig {
     }
 
     @Bean
-    public static JwtAuthenticationConverter jwtAuthenticationConverter() {
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("role");
         jwtGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
