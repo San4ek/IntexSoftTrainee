@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
+import lombok.RequiredArgsConstructor;
 import me.inqu1sitor.authservice.dtos.CredentialsRequestDto;
 import me.inqu1sitor.authservice.entities.AccountEntity;
 import me.inqu1sitor.authservice.entities.AccountRole;
@@ -60,39 +61,37 @@ import java.util.UUID;
 @SpringBootTest
 @Testcontainers
 @AutoConfigureMockMvc
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 class AccountControllerTest {
 
     @Container
     @ServiceConnection
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
+    private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
 
     @RegisterExtension
-    static WireMockExtension wm = WireMockExtension.newInstance().
+    private static final WireMockExtension wm = WireMockExtension.newInstance().
             proxyMode(true).
             options(WireMockConfiguration.wireMockConfig().dynamicPort()).
             build();
 
     @DynamicPropertySource
-    static void configureProperties(DynamicPropertyRegistry registry) {
+    private static void configureProperties(DynamicPropertyRegistry registry) {
         registry.add(FinalVariables.USER_SERVICE_PORT_PROPERTY, wm::getPort);
     }
 
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private DtoProvider<CredentialsRequestDto> dtoProvider;
-    @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final MockMvc mockMvc;
+    private final DtoProvider<CredentialsRequestDto> dtoProvider;
+    private final AccountRepository accountRepository;
+    private final PasswordEncoder passwordEncoder;
+
     @SpyBean
     private LoggedAccountDetailsProvider loggedAccountDetailsProvider;
     @MockBean
     private LogoutService logoutService;
 
-    @Value("${"+FinalVariables.USER_SERVICE_HOST_PROPERTY+"}")
+    @Value("${" + FinalVariables.USER_SERVICE_HOST_PROPERTY + "}")
     private String userServiceHost;
-    @Value("${"+FinalVariables.USER_SERVICE_PORT_PROPERTY+"}")
+    @Value("${" + FinalVariables.USER_SERVICE_PORT_PROPERTY + "}")
     private int userServicePort;
 
     private static final ObjectMapper mapper = new ObjectMapper();

@@ -11,10 +11,10 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class LoggedAccountDetailsHolder {
+public class LoggedAccountDetailsProvider {
 
     /**
-     * The current logged account OAuth2AccessToken OAuth 2.0 Access Token value.
+     * The current logged account OAuth 2.0 Access Token value.
      */
     private String tokenValue;
 }

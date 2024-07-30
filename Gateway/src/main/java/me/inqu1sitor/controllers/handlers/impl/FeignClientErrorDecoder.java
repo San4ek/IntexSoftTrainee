@@ -9,6 +9,11 @@ import org.springframework.http.HttpStatus;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * An implementation of {@link ErrorDecoder}.
+ *
+ * @author Alexander Sankevich
+ */
 public class FeignClientErrorDecoder implements ErrorDecoder {
 
     @Override

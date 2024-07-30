@@ -1,5 +1,6 @@
 package me.inqu1sitor.authservice.tests.services;
 
+import lombok.RequiredArgsConstructor;
 import me.inqu1sitor.authservice.entities.AccountEntity;
 import me.inqu1sitor.authservice.exceptions.AccountNotFoundException;
 import me.inqu1sitor.authservice.repositories.AccountRepository;
@@ -21,16 +22,15 @@ import java.util.UUID;
 
 @SpringBootTest
 @Testcontainers
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 class AccountFinderServiceTest {
 
     @Container
     @ServiceConnection
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
+    private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
 
-    @Autowired
-    private AccountFinderService accountFinderService;
-    @Autowired
-    private AccountRepository accountRepository;
+    private final AccountFinderService accountFinderService;
+    private final AccountRepository accountRepository;
 
     @AfterEach
     void afterEach() {

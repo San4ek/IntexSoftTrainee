@@ -17,3 +17,14 @@ feign:
 logging:
   level:
     src.main.java.me.inqu1sitor.clients: DEBUG
+
+remote-services:
+  user-service:
+    host: user-service
+    port: 8081
+    url: http://${remote-services.user-service.host}:${remote-services.user-service.port}
+
+  auth-service:
+    host: auth-service
+    port: 9000
+    url: http://${remote-services.auth-service.host}:${remote-services.auth-service.port}

@@ -3,7 +3,7 @@ package me.inqu1sitor.dtos;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- * DTO for response with the required {@link PersonalInfoDto} information.
+ * DTO for response with the required personal info.
  *
  * @author Alexander Sankevich
  */
