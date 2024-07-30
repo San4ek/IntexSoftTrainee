@@ -1,13 +1,13 @@
 package me.inqu1sitor.config;
 
 import jakarta.servlet.http.HttpServletRequest;
-import me.inqu1sitor.utils.LoggedAccountDetailsHolder;
+import me.inqu1sitor.utils.LoggedAccountDetailsProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.annotation.RequestScope;
 
 /**
- * {@link Configuration} for {@link LoggedAccountDetailsHolder} support.
+ * {@link Configuration} for {@link LoggedAccountDetailsProvider} support.
  *
  * @author Alexander Sankevich
  */
@@ -16,12 +16,12 @@ public class LoggedAccountDetailsProviderConfig {
 
     @Bean
     @RequestScope
-    public LoggedAccountDetailsHolder loggedAccountHolder(final HttpServletRequest httpServletRequest) {
-        LoggedAccountDetailsHolder loggedAccountDetailsHolder = new LoggedAccountDetailsHolder();
+    public LoggedAccountDetailsProvider loggedAccountHolder(final HttpServletRequest httpServletRequest) {
+        LoggedAccountDetailsProvider loggedAccountDetailsProvider = new LoggedAccountDetailsProvider();
         String authStr = httpServletRequest.getHeader("Authorization");
         if (authStr != null) {
-            loggedAccountDetailsHolder.setTokenValue(authStr.replace("Bearer ", ""));
+            loggedAccountDetailsProvider.setTokenValue(authStr.replace("Bearer ", ""));
         }
-        return loggedAccountDetailsHolder;
+        return loggedAccountDetailsProvider;
     }
 }

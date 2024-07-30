@@ -53,6 +53,6 @@ public class ExceptionHandlingControllerImpl implements ExceptionHandlingControl
     }
 
     private void logError(final Exception e) {
-        e.printStackTrace();
+        log.error(e.getMessage(), e);
     }
 }
