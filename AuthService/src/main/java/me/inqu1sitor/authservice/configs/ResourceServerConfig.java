@@ -6,14 +6,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authorization.AuthorizationDecision;
+import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.stereotype.Component;
+
+import java.util.function.Supplier;
 
 /**
  * {@link Configuration} for OAuth 2.0 Resource Server support.
@@ -29,9 +37,11 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 @RequiredArgsConstructor
 public class ResourceServerConfig {
 
+    private final JwtAuthorizationManager jwtAuthorizationManager;
+
     @Bean
     @Order(0)
-    public SecurityFilterChain restApiSecurityFilterChain(HttpSecurity http, JwtAuthenticationConverter jwtAuthenticationConverter) throws Exception {
+    public SecurityFilterChain restApiSecurityFilterChain(HttpSecurity http, final JwtAuthenticationConverter jwtAuthenticationConverter) throws Exception {
         RequestMatcher requestMatcher = new AntPathRequestMatcher("/api/**");
         return http.
                 securityMatcher(requestMatcher).
@@ -39,6 +49,7 @@ public class ResourceServerConfig {
                 authorizeHttpRequests(authorize ->
                         authorize.
                                 requestMatchers(HttpMethod.POST, "/api/accounts/user").permitAll().
+                                requestMatchers(HttpMethod.PUT, "/api/accounts").access(jwtAuthorizationManager).
                                 requestMatchers("/api/accounts/moder", "/api/accounts/admin", "/api/accounts/block", "/api/accounts/unblock").hasAuthority("ROLE_ADMIN").
                                 anyRequest().authenticated()).
                 sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
@@ -54,5 +65,19 @@ public class ResourceServerConfig {
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
         return jwtAuthenticationConverter;
+    }
+}
+
+@Component
+@RequiredArgsConstructor
+class JwtAuthorizationManager implements AuthorizationManager<RequestAuthorizationContext> {
+
+    private final RedisTemplate<String, Object> redisTemplate;
+
+    @Override
+    public AuthorizationDecision check(Supplier<Authentication> authentication, RequestAuthorizationContext object) {
+        String authStr = object.getRequest().getHeader("Authorization");
+        return new AuthorizationDecision(authStr != null &&
+                Boolean.TRUE.equals(redisTemplate.hasKey("access_for_id:" + authStr.replace("Bearer ", ""))));
     }
 }
