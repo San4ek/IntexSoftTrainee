@@ -71,7 +71,7 @@ public class ExceptionHandlingControllerImpl implements ExceptionHandlingControl
         return e.getBindingResult().getFieldErrors().stream().
                 map(val -> {
                     logWarn(val.getDefaultMessage());
-                    return new ErrorResponseDto(HttpStatus.EXPECTATION_FAILED.value(), HttpStatus.EXPECTATION_FAILED.getReasonPhrase(), val.getDefaultMessage());
+                    return new ErrorResponseDto(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), val.getDefaultMessage());
                 }).toList();
     }
 
@@ -84,7 +84,7 @@ public class ExceptionHandlingControllerImpl implements ExceptionHandlingControl
     @Override
     public ErrorResponseDto onHttpMessageException(final Exception e) {
         logWarn(e.getMessage());
-        return new ErrorResponseDto(HttpStatus.CONFLICT.value(), HttpStatus.CONFLICT.getReasonPhrase(), e.getMessage());
+        return new ErrorResponseDto(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST.getReasonPhrase(), e.getMessage());
     }
 
     /**

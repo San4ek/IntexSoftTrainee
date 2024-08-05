@@ -27,10 +27,6 @@ spring:
     password: Utermybest1
     driver-class-name: org.postgresql.Driver
 
-  test:
-    database:
-      replace: none
-
   liquibase:
     change-log: classpath:db.changelog/db.changelog-master.xml
     default-schema: auth_service

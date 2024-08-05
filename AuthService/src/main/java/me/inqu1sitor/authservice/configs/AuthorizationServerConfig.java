@@ -71,7 +71,6 @@ public class AuthorizationServerConfig {
         return http.
                 csrf(AbstractHttpConfigurer::disable).
                 formLogin(login -> login.failureHandler((request, response, exception) -> response.setStatus(HttpServletResponse.SC_UNAUTHORIZED))).
-                logout(Customizer.withDefaults()).
                 build();
     }
 
@@ -112,8 +111,9 @@ public class AuthorizationServerConfig {
     }
 
     @Bean
-    UserDetailsService userDetailsService(final AccountRepository accountRepository) {
-        return account -> accountRepository.findByEmail(account).orElseThrow(() -> new UsernameNotFoundException(account));
+    public UserDetailsService userDetailsService(final AccountRepository accountRepository) {
+        return account -> accountRepository.findByEmail(account).
+                orElseThrow(() -> new UsernameNotFoundException(account));
     }
 
     @Bean

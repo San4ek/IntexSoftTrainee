@@ -6,7 +6,6 @@ import jakarta.validation.Valid;
 import me.inqu1sitor.authservice.annotations.swagger.parameters.AccountIdParameter;
 import me.inqu1sitor.authservice.annotations.swagger.requests.SwaggerRequestBody;
 import me.inqu1sitor.authservice.annotations.swagger.responses.BadRequestErrorResponse;
-import me.inqu1sitor.authservice.annotations.swagger.responses.ExpectationFailedErrorResponse;
 import me.inqu1sitor.authservice.annotations.swagger.responses.NoContentOkResponse;
 import me.inqu1sitor.authservice.annotations.swagger.security.Oauth2SecurityRequired;
 import me.inqu1sitor.authservice.dtos.CredentialsRequestDto;
@@ -29,7 +28,6 @@ import java.util.UUID;
 public interface AccountController {
 
     @BadRequestErrorResponse
-    @ExpectationFailedErrorResponse
     @NoContentOkResponse
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/user")
@@ -40,7 +38,6 @@ public interface AccountController {
 
     @Oauth2SecurityRequired
     @BadRequestErrorResponse
-    @ExpectationFailedErrorResponse
     @NoContentOkResponse
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/moder")
@@ -51,7 +48,6 @@ public interface AccountController {
 
     @Oauth2SecurityRequired
     @BadRequestErrorResponse
-    @ExpectationFailedErrorResponse
     @NoContentOkResponse
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/admin")
@@ -91,7 +87,6 @@ public interface AccountController {
 
     @Oauth2SecurityRequired
     @BadRequestErrorResponse
-    @ExpectationFailedErrorResponse
     @NoContentOkResponse
     @ResponseStatus(HttpStatus.OK)
     @PutMapping

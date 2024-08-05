@@ -9,9 +9,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
  */
 @Schema(description = "Error information model")
 public record ErrorResponseDto(
-        @Schema(description = "Error code", example = "417")
+        @Schema(description = "Error code", example = "400")
         int code,
-        @Schema(description = "Error name", example = "Expectation Failed")
+        @Schema(description = "Error name", example = "Bad Request")
         String name,
         @Schema(description = "Error message", example = "Email is required")
         String message
