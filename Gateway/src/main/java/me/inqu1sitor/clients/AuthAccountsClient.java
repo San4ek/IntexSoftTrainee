@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @FeignClient(
         name = "authaccounts",
-        url = "http://auth-service:9000/api/accounts",
+        url = "${remote-services.auth-service.url}" + "/api/accounts",
         configuration = FeignClientConfig.class
 )
 public interface AuthAccountsClient {

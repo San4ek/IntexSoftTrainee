@@ -6,7 +6,6 @@ import me.inqu1sitor.authservice.rabbit.AccountDeletedNotifier;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 

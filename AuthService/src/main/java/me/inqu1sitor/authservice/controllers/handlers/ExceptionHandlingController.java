@@ -37,11 +37,11 @@ public interface ExceptionHandlingController {
     @ExceptionHandler(ConstraintViolationException.class)
     List<ErrorResponseDto> onConstraintViolationsException(ConstraintViolationException e);
 
-    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     List<ErrorResponseDto> onMethodArgumentNotValidException(MethodArgumentNotValidException e);
 
-    @ResponseStatus(HttpStatus.CONFLICT)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({HttpMessageNotReadableException.class, MissingServletRequestParameterException.class})
     ErrorResponseDto onHttpMessageException(Exception e);
 

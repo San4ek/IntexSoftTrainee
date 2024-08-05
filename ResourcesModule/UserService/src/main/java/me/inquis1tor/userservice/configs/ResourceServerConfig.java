@@ -58,7 +58,7 @@ public class ResourceServerConfig {
     }
 
     @Bean
-    public static JwtAuthenticationConverter jwtAuthenticationConverter() {
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("role");
         jwtGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");

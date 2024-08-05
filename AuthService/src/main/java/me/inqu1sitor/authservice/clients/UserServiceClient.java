@@ -53,6 +53,6 @@ public interface UserServiceClient {
      *
      * @param credentials the dto with required account credentials info
      */
-    @PutMapping("/credentials")
+    @PutMapping
     void update(@RequestBody CredentialsTransferDto credentials);
 }

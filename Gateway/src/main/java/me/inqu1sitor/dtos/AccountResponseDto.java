@@ -13,9 +13,9 @@ import java.util.UUID;
 public record AccountResponseDto(
         @Schema(description = "Account id", example = "c0a80067-907f-19d0-8190-7f09f40e0000")
         UUID id,
-        @Schema(description = "Account role")
+        @Schema(description = "Account role", example = "USER")
         String role,
-        @Schema(description = "Account status")
+        @Schema(description = "Account status", example = "ACTIVE")
         String status,
         @Schema(description = "Account email", example = "test@test.ru")
         String email,

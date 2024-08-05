@@ -30,7 +30,6 @@ public class LoggedAccountDetailsProviderConfig {
         LoggedAccountDetailsProvider loggedAccountDetailsProvider = new LoggedAccountDetailsProvider();
         loggedAccountDetailsProvider.setAccountId(UUID.fromString(jwt.getSubject()));
         loggedAccountDetailsProvider.setAccountRole(AccountRole.valueOf(jwt.getClaimAsStringList("role").get(0)));
-
         return loggedAccountDetailsProvider;
     }
 }

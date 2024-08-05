@@ -6,6 +6,8 @@ import org.springframework.security.oauth2.server.authorization.OAuth2Authorizat
 /**
  * Implementations of this interface are responsible for the advanced management
  * of {@link OAuth2Authorization OAuth 2.0 Authorization(s)}.
+ *
+ * @author Alexander Sankevich
  */
 public interface OAuth2AuthorizationServiceExt extends OAuth2AuthorizationService {
 
