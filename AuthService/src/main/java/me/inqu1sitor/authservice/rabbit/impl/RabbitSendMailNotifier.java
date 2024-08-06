@@ -1,37 +1,36 @@
 package me.inqu1sitor.authservice.rabbit.impl;
 
 import lombok.RequiredArgsConstructor;
-import me.inqu1sitor.authservice.entities.AccountEntity;
+import me.inqu1sitor.authservice.dtos.SendMailRequestDto;
 import me.inqu1sitor.authservice.rabbit.Notifier;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 /**
  * A RabbitMQ implementation of {@link Notifier}
  * that uses {@link FanoutExchange} for public notification
- * about account deleting.
+ * about sending email.
  *
  * @author Alexander Sankevich
  */
 @Component
 @RequiredArgsConstructor
-public class RabbitAccountDeletedNotifierImpl implements Notifier<UUID> {
+public class RabbitSendMailNotifier implements Notifier<SendMailRequestDto> {
 
     private final RabbitTemplate rabbitTemplate;
-    @Qualifier("accountDeletedFanoutExchange")
+    @Qualifier("mailSendFanoutExchange")
     private final FanoutExchange fanoutExchange;
 
     /**
-     * Notifies all services about deleting the account, identified by the provided parameter {@code accountId}.
+     * Notifies all services about sending an email with args,
+     * provided by the parameter {@code dto}.
      *
-     * @param accountId the deleted {@link AccountEntity} id
+     * @param dto the sending email args
      */
     @Override
-    public void notifyAbout(final UUID accountId) {
-        this.rabbitTemplate.convertAndSend(fanoutExchange.getName(), "", accountId);
+    public void notifyAbout(final SendMailRequestDto dto) {
+        this.rabbitTemplate.convertAndSend(fanoutExchange.getName(), "", dto);
     }
 }

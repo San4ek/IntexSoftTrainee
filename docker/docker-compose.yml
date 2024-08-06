@@ -49,6 +49,17 @@ services:
     networks:
       - bridge_network
 
+  mail-service:
+    image: inqu1sitor/mail_service:latest
+    container_name: mail-service
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      SPRING_RABBITMQ_HOST: rabbitmq
+    networks:
+      - bridge_network
+
   cart-service:
     image: eexxlliinn/cart-service:latest
     ports:
@@ -183,7 +194,7 @@ services:
       retries: 5
 
   rabbitmq:
-    image: rabbitmq:latest
+    image: rabbitmq:management
     container_name: rabbit-server
     restart: on-failure
     hostname: rabbitmq
