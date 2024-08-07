@@ -36,4 +36,6 @@ public interface AccountService {
     void unblockAccount(UUID accountId);
 
     void updateCredentials(@UniqueCredentials CredentialsTransferDto dto);
+
+    String getEmail(UUID accountId);
 }

@@ -63,7 +63,7 @@ public class AccountServiceImpl implements AccountService {
         accountEntity.setStatus(AccountStatus.ACTIVE);
         accountRepository.save(accountEntity);
         userServiceClient.register(accountMapper.toAccountTransferDto(accountEntity));
-        sendMailNotifier.notifyAbout(SendMailRequestDtoProvider.registerDto(credentialsRequestDto.email()));
+        sendMailNotifier.notifyAbout(SendMailRequestDtoProvider.registerDto(accountEntity.getId()));
         log.info("Account '{}' created", accountEntity.getId());
     }
 
@@ -86,7 +86,7 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.save(accountEntity);
         logoutService.logoutAll();
         userServiceClient.update(accountMapper.toCredentialsTransferDto(accountEntity));
-        sendMailNotifier.notifyAbout(SendMailRequestDtoProvider.updateDto(credentialsRequestDto.email()));
+        sendMailNotifier.notifyAbout(SendMailRequestDtoProvider.updateDto(loggedAccountDetailsProvider.getAccountId()));
         log.info("Account '{}' updated  and logged out", loggedAccountDetailsProvider.getAccountId());
     }
 
@@ -107,7 +107,7 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.save(accountEntity);
         logoutService.logoutAll(accountId);
         userServiceClient.block(accountId, loggedAccountDetailsProvider.getAccountId());
-        sendMailNotifier.notifyAbout(SendMailRequestDtoProvider.blockDto(accountEntity.getEmail()));
+        sendMailNotifier.notifyAbout(SendMailRequestDtoProvider.blockDto(accountId));
         log.info("Account '{}' blocked  and logged out", loggedAccountDetailsProvider.getAccountId());
     }
 
@@ -126,7 +126,7 @@ public class AccountServiceImpl implements AccountService {
         accountEntity.setStatus(AccountStatus.ACTIVE);
         accountRepository.save(accountEntity);
         userServiceClient.unblock(accountId);
-        sendMailNotifier.notifyAbout(SendMailRequestDtoProvider.unblockDto(accountEntity.getEmail()));
+        sendMailNotifier.notifyAbout(SendMailRequestDtoProvider.unblockDto(accountId));
         log.info("Account '{}' unblocked", loggedAccountDetailsProvider.getAccountId());
     }
 
@@ -144,7 +144,7 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.save(accountEntity);
         logoutService.logoutAll();
         accountDeletedNotifier.notifyAbout(loggedAccountDetailsProvider.getAccountId());
-        sendMailNotifier.notifyAbout(SendMailRequestDtoProvider.deleteDto(accountEntity.getEmail()));
+        sendMailNotifier.notifyAbout(SendMailRequestDtoProvider.deleteDto(loggedAccountDetailsProvider.getAccountId()));
         log.info("Account '{}' deleted and logged out", loggedAccountDetailsProvider.getAccountId());
     }
 }

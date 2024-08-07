@@ -2,6 +2,9 @@ server:
   port: 8084
 
 spring:
+  config:
+    import: optional:gitignore/hidden.properties
+
   rabbitmq:
     host: localhost
     port: 5672
@@ -19,3 +22,9 @@ spring:
           auth: true
           starttls:
             enable: true
+
+remote-services:
+  user-service:
+    host: user-service
+    port: 8081
+    url: http://${remote-services.user-service.host}:${remote-services.user-service.port}
