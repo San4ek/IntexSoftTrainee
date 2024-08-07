@@ -54,6 +54,19 @@ public class AccountServiceImpl implements AccountService {
     }
 
     /**
+     * Provides an {@link AccountEntity} email,
+     * identified by the provided parameter {@code accountId}
+     *
+     * @param accountId an {@link AccountEntity} identifier
+     * @return an {@link AccountEntity} email
+     */
+    @Override
+    public String getEmail(final UUID accountId) {
+        AccountEntity accountEntity = accountFinderService.findActiveAny(accountId);
+        return accountEntity.getEmail();
+    }
+
+    /**
      * Provides current {@link LoggedAccountDetailsProvider logged} {@link AccountEntity} info.
      *
      * @return the {@link AccountResponseDto}

@@ -30,6 +30,12 @@ public class AccountsControllerImpl implements AccountsController {
     }
 
     @Override
+    public String getEmail(final UUID accountId) {
+        log.info("Received request for getting '{}' email", accountId);
+        return accountService.getEmail(accountId);
+    }
+
+    @Override
     public void registerAccount(final AccountTransferDto dto) {
         log.info("Received '{}' request for new {} registration", dto.id(), dto.role());
         accountService.createAccount(dto);

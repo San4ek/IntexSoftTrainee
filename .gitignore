@@ -37,3 +37,4 @@ build/
 /ResourcesModule/UserService/src/main/resources/gitignore/
 /docker/
 /umls/
+/MailService/src/main/resources/gitignore/

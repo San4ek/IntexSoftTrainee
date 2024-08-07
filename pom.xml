@@ -13,6 +13,7 @@
         <module>AuthService</module>
         <module>ResourcesModule</module>
         <module>Gateway</module>
+        <module>MailService</module>
     </modules>
 
     <properties>

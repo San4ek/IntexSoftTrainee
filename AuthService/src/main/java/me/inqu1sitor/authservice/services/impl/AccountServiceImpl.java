@@ -4,17 +4,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.inqu1sitor.authservice.clients.UserServiceClient;
 import me.inqu1sitor.authservice.dtos.CredentialsRequestDto;
+import me.inqu1sitor.authservice.dtos.SendMailRequestDto;
 import me.inqu1sitor.authservice.entities.AccountEntity;
 import me.inqu1sitor.authservice.entities.AccountRole;
 import me.inqu1sitor.authservice.entities.AccountStatus;
 import me.inqu1sitor.authservice.mappers.AccountMapper;
-import me.inqu1sitor.authservice.rabbit.AccountDeletedNotifier;
+import me.inqu1sitor.authservice.rabbit.Notifier;
 import me.inqu1sitor.authservice.rabbit.impl.RabbitAccountDeletedNotifierImpl;
 import me.inqu1sitor.authservice.repositories.AccountRepository;
 import me.inqu1sitor.authservice.services.AccountFinderService;
 import me.inqu1sitor.authservice.services.AccountService;
 import me.inqu1sitor.authservice.services.LogoutService;
 import me.inqu1sitor.authservice.utils.LoggedAccountDetailsProvider;
+import me.inqu1sitor.authservice.utils.SendMailRequestDtoProvider;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +38,8 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
     private final LoggedAccountDetailsProvider loggedAccountDetailsProvider;
-    private final AccountDeletedNotifier accountDeletedNotifier;
+    private final Notifier<UUID> accountDeletedNotifier;
+    private final Notifier<SendMailRequestDto> sendMailNotifier;
     private final AccountFinderService accountFinderService;
     private final UserServiceClient userServiceClient;
     private final AccountMapper accountMapper;
@@ -60,6 +63,7 @@ public class AccountServiceImpl implements AccountService {
         accountEntity.setStatus(AccountStatus.ACTIVE);
         accountRepository.save(accountEntity);
         userServiceClient.register(accountMapper.toAccountTransferDto(accountEntity));
+        sendMailNotifier.notifyAbout(SendMailRequestDtoProvider.registerDto(accountEntity.getId()));
         log.info("Account '{}' created", accountEntity.getId());
     }
 
@@ -82,6 +86,7 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.save(accountEntity);
         logoutService.logoutAll();
         userServiceClient.update(accountMapper.toCredentialsTransferDto(accountEntity));
+        sendMailNotifier.notifyAbout(SendMailRequestDtoProvider.updateDto(loggedAccountDetailsProvider.getAccountId()));
         log.info("Account '{}' updated  and logged out", loggedAccountDetailsProvider.getAccountId());
     }
 
@@ -102,6 +107,7 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.save(accountEntity);
         logoutService.logoutAll(accountId);
         userServiceClient.block(accountId, loggedAccountDetailsProvider.getAccountId());
+        sendMailNotifier.notifyAbout(SendMailRequestDtoProvider.blockDto(accountId));
         log.info("Account '{}' blocked  and logged out", loggedAccountDetailsProvider.getAccountId());
     }
 
@@ -120,6 +126,7 @@ public class AccountServiceImpl implements AccountService {
         accountEntity.setStatus(AccountStatus.ACTIVE);
         accountRepository.save(accountEntity);
         userServiceClient.unblock(accountId);
+        sendMailNotifier.notifyAbout(SendMailRequestDtoProvider.unblockDto(accountId));
         log.info("Account '{}' unblocked", loggedAccountDetailsProvider.getAccountId());
     }
 
@@ -137,6 +144,7 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.save(accountEntity);
         logoutService.logoutAll();
         accountDeletedNotifier.notifyAbout(loggedAccountDetailsProvider.getAccountId());
+        sendMailNotifier.notifyAbout(SendMailRequestDtoProvider.deleteDto(loggedAccountDetailsProvider.getAccountId()));
         log.info("Account '{}' deleted and logged out", loggedAccountDetailsProvider.getAccountId());
     }
 }

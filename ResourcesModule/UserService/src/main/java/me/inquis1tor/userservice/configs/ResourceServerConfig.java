@@ -47,6 +47,7 @@ public class ResourceServerConfig {
                 csrf(AbstractHttpConfigurer::disable).
                 authorizeHttpRequests(authorize -> authorize.
                         requestMatchers(HttpMethod.POST, "/api/accounts").access(authCodeAuthorizationManager).
+                        requestMatchers(HttpMethod.GET, "/api/accounts/email").access(authCodeAuthorizationManager).
                         requestMatchers(HttpMethod.PUT, "/api/accounts/block", "/api/accounts/unblock", "/api/accounts/credentials").access(authCodeAuthorizationManager).
                         requestMatchers(HttpMethod.GET, "/api/accounts/all").hasAuthority("ROLE_ADMIN").
                         anyRequest().authenticated()).
