@@ -6,16 +6,16 @@ spring:
     import: optional:gitignore/hidden.properties
 
   rabbitmq:
-    host: localhost
-    port: 5672
-    username: iNQU1SITOR
-    password: Utermybest1
+    host: ${rabbit.host:localhost}
+    port: ${rabbit.port:5672}
+    username: ${rabbit.username:guest}
+    password: ${rabbit.password:guest}
 
   mail:
     host: smtp.mail.ru
     port: 587
-    username: sankevich2003@mail.ru
-    password: BE571z83rLcYjKkX98Dr
+    username: ${mail.username}
+    password: ${mail.password}
     properties:
       mail:
         smtp:
