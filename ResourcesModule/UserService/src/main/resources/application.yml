@@ -2,11 +2,14 @@ server:
   port: 8081
 
 spring:
+  config:
+    import: optional:gitignore/hidden.properties
+
   rabbitmq:
-    host: localhost
-    port: 5672
-    username: iNQU1SITOR
-    password: Utermybest1
+    host: ${rabbit.host:localhost}
+    port: ${rabbit.port:5672}
+    username: ${rabbit.username:guest}
+    password: ${rabbit.password:guest}
 
   main:
     allow-bean-definition-overriding: true
@@ -15,12 +18,12 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:9000/oauth2/jwks
+          jwk-set-uri: ${jwk-set-uri}
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: Utermybest1
+    url: ${datasource.url:jdbc:postgresql://localhost:5432/postgres}
+    username: ${datasource.username:}
+    password: ${datasource.password:}
     driver-class-name: org.postgresql.Driver
 
   test:
