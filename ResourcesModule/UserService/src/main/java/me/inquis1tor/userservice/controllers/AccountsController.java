@@ -42,6 +42,15 @@ public interface AccountsController {
         throw new EndpointNotImplementedException();
     }
 
+    @Operation(summary = "Get account email by its id")
+    @NotFoundErrorResponse
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/email")
+    default @ResponseBody String getEmail(@RequestParam("accountId") UUID accountId) throws EndpointNotImplementedException {
+        throw new EndpointNotImplementedException();
+    }
+
+
     @Operation(summary = "Register new account")
     @NoContentOkResponse
     @BadRequestErrorResponse
