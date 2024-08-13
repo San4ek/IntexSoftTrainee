@@ -1,5 +1,6 @@
 package me.inquis1tor.userservice.tests.services;
 
+import lombok.RequiredArgsConstructor;
 import me.inquis1tor.userservice.entities.AccountEntity;
 import me.inquis1tor.userservice.exceptions.AccountNotFoundException;
 import me.inquis1tor.userservice.providers.AccountEntityProvider;
@@ -24,16 +25,15 @@ import java.util.stream.Stream;
 
 @SpringBootTest
 @Testcontainers
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 class AccountFinderServiceTest {
 
     @Container
     @ServiceConnection
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
 
-    @Autowired
-    private AccountFinderService accountFinderService;
-    @Autowired
-    private AccountRepository accountRepository;
+    private final AccountFinderService accountFinderService;
+    private final AccountRepository accountRepository;
     private static final AccountEntityProvider accountEntityProvider = new AccountEntityProvider();
 
     @AfterEach

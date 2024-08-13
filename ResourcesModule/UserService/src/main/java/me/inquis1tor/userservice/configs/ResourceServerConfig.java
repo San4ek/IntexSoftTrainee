@@ -48,7 +48,7 @@ public class ResourceServerConfig {
                 authorizeHttpRequests(authorize -> authorize.
                         requestMatchers(HttpMethod.POST, "/api/accounts").access(authCodeAuthorizationManager).
                         requestMatchers(HttpMethod.GET, "/api/accounts/email").access(authCodeAuthorizationManager).
-                        requestMatchers(HttpMethod.PUT, "/api/accounts/block", "/api/accounts/unblock", "/api/accounts/credentials").access(authCodeAuthorizationManager).
+                        requestMatchers(HttpMethod.PUT, "/api/accounts/block", "/api/accounts/unblock", "/api/accounts").access(authCodeAuthorizationManager).
                         requestMatchers(HttpMethod.GET, "/api/accounts/all").hasAuthority("ROLE_ADMIN").
                         anyRequest().authenticated()).
                 sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
@@ -78,6 +78,7 @@ class AuthCodeAuthorizationManager implements AuthorizationManager<RequestAuthor
     @Override
     public AuthorizationDecision check(Supplier<Authentication> authentication, RequestAuthorizationContext object) {
         String authCode = object.getRequest().getHeader("Auth-Code");
+        System.out.println(authCode);
         return new AuthorizationDecision(authCode != null && authCode.equals(privatePropertiesProvider.getAuthCode()));
     }
 }
