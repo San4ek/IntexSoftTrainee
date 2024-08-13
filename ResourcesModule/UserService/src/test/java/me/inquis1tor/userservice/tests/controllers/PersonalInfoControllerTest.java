@@ -2,9 +2,10 @@ package me.inquis1tor.userservice.tests.controllers;
 
 import com.c4_soft.springaddons.security.oauth2.test.annotations.WithJwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import me.inquis1tor.userservice.dtos.PersonalInfoDto;
-import me.inquis1tor.userservice.providers.EndpointsUrls;
 import me.inquis1tor.userservice.providers.DtoProvider;
+import me.inquis1tor.userservice.providers.EndpointsUrls;
 import me.inquis1tor.userservice.services.PersonalInfoService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,22 +27,21 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @Testcontainers
 @AutoConfigureMockMvc
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 class PersonalInfoControllerTest {
 
     @Container
     @ServiceConnection
-    static PostgreSQLContainer<?> postgres = new
+    private static final PostgreSQLContainer<?> postgres = new
             PostgreSQLContainer<>("postgres:latest");
 
     @MockBean
     private PersonalInfoService personalInfoService;
 
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private DtoProvider<PersonalInfoDto> dtoProvider;
+    private final MockMvc mockMvc;
+    private final DtoProvider<PersonalInfoDto> dtoProvider;
 
-    private final static ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     @Test
     @DisplayName("Tests PUT /api/personal-infos without auth")
@@ -53,9 +53,9 @@ class PersonalInfoControllerTest {
     @Test
     @WithJwt("jwt/user.json")
     @DisplayName("Tests PUT /api/personal-infos without body")
-    void updatePersonalInfoWithoutBody_409Expected() throws Exception {
+    void updatePersonalInfoWithoutBody_400Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.PERSONAL_INFOS.getPath())).
-                andExpect(MockMvcResultMatchers.status().isConflict());
+                andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test

@@ -2,6 +2,7 @@ package me.inquis1tor.userservice.tests.controllers;
 
 import com.c4_soft.springaddons.security.oauth2.test.annotations.WithJwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import me.inquis1tor.userservice.dtos.AccountTransferDto;
 import me.inquis1tor.userservice.dtos.CredentialsTransferDto;
 import me.inquis1tor.userservice.entities.AccountEntity;
@@ -34,29 +35,22 @@ import java.util.UUID;
 @SpringBootTest
 @Testcontainers
 @AutoConfigureMockMvc
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 class AccountControllerTest {
 
     @Container
     @ServiceConnection
-    static PostgreSQLContainer<?> postgres = new
+    private static final PostgreSQLContainer<?> postgres = new
             PostgreSQLContainer<>("postgres:latest");
 
-    @Autowired
-    private MockMvc mockMvc;
-    @Autowired
-    private PrivatePropertiesProvider privatePropertiesProvider;
-    @Autowired
-    private DtoProvider<AccountTransferDto> accountTransferDtoProvider;
-    @Autowired
-    private DtoProvider<CredentialsTransferDto> credentialsTransferDtoDtoProvider;
-    @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private PersonalInfoRepository personalInfoRepository;
-    @Autowired
-    private AccountEntityProvider accountEntityProvider;
-    @Autowired
-    private AccountMapper accountMapper;
+    private final MockMvc mockMvc;
+    private final PrivatePropertiesProvider privatePropertiesProvider;
+    private final DtoProvider<AccountTransferDto> accountTransferDtoProvider;
+    private final DtoProvider<CredentialsTransferDto> credentialsTransferDtoDtoProvider;
+    private final AccountRepository accountRepository;
+    private final PersonalInfoRepository personalInfoRepository;
+    private final AccountEntityProvider accountEntityProvider;
+    private final AccountMapper accountMapper;
 
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -75,10 +69,10 @@ class AccountControllerTest {
 
     @Test
     @DisplayName("Tests POST /api/accounts without body")
-    void registerAccountWithoutBody_409Expected() throws Exception {
+    void registerAccountWithoutBody_400Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(EndpointsUrls.ACCOUNTS.getPath()).
                         header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode())).
-                andExpect(MockMvcResultMatchers.status().isConflict());
+                andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
@@ -96,12 +90,12 @@ class AccountControllerTest {
 
     @Test
     @DisplayName("Tests POST /api/accounts with incorrect body")
-    void registerAccountWithIncorrectBody_417Expected() throws Exception {
+    void registerAccountWithIncorrectBody_400Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(EndpointsUrls.ACCOUNTS.getPath()).
                         header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode()).
                         contentType(MediaType.APPLICATION_JSON).
                         content(mapper.writeValueAsString(accountTransferDtoProvider.incorrectDto()))).
-                andExpect(MockMvcResultMatchers.status().isExpectationFailed());
+                andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
@@ -188,10 +182,10 @@ class AccountControllerTest {
 
     @Test
     @DisplayName("Tests PUT /api/accounts/block without params")
-    void blockAccountWithoutParams_417Expected() throws Exception {
+    void blockAccountWithoutParams_400Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_BLOCK.getPath()).
                         header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode())).
-                andExpect(MockMvcResultMatchers.status().isConflict());
+                andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
@@ -268,10 +262,10 @@ class AccountControllerTest {
 
     @Test
     @DisplayName("Tests PUT /api/accounts/unblock without params")
-    void unblockAccountWithoutParams_409Expected() throws Exception {
+    void unblockAccountWithoutParams_400Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_UNBLOCK.getPath()).
                         header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode())).
-                andExpect(MockMvcResultMatchers.status().isConflict());
+                andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
@@ -307,34 +301,34 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/credentials without auth")
+    @DisplayName("Tests PUT /api/accounts without auth")
     void updateCredentialsWithoutAuth_401Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_CREDENTIALS.getPath())).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS.getPath())).
                 andExpect(MockMvcResultMatchers.status().isUnauthorized());
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/credentials without body")
-    void updateCredentialsWithoutBody_409Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_CREDENTIALS.getPath()).
+    @DisplayName("Tests PUT /api/accounts without body")
+    void updateCredentialsWithoutBody_400Expected() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS.getPath()).
                         header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode())).
-                andExpect(MockMvcResultMatchers.status().isConflict());
+                andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/credentials with incorrect body")
-    void updateCredentialsWithIncorrectBody_417Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_CREDENTIALS.getPath()).
+    @DisplayName("Tests PUT /api/accounts with incorrect body")
+    void updateCredentialsWithIncorrectBody_400Expected() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS.getPath()).
                         header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode()).
                         contentType(MediaType.APPLICATION_JSON).
                         content(mapper.writeValueAsString(credentialsTransferDtoDtoProvider.incorrectDto()))).
-                andExpect(MockMvcResultMatchers.status().isExpectationFailed());
+                andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/credentials without entity in db")
+    @DisplayName("Tests PUT /api/accounts without entity in db")
     void updateCredentialsWithoutEntityInDb_404Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_CREDENTIALS.getPath()).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS.getPath()).
                         header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode()).
                         contentType(MediaType.APPLICATION_JSON).
                         content(mapper.writeValueAsString(credentialsTransferDtoDtoProvider.correctDto()))).
@@ -342,11 +336,11 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/credentials with already registered email in db")
+    @DisplayName("Tests PUT /api/accounts with already registered email in db")
     void updateCredentialsWithAlreadyRegisteredEmailInDb_400Expected() throws Exception {
         CredentialsTransferDto dto = credentialsTransferDtoDtoProvider.correctDto();
         accountRepository.save(accountEntityProvider.activeUserEntity(String.valueOf(dto.id())));
-        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_CREDENTIALS.getPath()).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS.getPath()).
                         header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode()).
                         contentType(MediaType.APPLICATION_JSON).
                         content(mapper.writeValueAsString(dto))).
@@ -354,13 +348,13 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("Tests PUT /api/accounts/credentials correctly")
+    @DisplayName("Tests PUT /api/accounts correctly")
     void updateCredentials_200Expected() throws Exception {
         CredentialsTransferDto dto = credentialsTransferDtoDtoProvider.correctDto();
         AccountEntity accountEntity = accountEntityProvider.activeUserEntity(String.valueOf(dto.id()));
         accountEntity.setEmail("test2@test.ru");
         accountRepository.save(accountEntity);
-        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS_CREDENTIALS.getPath()).
+        mockMvc.perform(MockMvcRequestBuilders.put(EndpointsUrls.ACCOUNTS.getPath()).
                         header(ConstantVariables.AUTH_CODE.getVal(), privatePropertiesProvider.getAuthCode()).
                         contentType(MediaType.APPLICATION_JSON).
                         content(mapper.writeValueAsString(dto))).

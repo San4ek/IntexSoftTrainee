@@ -7,12 +7,14 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import lombok.RequiredArgsConstructor;
 import me.inqu1sitor.authservice.dtos.CredentialsRequestDto;
+import me.inqu1sitor.authservice.dtos.SendMailRequestDto;
 import me.inqu1sitor.authservice.entities.AccountEntity;
 import me.inqu1sitor.authservice.entities.AccountRole;
 import me.inqu1sitor.authservice.entities.AccountStatus;
 import me.inqu1sitor.authservice.providers.DtoProvider;
 import me.inqu1sitor.authservice.providers.FinalVariables;
 import me.inqu1sitor.authservice.providers.ServicesEndpoints;
+import me.inqu1sitor.authservice.rabbit.Notifier;
 import me.inqu1sitor.authservice.repositories.AccountRepository;
 import me.inqu1sitor.authservice.services.LogoutService;
 import me.inqu1sitor.authservice.utils.LoggedAccountDetailsProvider;
@@ -32,6 +34,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
@@ -58,7 +62,7 @@ import java.util.UUID;
  *     <li>{@link #updateAccountWithIncorrectEntityInDb_400Expected}</li>
  * </ul>
  */
-@SpringBootTest
+@SpringBootTest(properties = "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration,org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration")
 @Testcontainers
 @AutoConfigureMockMvc
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -88,6 +92,12 @@ class AccountControllerTest {
     private LoggedAccountDetailsProvider loggedAccountDetailsProvider;
     @MockBean
     private LogoutService logoutService;
+    @MockBean
+    private Notifier<SendMailRequestDto> sendMailNotifier;
+    @MockBean
+    private Notifier<UUID> accountDeletedNotifier;
+    @MockBean
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Value("${" + FinalVariables.USER_SERVICE_HOST_PROPERTY + "}")
     private String userServiceHost;
@@ -125,6 +135,7 @@ class AccountControllerTest {
     @WithJwt("jwt/admin.json")
     @ValueSource(strings = {ServicesEndpoints.API_ACCOUNTS_MODER, ServicesEndpoints.API_ACCOUNTS_ADMIN})
     void registerModerAndAdmin_200Expected(final String path) throws Exception {
+        Mockito.doReturn(true).when(redisTemplate).hasKey(Mockito.anyString());
         wm.stubFor(WireMock.post(WireMock.urlPathEqualTo(ServicesEndpoints.API_ACCOUNTS)).
                 withHost(WireMock.equalTo(userServiceHost)).
                 withPort(userServicePort).
@@ -132,7 +143,8 @@ class AccountControllerTest {
         final CredentialsRequestDto dto = dtoProvider.correctDto();
         mockMvc.perform(MockMvcRequestBuilders.post(path).
                         contentType(MediaType.APPLICATION_JSON).
-                        content(mapper.writeValueAsString(dto))).
+                        content(mapper.writeValueAsString(dto)).
+                        header(HttpHeaders.AUTHORIZATION, "")).
                 andExpect(MockMvcResultMatchers.status().isOk());
         final Optional<AccountEntity> optionalAccountEntity = accountRepository.findByEmail(dto.email());
         Assertions.assertTrue(optionalAccountEntity.isPresent());
@@ -172,36 +184,40 @@ class AccountControllerTest {
 
     @Test
     @DisplayName("Tests POST /api/accounts/user without request body")
-    void registerUserWithoutBody_409Expected() throws Exception {
+    void registerUserWithoutBody_400Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(ServicesEndpoints.API_ACCOUNTS_USER)).
-                andExpect(MockMvcResultMatchers.status().isConflict());
+                andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @ParameterizedTest(name = "Tests POST {0} without request body")
     @WithJwt("jwt/admin.json")
     @ValueSource(strings = {ServicesEndpoints.API_ACCOUNTS_MODER, ServicesEndpoints.API_ACCOUNTS_ADMIN})
-    void registerModerAndAdminWithoutBody_409Expected(final String path) throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post(path)).
-                andExpect(MockMvcResultMatchers.status().isConflict());
+    void registerModerAndAdminWithoutBody_400Expected(final String path) throws Exception {
+        Mockito.doReturn(true).when(redisTemplate).hasKey(Mockito.anyString());
+        mockMvc.perform(MockMvcRequestBuilders.post(path).
+                        header(HttpHeaders.AUTHORIZATION, "")).
+                andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
     @DisplayName("Tests POST /api/accounts/user with incorrect request body")
-    void registerUserWithIncorrectBody_417Expected() throws Exception {
+    void registerUserWithIncorrectBody_400Expected() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post(ServicesEndpoints.API_ACCOUNTS_USER).
                         contentType(MediaType.APPLICATION_JSON).
                         content(mapper.writeValueAsString(dtoProvider.incorrectDto()))).
-                andExpect(MockMvcResultMatchers.status().isExpectationFailed());
+                andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @ParameterizedTest(name = "Tests POST {0} with incorrect request body")
     @WithJwt("jwt/admin.json")
     @ValueSource(strings = {ServicesEndpoints.API_ACCOUNTS_MODER, ServicesEndpoints.API_ACCOUNTS_ADMIN})
-    void registerModerAndAdminWithIncorrectBody_417Expected(final String path) throws Exception {
+    void registerModerAndAdminWithIncorrectBody_400Expected(final String path) throws Exception {
+        Mockito.doReturn(true).when(redisTemplate).hasKey(Mockito.anyString());
         mockMvc.perform(MockMvcRequestBuilders.post(path).
                         contentType(MediaType.APPLICATION_JSON).
-                        content(mapper.writeValueAsString(dtoProvider.incorrectDto()))).
-                andExpect(MockMvcResultMatchers.status().isExpectationFailed());
+                        content(mapper.writeValueAsString(dtoProvider.incorrectDto())).
+                        header(HttpHeaders.AUTHORIZATION, "")).
+                andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @ParameterizedTest(name = "Tests POST /api/accounts/user with already registered email and {0} in db")
@@ -230,10 +246,12 @@ class AccountControllerTest {
             "me.inqu1sitor.authservice.providers.ArgumentsProvider#activeAdminEntity"
     })
     void registerModerWithAlreadyRegisteredEmail_400Expected(final AccountEntity accountEntity) throws Exception {
+        Mockito.doReturn(true).when(redisTemplate).hasKey(Mockito.anyString());
         accountRepository.save(accountEntity);
         mockMvc.perform(MockMvcRequestBuilders.post(ServicesEndpoints.API_ACCOUNTS_MODER).
                         contentType(MediaType.APPLICATION_JSON).
-                        content(mapper.writeValueAsString(dtoProvider.correctDto()))).
+                        content(mapper.writeValueAsString(dtoProvider.correctDto())).
+                        header(HttpHeaders.AUTHORIZATION, "")).
                 andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
@@ -247,10 +265,12 @@ class AccountControllerTest {
             "me.inqu1sitor.authservice.providers.ArgumentsProvider#activeAdminEntity"
     })
     void registerAdminWithAlreadyRegisteredEmail_400Expected(final AccountEntity accountEntity) throws Exception {
+        Mockito.doReturn(true).when(redisTemplate).hasKey(Mockito.anyString());
         accountRepository.save(accountEntity);
         mockMvc.perform(MockMvcRequestBuilders.post(ServicesEndpoints.API_ACCOUNTS_ADMIN).
                         contentType(MediaType.APPLICATION_JSON).
-                        content(mapper.writeValueAsString(dtoProvider.correctDto()))).
+                        content(mapper.writeValueAsString(dtoProvider.correctDto())).
+                        header(HttpHeaders.AUTHORIZATION, "")).
                 andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
@@ -280,9 +300,9 @@ class AccountControllerTest {
     @ParameterizedTest(name = "Tests POST {0} without request param")
     @WithJwt("jwt/admin.json")
     @ValueSource(strings = {ServicesEndpoints.API_ACCOUNTS_BLOCK, ServicesEndpoints.API_ACCOUNTS_UNBLOCK})
-    void blockAndUnblockAccountWithoutParam_409Expected(final String path) throws Exception {
+    void blockAndUnblockAccountWithoutParam_400Expected(final String path) throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put(path)).
-                andExpect(MockMvcResultMatchers.status().isConflict());
+                andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @ParameterizedTest(name = "Tests POST {0} without required entity in db")
@@ -333,7 +353,6 @@ class AccountControllerTest {
                 withHost(WireMock.equalTo(userServiceHost)).
                 withPort(userServicePort).
                 willReturn(WireMock.aResponse().withStatus(200)));
-        Mockito.doNothing().when(logoutService).logoutAll(accountEntity.getId());
         mockMvc.perform(MockMvcRequestBuilders.put(ServicesEndpoints.API_ACCOUNTS_BLOCK).
                         param(FinalVariables.ACCOUNT_ID_PARAM, accountEntity.getId().toString())).
                 andExpect(MockMvcResultMatchers.status().isOk());
@@ -354,7 +373,6 @@ class AccountControllerTest {
                 withHost(WireMock.equalTo(userServiceHost)).
                 withPort(userServicePort).
                 willReturn(WireMock.aResponse().withStatus(200)));
-        Mockito.doNothing().when(logoutService).logoutAll(accountEntity.getId());
         mockMvc.perform(MockMvcRequestBuilders.put(ServicesEndpoints.API_ACCOUNTS_UNBLOCK).
                         param(FinalVariables.ACCOUNT_ID_PARAM, accountEntity.getId().toString())).
                 andExpect(MockMvcResultMatchers.status().isOk());
@@ -403,7 +421,6 @@ class AccountControllerTest {
     void deleteAccountWithCorrectEntityInDbAndUserAuth_200Expected(final AccountEntity accountEntity) throws Exception {
         accountRepository.save(accountEntity);
         Mockito.doReturn(accountEntity.getId()).when(loggedAccountDetailsProvider).getAccountId();
-        Mockito.doNothing().when(logoutService).logoutAll();
         mockMvc.perform(MockMvcRequestBuilders.delete(ServicesEndpoints.API_ACCOUNTS)).
                 andExpect(MockMvcResultMatchers.status().isOk());
         final Optional<AccountEntity> optionalAccountEntity = accountRepository.findById(accountEntity.getId());
@@ -424,18 +441,22 @@ class AccountControllerTest {
     @Test
     @WithJwt("jwt/user.json")
     @DisplayName("Tests PUT /api/accounts without request body")
-    void updateAccountWithoutBody_409Expected() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.put(ServicesEndpoints.API_ACCOUNTS)).
-                andExpect(MockMvcResultMatchers.status().isConflict());
+    void updateAccountWithoutBody_400Expected() throws Exception {
+        Mockito.doReturn(true).when(redisTemplate).hasKey(Mockito.anyString());
+        mockMvc.perform(MockMvcRequestBuilders.put(ServicesEndpoints.API_ACCOUNTS).
+                        header(HttpHeaders.AUTHORIZATION, "")).
+                andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @Test
     @WithJwt("jwt/admin.json")
     @DisplayName("Tests PUT /api/accounts without required entity in db")
     void updateAccountWithoutRequiredEntityInDb_404Expected() throws Exception {
+        Mockito.doReturn(true).when(redisTemplate).hasKey(Mockito.anyString());
         mockMvc.perform(MockMvcRequestBuilders.put(ServicesEndpoints.API_ACCOUNTS).
                         contentType(MediaType.APPLICATION_JSON).
-                        content(mapper.writeValueAsString(dtoProvider.correctDto()))).
+                        content(mapper.writeValueAsString(dtoProvider.correctDto())).
+                        header(HttpHeaders.AUTHORIZATION, "")).
                 andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
@@ -443,10 +464,12 @@ class AccountControllerTest {
     @WithJwt("jwt/admin.json")
     @DisplayName("Tests PUT /api/accounts with incorrect request body")
     void updateAccountWithIncorrectBody_400Expected() throws Exception {
+        Mockito.doReturn(true).when(redisTemplate).hasKey(Mockito.anyString());
         mockMvc.perform(MockMvcRequestBuilders.put(ServicesEndpoints.API_ACCOUNTS).
                         contentType(MediaType.APPLICATION_JSON).
-                        content(mapper.writeValueAsString(dtoProvider.incorrectDto()))).
-                andExpect(MockMvcResultMatchers.status().isExpectationFailed());
+                        content(mapper.writeValueAsString(dtoProvider.incorrectDto())).
+                        header(HttpHeaders.AUTHORIZATION, "")).
+                andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @ParameterizedTest(name = "Tests PUT /api/accounts with {0} in db and already registered email")
@@ -459,10 +482,12 @@ class AccountControllerTest {
             "me.inqu1sitor.authservice.providers.ArgumentsProvider#activeAdminEntity"
     })
     void updateAccountWithAlreadyRegisteredEmail_400Expected(final AccountEntity accountEntity) throws Exception {
+        Mockito.doReturn(true).when(redisTemplate).hasKey(Mockito.anyString());
         accountRepository.save(accountEntity);
         mockMvc.perform(MockMvcRequestBuilders.put(ServicesEndpoints.API_ACCOUNTS).
                         contentType(MediaType.APPLICATION_JSON).
-                        content(mapper.writeValueAsString(dtoProvider.correctDto()))).
+                        content(mapper.writeValueAsString(dtoProvider.correctDto())).
+                        header(HttpHeaders.AUTHORIZATION, "")).
                 andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
@@ -491,7 +516,7 @@ class AccountControllerTest {
             "me.inqu1sitor.authservice.providers.ArgumentsProvider#activeAdminEntity"
     })
     void updateAccountWithCorrectEntityInDb_200Expected(final AccountEntity accountEntity) throws Exception {
-        wm.stubFor(WireMock.put(WireMock.urlPathEqualTo(ServicesEndpoints.API_ACCOUNTS_CREDENTIALS)).
+        wm.stubFor(WireMock.put(WireMock.urlPathEqualTo(ServicesEndpoints.API_ACCOUNTS)).
                 withHost(WireMock.equalTo(userServiceHost)).
                 withPort(userServicePort).
                 willReturn(WireMock.aResponse().withStatus(200)));
@@ -499,7 +524,6 @@ class AccountControllerTest {
         accountRepository.save(accountEntity);
         final UUID accountId = accountEntity.getId();
         Mockito.doReturn(accountId).when(loggedAccountDetailsProvider).getAccountId();
-        Mockito.doNothing().when(logoutService).logoutAll();
         final CredentialsRequestDto dto = dtoProvider.correctDto();
         mockMvc.perform(MockMvcRequestBuilders.put(ServicesEndpoints.API_ACCOUNTS).
                         contentType(MediaType.APPLICATION_JSON).
