@@ -6,6 +6,7 @@ import com.github.tomakehurst.wiremock.junit5.WireMockExtension;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import me.inqu1sitor.authservice.dtos.CredentialsRequestDto;
+import me.inqu1sitor.authservice.dtos.SendMailRequestDto;
 import me.inqu1sitor.authservice.entities.AccountEntity;
 import me.inqu1sitor.authservice.entities.AccountRole;
 import me.inqu1sitor.authservice.entities.AccountStatus;
@@ -13,6 +14,7 @@ import me.inqu1sitor.authservice.exceptions.AccountNotFoundException;
 import me.inqu1sitor.authservice.providers.DtoProvider;
 import me.inqu1sitor.authservice.providers.FinalVariables;
 import me.inqu1sitor.authservice.providers.ServicesEndpoints;
+import me.inqu1sitor.authservice.rabbit.Notifier;
 import me.inqu1sitor.authservice.repositories.AccountRepository;
 import me.inqu1sitor.authservice.services.AccountService;
 import me.inqu1sitor.authservice.services.LogoutService;
@@ -70,6 +72,10 @@ class AccountServiceTest {
     private LoggedAccountDetailsProvider loggedAccountDetailsProvider;
     @MockBean
     private LogoutService logoutService;
+    @MockBean
+    private Notifier<SendMailRequestDto> sendMailNotifier;
+    @MockBean
+    private Notifier<UUID> accountDeletedNotifier;
 
     @Value("${" + FinalVariables.USER_SERVICE_HOST_PROPERTY + "}")
     private String userServiceHost;
@@ -160,12 +166,10 @@ class AccountServiceTest {
             "me.inqu1sitor.authservice.providers.ArgumentsProvider#activeAdminEntity"
     })
     void updateAccountWithCorrectEntityInDb_EqualsExpected(final AccountEntity accountEntity) {
-        wm.stubFor(WireMock.put(WireMock.urlPathEqualTo(ServicesEndpoints.API_ACCOUNTS_CREDENTIALS)).
+        wm.stubFor(WireMock.put(WireMock.urlPathEqualTo(ServicesEndpoints.API_ACCOUNTS)).
                 withHost(WireMock.equalTo(userServiceHost)).
                 withPort(userServicePort).
                 willReturn(WireMock.aResponse().withStatus(200)));
-        Mockito.doNothing().
-                when(logoutService).logoutAll();
         accountEntity.setEmail(FinalVariables.NOT_STANDART_EMAIL);
         accountRepository.save(accountEntity);
         Mockito.doReturn(accountEntity.getId()).
@@ -208,8 +212,6 @@ class AccountServiceTest {
         Mockito.doReturn(UUID.randomUUID()).
                 when(loggedAccountDetailsProvider).getAccountId();
         accountRepository.save(accountEntity);
-        Mockito.doNothing().
-                when(logoutService).logoutAll(accountEntity.getId());
         wm.stubFor(WireMock.put(WireMock.urlPathEqualTo(ServicesEndpoints.API_ACCOUNTS_BLOCK)).
                 withHost(WireMock.equalTo(userServiceHost)).
                 withPort(userServicePort).
@@ -266,7 +268,7 @@ class AccountServiceTest {
     void deleteAccountWithoutEntityInDb_ExceptionExpected() {
         Mockito.doReturn(UUID.randomUUID()).when(loggedAccountDetailsProvider).getAccountId();
         Assertions.assertThrows(AccountNotFoundException.class,
-                () -> accountService.deleteAccount());
+                accountService::deleteAccount);
     }
 
     @ParameterizedTest(name = "deleteAccount with incorrect {0} in db")
@@ -279,7 +281,7 @@ class AccountServiceTest {
         accountRepository.save(accountEntity);
         Mockito.doReturn(accountEntity.getId()).when(loggedAccountDetailsProvider).getAccountId();
         Assertions.assertThrows(AccountNotFoundException.class,
-                () -> accountService.deleteAccount());
+                accountService::deleteAccount);
     }
 
     @ParameterizedTest(name = "deleteAccount with correct {0} in db correctly")
@@ -290,7 +292,6 @@ class AccountServiceTest {
     void deleteAccountWithCorrectEntityInDb_EqualsExpected(final AccountEntity accountEntity) {
         accountRepository.save(accountEntity);
         Mockito.doReturn(accountEntity.getId()).when(loggedAccountDetailsProvider).getAccountId();
-        Mockito.doNothing().when(logoutService).logoutAll();
         accountService.deleteAccount();
         final Optional<AccountEntity> optionalAccountEntity = accountRepository.findById(accountEntity.getId());
         Assertions.assertTrue(optionalAccountEntity.isPresent());

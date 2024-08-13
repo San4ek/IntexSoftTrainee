@@ -8,6 +8,4 @@ public class ServicesEndpoints {
     public static final String API_ACCOUNTS_ADMIN = "/api/accounts/admin";
     public static final String API_ACCOUNTS_UNBLOCK = "/api/accounts/unblock";
     public static final String API_ACCOUNTS_BLOCK = "/api/accounts/block";
-    public static final String API_ACCOUNTS_CREDENTIALS = "/api/accounts/credentials";
-
 }

@@ -1,7 +1,7 @@
 package me.inquis1tor.userservice.tests.services;
 
-
 import jakarta.validation.ConstraintViolationException;
+import lombok.RequiredArgsConstructor;
 import me.inquis1tor.userservice.dtos.AccountResponseDto;
 import me.inquis1tor.userservice.dtos.AccountTransferDto;
 import me.inquis1tor.userservice.dtos.CredentialsTransferDto;
@@ -34,25 +34,23 @@ import java.util.UUID;
 
 @SpringBootTest
 @Testcontainers
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 class AccountServiceTest {
 
     @Container
     @ServiceConnection
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
+    private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
 
-    @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private AccountService accountService;
-    @Autowired
-    private DtoProvider<AccountTransferDto> accountTransferDtoDtoProvider;
-    @Autowired
-    private DtoProvider<CredentialsTransferDto> credentialsTransferDtoProvider;
-    private static final AccountEntityProvider accountEntityProvider = new AccountEntityProvider();
-    @Autowired
-    private AccountMapper accountMapper;
+    private final AccountRepository accountRepository;
+    private final AccountService accountService;
+    private final DtoProvider<AccountTransferDto> accountTransferDtoDtoProvider;
+    private final DtoProvider<CredentialsTransferDto> credentialsTransferDtoProvider;
+    private final AccountMapper accountMapper;
+
     @MockBean
     private LoggedAccountDetailsProvider holder;
+
+    private static final AccountEntityProvider accountEntityProvider = new AccountEntityProvider();
 
     @AfterEach
     void afterEach() {
@@ -92,7 +90,7 @@ class AccountServiceTest {
     @DisplayName("getAccount without entity in db")
     void getAccountWithIncorrectEntityInDb_EqualsExpected() {
         Mockito.doReturn(UUID.randomUUID()).when(holder).getAccountId();
-        Assertions.assertThrows(AccountNotFoundException.class, () -> accountService.getAccount());
+        Assertions.assertThrows(AccountNotFoundException.class, accountService::getAccount);
     }
 
     @Test

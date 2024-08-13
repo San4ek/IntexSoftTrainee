@@ -1,5 +1,6 @@
 package me.inquis1tor.userservice.tests.services;
 
+import lombok.RequiredArgsConstructor;
 import me.inquis1tor.userservice.dtos.PersonalInfoDto;
 import me.inquis1tor.userservice.entities.PersonalInfoEntity;
 import me.inquis1tor.userservice.mappers.PersonalInfoMapper;
@@ -26,26 +27,20 @@ import java.util.UUID;
 
 @SpringBootTest
 @Testcontainers
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 class PersonalInfoServiceTest {
 
     @Container
     @ServiceConnection
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
+    private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
 
-    @Autowired
-    private PersonalInfoService personalInfoService;
-    @Autowired
-    private PersonalInfoRepository personalInfoRepository;
-    @Autowired
-    private PersonalInfoEntityProvider personalInfoEntityProvider;
-    @Autowired
-    private AccountEntityProvider accountEntityProvider;
-    @Autowired
-    private DtoProvider<PersonalInfoDto> personalInfoDtoProvider;
-    @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private PersonalInfoMapper mapper;
+    private final PersonalInfoService personalInfoService;
+    private final PersonalInfoRepository personalInfoRepository;
+    private final PersonalInfoEntityProvider personalInfoEntityProvider;
+    private final AccountEntityProvider accountEntityProvider;
+    private final DtoProvider<PersonalInfoDto> personalInfoDtoProvider;
+    private final AccountRepository accountRepository;
+    private final PersonalInfoMapper mapper;
 
     @MockBean
     private LoggedAccountDetailsProvider holder;
