@@ -1,5 +1,6 @@
 package org.example.services;
 
+import jakarta.validation.Valid;
 import org.example.dtos.CartItemRequest;
 import org.example.dtos.CartItemResponse;
 import org.example.dtos.CartRequest;
@@ -13,15 +14,17 @@ import java.util.UUID;
  */
 public interface CartService {
 
-    CartEntity createCart(CartRequest cartRequest);
+    CartEntity createCart(@Valid CartRequest cartRequest);
 
     CartEntity getCart(UUID cartId);
 
-    CartEntity updateCart(UUID cartId, CartRequest cartRequest);
+    CartEntity updateCart(UUID cartId, @Valid CartRequest cartRequest);
 
-    CartItemEntity addItemInCart(CartItemRequest cartItemRequest);
+    CartItemEntity addItemInCart(@Valid CartItemRequest cartItemRequest);
 
     void deleteItemFromCart(UUID cartId, UUID stockItemId);
 
     void deleteCart(UUID cartId);
+
+    void deleteCartItemsByStockId(UUID stockId);
 }

@@ -10,4 +10,5 @@
     <include file="db/changelog/v.1.0.0/creating-table-product.xml"/>
     <include file="db/changelog/v.1.0.0/adding-stock-foreign-keys.xml"/>
     <include file="db/changelog/v.1.0.0/adding-initial-data-in-brand-table.xml"/>
+    <include file="db/changelog/v.1.0.0/changing-fields-type-in-product-table.xml"/>
 </databaseChangeLog>

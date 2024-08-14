@@ -32,11 +32,11 @@ public class ResourceServerConfig {
         return http.securityMatcher(requestMatcher).
                 csrf(AbstractHttpConfigurer::disable).
                 authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.GET, "/api/brands/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/brands/*").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/brands").hasAuthority("ROLE_MODER")
                         .requestMatchers(HttpMethod.PUT, "/api/brands/*").hasAuthority("ROLE_MODER")
                         .requestMatchers(HttpMethod.DELETE, "/api/brands/*").hasAuthority("ROLE_MODER")
-                        .requestMatchers(HttpMethod.GET, "/api/products/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/products/*").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/products").hasAuthority("ROLE_MODER")
                         .requestMatchers(HttpMethod.PUT, "/api/products/*").hasAuthority("ROLE_MODER")
                         .requestMatchers(HttpMethod.DELETE, "/api/products/*").hasAuthority("ROLE_MODER")
@@ -45,10 +45,10 @@ public class ResourceServerConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/stock/*").hasAuthority("ROLE_MODER")
                         .requestMatchers(HttpMethod.PUT, "/api/stock/*/utilization").hasAuthority("ROLE_MODER")
                         .requestMatchers(HttpMethod.DELETE, "/api/stock/*").hasAuthority("ROLE_MODER")
-                        .requestMatchers(HttpMethod.GET, "/api/user-stock/name/*").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/user-stock/attributes").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/user-stock/*").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/user-stock/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/user-stock/name/*").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/user-stock/attributes").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/user-stock/*").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/user-stock/*").authenticated()
                         .anyRequest().authenticated()).
                 sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
                 oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationConverter))).

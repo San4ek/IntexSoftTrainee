@@ -1,7 +1,7 @@
 package org.example.configs;
 
-import org.example.utils.security.LoggedAccountDetailsProvider;
-import org.example.utils.security.RoleEnum;
+import org.example.dtos.LoggedAccountDetailsProvider;
+import org.example.enums.RoleEnum;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.context.SecurityContextHolder;

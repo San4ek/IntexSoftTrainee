@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@FeignClient(name = "brand-client", url = "http://localhost:8083/api/brands")
+@FeignClient(name = "brand-client", url = "http://stock-service:8083/api/brands")
 public interface BrandClient {
 
     @GetMapping("/{brandId}")

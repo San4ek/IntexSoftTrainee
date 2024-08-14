@@ -42,17 +42,18 @@ public class ResourceServerConfig {
         return http.securityMatcher(requestMatcher).
                 csrf(AbstractHttpConfigurer::disable).
                 authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.GET, "/api/addresses").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/addresses").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/addresses").hasAuthority("ROLE_MODER")
                         .requestMatchers(HttpMethod.PUT, "/api/addresses/*").hasAuthority("ROLE_MODER")
                         .requestMatchers(HttpMethod.DELETE, "/api/addresses/*").hasAuthority("ROLE_MODER")
-                        .requestMatchers(HttpMethod.GET, "/api/cart/*").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/cart").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/cart/*").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/cart/item").permitAll()
-                        .requestMatchers(HttpMethod.DELETE, "/api/cart/item").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/orders/*").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/orders").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/carts/*").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/carts").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/carts/*").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/carts/item").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/carts/item").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/carts/items/*").hasAuthority("ROLE_MODER")
+                        .requestMatchers(HttpMethod.GET, "/api/orders/*").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/orders").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/orders/address/*").hasAuthority("ROLE_MODER")
                         .anyRequest().authenticated()).
                 sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).

@@ -26,5 +26,4 @@ public class OrderEntity {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private AddressEntity address;
-
 }

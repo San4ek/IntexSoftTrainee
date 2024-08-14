@@ -1,5 +1,6 @@
 package org.example.services.impl;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dtos.StockItemRequest;
@@ -7,9 +8,11 @@ import org.example.entities.StockEntity;
 import org.example.mappers.StockItemMapper;
 import org.example.repositories.StockRepository;
 import org.example.services.StockModeratorService;
+import org.example.services.client.CartItemsClient;
 import org.example.validation.ValidationStockService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.UUID;
 
@@ -18,12 +21,14 @@ import java.util.UUID;
  */
 @Slf4j
 @Service
+@Validated
 @RequiredArgsConstructor
 public class StockModeratorServiceImpl implements StockModeratorService {
 
     private final StockRepository stockRepository;
     private final ValidationStockService validationStockService;
     private final StockItemMapper stockItemMapper;
+    private final CartItemsClient cartItemsClient;
 
     /**
      * Finds a stock item by ID.
@@ -45,7 +50,7 @@ public class StockModeratorServiceImpl implements StockModeratorService {
      */
     @Override
     @Transactional
-    public StockEntity createStockItem(final StockItemRequest stockItemRequest) {
+    public StockEntity createStockItem(@Valid final StockItemRequest stockItemRequest) {
         log.info("Create stock item with productId: {}", stockItemRequest.getProductId());
         validationStockService.validateStockItemForCreate(stockItemRequest);
         return stockRepository.save(stockItemMapper.toEntity(stockItemRequest));
@@ -60,7 +65,7 @@ public class StockModeratorServiceImpl implements StockModeratorService {
      */
     @Override
     @Transactional
-    public StockEntity updateStockItem(final UUID stockItemId, final StockItemRequest stockItemRequest) {
+    public StockEntity updateStockItem(final UUID stockItemId, @Valid final StockItemRequest stockItemRequest) {
         log.info("Update stock item with id: {}", stockItemId);
         validationStockService.validateStockItemForUpdate(stockItemId, stockItemRequest);
         StockEntity existingStockEntity = stockRepository.getById(stockItemId);
@@ -79,6 +84,7 @@ public class StockModeratorServiceImpl implements StockModeratorService {
         log.info("Remove all items with id: {}", stockItemId);
         StockEntity stockEntity = stockRepository.getById(stockItemId);
         stockEntity.setAmount(0L);
+        cartItemsClient.deleteCartItemsWithStockId(stockItemId);
         stockRepository.save(stockEntity);
     }
 

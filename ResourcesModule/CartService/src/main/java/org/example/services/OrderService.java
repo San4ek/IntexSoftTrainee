@@ -1,5 +1,6 @@
 package org.example.services;
 
+import jakarta.validation.Valid;
 import org.example.dtos.OrderRequest;
 import org.example.dtos.OrderResponse;
 import org.example.entities.OrderEntity;
@@ -13,7 +14,7 @@ public interface OrderService {
 
     OrderEntity getOrder(UUID orderId);
 
-    OrderResponse createOrder(OrderRequest orderRequest);
+    OrderResponse createOrder(@Valid OrderRequest orderRequest);
 
     void deleteOrdersWithAddress(UUID addressId);
 

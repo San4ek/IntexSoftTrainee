@@ -9,18 +9,18 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitConfig {
 
     @Bean
-    public FanoutExchange fanoutExchange() {
+    public FanoutExchange accountDeletedFanoutExchange() {
         return new FanoutExchange("account.deleted");
     }
 
     @Bean
-    public Queue autoDeleteQueue() {
-        return new AnonymousQueue();
+    public FanoutExchange mailSendFanoutExchange() {
+        return new FanoutExchange("mail.send");
     }
 
     @Bean
-    public Binding binding(FanoutExchange fanoutExchange, Queue accountDeletedQueue) {
-        return BindingBuilder.bind(accountDeletedQueue).to(fanoutExchange);
+    public Queue accountDeletedQueue() {
+        return new Queue("account.deleted");
     }
 
     @Bean

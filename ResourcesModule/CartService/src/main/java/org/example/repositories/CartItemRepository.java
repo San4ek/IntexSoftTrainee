@@ -12,4 +12,8 @@ public interface CartItemRepository extends BaseRepository<CartItemEntity, UUID>
     CartItemEntity findByCartIdAndStockId(UUID cartId, UUID stockId);
 
     Boolean existsByCartIdAndStockId(UUID cartId, UUID stockId);
+
+    void deleteByStockId(UUID stockId);
+
+    Boolean existsByStockId(UUID stockId);
 }

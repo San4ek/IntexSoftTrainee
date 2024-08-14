@@ -6,6 +6,7 @@ import org.example.enums.ColorEnum;
 import org.example.enums.SizeEnum;
 import org.example.enums.StockOperationEnum;
 import org.example.enums.TypeEnum;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,9 +16,16 @@ import java.util.UUID;
  */
 public interface StockUserService {
 
-    List<StockEntity> findStockItemsByName(String name);
+    Page<StockEntity> findStockItemsByName(final String name, final Integer page, final Integer pageSize);
 
-    List<StockEntity> findByAttributes(String brand, ColorEnum color, SizeEnum size, TypeEnum type, Double minPrice, Double maxPrice);
+    Page<StockEntity> findByAttributes(final String brand,
+                                       final ColorEnum color,
+                                       final SizeEnum size,
+                                       final TypeEnum type,
+                                       final Double minPrice,
+                                       final Double maxPrice,
+                                       final Integer page,
+                                       final Integer pageSize);
 
     StockItemAmount checkStockItemAmount(UUID stockItemId);
 
