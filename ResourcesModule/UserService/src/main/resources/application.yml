@@ -38,6 +38,7 @@ spring:
     properties:
       hibernate:
         default_schema: user_service
+
     hibernate:
       ddl-auto: validate
 
