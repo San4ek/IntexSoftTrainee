@@ -13,10 +13,13 @@ import org.example.enums.TypeEnum;
 import org.example.mappers.StockItemAmountMapper;
 import org.example.repositories.StockRepository;
 import org.example.services.StockUserService;
+import org.example.validation.ValidationStockService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -39,8 +42,9 @@ public class StockUserServiceImpl implements StockUserService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<StockEntity> findStockItemsByName(final String name) {
-        return stockRepository.getByProductName(name);
+    public Page<StockEntity> findStockItemsByName(final String name, final Integer page, final Integer pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return stockRepository.findByProductName(name, pageable);
     }
 
     /**
@@ -56,12 +60,14 @@ public class StockUserServiceImpl implements StockUserService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<StockEntity> findByAttributes(final String brand,
+    public Page<StockEntity> findByAttributes(final String brand,
                                               final ColorEnum color,
                                               final SizeEnum size,
                                               final TypeEnum type,
                                               final Double minPrice,
-                                              final Double maxPrice) {
+                                              final Double maxPrice,
+                                              final Integer page,
+                                              final Integer pageSize) {
         QStockEntity stockItem = QStockEntity.stockEntity;
         BooleanBuilder builder = new BooleanBuilder();
         Optional.ofNullable(brand).ifPresent(b -> builder.and(stockItem.product.brand.name.likeIgnoreCase("%" + b + "%")));
@@ -70,7 +76,8 @@ public class StockUserServiceImpl implements StockUserService {
         Optional.ofNullable(type).ifPresent(t -> builder.and(stockItem.product.type.eq(t)));
         Optional.ofNullable(minPrice).ifPresent(mp -> builder.and(stockItem.product.price.goe(mp)));
         Optional.ofNullable(maxPrice).ifPresent(mp -> builder.and(stockItem.product.price.loe(mp)));
-        return (List<StockEntity>) stockRepository.findAll(builder);
+        Pageable pageable = PageRequest.of(page, pageSize);
+        return stockRepository.findAll(builder, pageable);
     }
 
     /**
@@ -94,7 +101,6 @@ public class StockUserServiceImpl implements StockUserService {
     @Override
     @Transactional
     public void changeStockItemAmount(final UUID stockItemId, final Long amount, final StockOperationEnum operation) {
-        log.info("Changing amount by {} of stock item with id {} ", amount, stockItemId);
         StockEntity stockEntity = stockRepository.getById(stockItemId);
         switch (operation) {
             case INCREASE:

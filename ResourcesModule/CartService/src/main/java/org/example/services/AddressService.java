@@ -1,5 +1,6 @@
 package org.example.services;
 
+import jakarta.validation.Valid;
 import org.example.dtos.AddressRequest;
 import org.example.entities.AddressEntity;
 
@@ -13,9 +14,9 @@ public interface AddressService {
 
     List<AddressEntity> getAddresses();
 
-    AddressEntity createAddress(AddressRequest addressRequest);
+    AddressEntity createAddress(@Valid AddressRequest addressRequest);
 
-    AddressEntity updateAddress(UUID addressId, AddressRequest addressRequest);
+    AddressEntity updateAddress(UUID addressId, @Valid AddressRequest addressRequest);
 
     void deleteAddress(UUID addressId);
 }

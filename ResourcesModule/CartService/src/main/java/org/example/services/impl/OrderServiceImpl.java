@@ -1,9 +1,11 @@
 package org.example.services.impl;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dtos.OrderRequest;
 import org.example.dtos.OrderResponse;
+import org.example.dtos.SendMailRequest;
 import org.example.entities.CartEntity;
 import org.example.entities.OrderEntity;
 import org.example.mappers.OrderMapper;
@@ -11,8 +13,10 @@ import org.example.repositories.CartRepository;
 import org.example.repositories.OrderRepository;
 import org.example.services.OrderService;
 import org.example.validation.ValidationOrderService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.UUID;
 
@@ -23,6 +27,7 @@ import static org.example.utils.validation.ValidatorUtils.checkFalse;
  */
 @Slf4j
 @Service
+@Validated
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
@@ -30,6 +35,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
     private final CartRepository cartRepository;
     private final ValidationOrderService validationOrderService;
+    private final RabbitTemplate rabbitTemplate;
 
     /**
      * Retrieves an order by its ID.
@@ -51,15 +57,16 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     @Transactional
-    public OrderResponse createOrder(final OrderRequest orderRequest) {
+    public OrderResponse createOrder(@Valid final OrderRequest orderRequest) {
         log.info("Create order from cart {} ", orderRequest.getCartId());
         validationOrderService.validateOrderForCreating(orderRequest);
         CartEntity cartEntity = cartRepository.getById(orderRequest.getCartId());
-        checkFalse(cartEntity.getCartItems().isEmpty(), "Cart is empty");
         OrderResponse orderResponse = orderMapper.toDto(orderRepository.save(orderMapper.toEntity(orderRequest)));
         cartEntity.removeAllItems();
         cartRepository.save(cartEntity);
         log.info("Order created with id {}", orderResponse.getId());
+        SendMailRequest sendMailRequest = new SendMailRequest(cartEntity.getUserId(), "Order Created", "Your order has been created");
+        rabbitTemplate.convertAndSend("mail.send", "", sendMailRequest);
         return orderResponse;
     }
 

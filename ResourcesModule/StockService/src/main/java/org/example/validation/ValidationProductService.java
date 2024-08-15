@@ -3,12 +3,14 @@ package org.example.validation;
 import lombok.RequiredArgsConstructor;
 import org.example.dtos.ProductRequest;
 import org.example.entities.BrandEntity;
+import org.example.entities.ProductEntity;
 import org.example.repositories.BrandRepository;
 import org.example.repositories.ProductRepository;
 import org.example.repositories.StockRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.example.utils.validation.ValidatorUtils.checkFalse;
@@ -46,7 +48,8 @@ public class ValidationProductService {
     public void validateProductRequestForUpdate(final UUID productId, final ProductRequest productRequest) {
         checkTrue(productRepository.existsById(productId), "Product doesn't exist with id: " + productId);
         final BrandEntity brandEntity = brandRepository.getById(productRequest.getBrandId());
-        checkFalse(productRepository.existsByNameAndTypeAndBrandAndPriceAndCurrency(productRequest.getName(), productRequest.getType(), brandEntity, productRequest.getPrice(), productRequest.getCurrency()), "Product with such parameters is already exists");
+        final Optional<ProductEntity> productEntity = productRepository.findByNameAndTypeAndBrandAndCurrency(productRequest.getName(), productRequest.getType(), brandEntity, productRequest.getCurrency());
+        checkFalse(productEntity.isPresent() && Math.abs(productEntity.get().getPrice() - productRequest.getPrice()) < 0.001, "Product with such parameters is already exists");
     }
 
     /**

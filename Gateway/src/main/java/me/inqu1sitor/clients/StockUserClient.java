@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.UUID;
 
-@FeignClient(name = "stock-user-client", url = "https://localhost:8083/api/user-stock")
+@FeignClient(name = "stock-user-client", url = "https://stock-service:8083/api/user-stock")
 public interface StockUserClient {
 
     @GetMapping("/name/{name}")

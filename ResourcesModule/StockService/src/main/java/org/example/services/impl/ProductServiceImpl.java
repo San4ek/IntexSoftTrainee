@@ -1,16 +1,19 @@
 package org.example.services.impl;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dtos.ProductRequest;
 import org.example.entities.ProductEntity;
 import org.example.mappers.ProductMapper;
 import org.example.repositories.ProductRepository;
+import org.example.repositories.StockRepository;
 import org.example.services.ProductService;
-import org.example.utils.security.LoggedAccountDetailsProvider;
+import org.example.dtos.LoggedAccountDetailsProvider;
 import org.example.validation.ValidationProductService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.UUID;
 
@@ -19,6 +22,7 @@ import java.util.UUID;
  */
 @Slf4j
 @Service
+@Validated
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
@@ -26,6 +30,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductMapper productMapper;
     private final ValidationProductService validationProductService;
     private final LoggedAccountDetailsProvider loggedAccountDetailsProvider;
+    private final StockRepository stockRepository;
 
     /**
      * Finds a product by its id.
@@ -47,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     @Transactional
-    public ProductEntity createProduct(final ProductRequest productRequest) {
+    public ProductEntity createProduct(@Valid final ProductRequest productRequest) {
         log.info("Creating product with name {}", productRequest.getName());
         validationProductService.validateProductRequestForCreate(productRequest);
         ProductEntity productEntity = productMapper.toEntity(productRequest);
@@ -64,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     @Transactional
-    public ProductEntity updateProduct(final UUID productId, final ProductRequest productRequest) {
+    public ProductEntity updateProduct(final UUID productId, @Valid final ProductRequest productRequest) {
         log.info("Updating product with id: {} ", productId);
         validationProductService.validateProductRequestForUpdate(productId, productRequest);
         ProductEntity existingProductEntity = productRepository.getById(productId);
@@ -83,6 +88,7 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(final UUID productId) {
         log.info("Deleting product with id: {}", productId);
         validationProductService.validateProductForDelete(productId);
+        stockRepository.deleteByProductId(productId);
         productRepository.deleteById(productId);
     }
 }

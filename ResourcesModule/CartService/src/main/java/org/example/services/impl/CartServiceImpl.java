@@ -1,5 +1,6 @@
 package org.example.services.impl;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dtos.CartItemRequest;
@@ -16,6 +17,7 @@ import org.example.services.CartService;
 import org.example.validation.ValidationCartService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.UUID;
 
@@ -26,6 +28,7 @@ import static org.example.utils.validation.ValidatorUtils.checkTrue;
  */
 @Slf4j
 @Service
+@Validated
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
 
@@ -57,7 +60,7 @@ public class CartServiceImpl implements CartService {
      */
     @Override
     @Transactional
-    public CartEntity createCart(final CartRequest cartRequest) {
+    public CartEntity createCart(@Valid final CartRequest cartRequest) {
         log.info("Creating new cart");
         return cartRepository.save(cartMapper.toEntity(cartRequest));
     }
@@ -71,7 +74,7 @@ public class CartServiceImpl implements CartService {
      */
     @Override
     @Transactional
-    public CartEntity updateCart(final UUID cartId, final CartRequest cartRequest) {
+    public CartEntity updateCart(final UUID cartId, @Valid final CartRequest cartRequest) {
         log.info("Updating cart entity with id {}", cartId);
         validationCartService.validateCartForUpdate(cartId);
         CartEntity cartEntity = cartRepository.getById(cartId);
@@ -86,14 +89,14 @@ public class CartServiceImpl implements CartService {
      */
     @Override
     @Transactional
-    public CartItemEntity addItemInCart(final CartItemRequest cartItemRequest) {
+    public CartItemEntity addItemInCart(@Valid final CartItemRequest cartItemRequest) {
         log.info("Adding item {} in cart with id {}", cartItemRequest.getStockId(),cartItemRequest.getCartId());
         validationCartService.validateCartForAddItem(cartItemRequest);
         CartItemEntity cartItemEntity = cartItemMapper.toEntity(cartItemRequest);
-        stockService.changeStockAmount(cartItemRequest.getStockId(), cartItemRequest.getAmount(), StockOperationEnum.DECREASE);
         CartEntity cartEntity = cartRepository.getById(cartItemRequest.getCartId());
         cartEntity.addItems(cartItemEntity);
         cartRepository.save(cartEntity);
+        stockService.changeStockAmount(cartItemRequest.getStockId(), cartItemRequest.getAmount(), StockOperationEnum.DECREASE);
         return cartItemEntity;
     }
 
@@ -111,20 +114,21 @@ public class CartServiceImpl implements CartService {
         CartEntity cartEntity = cartRepository.getById(cartId);
         CartItemEntity cartItemEntity = cartItemRepository.findByCartIdAndStockId(cartId, stockItemId);
         cartEntity.removeItems(cartItemEntity);
+        cartItemRepository.delete(cartItemEntity);
         cartRepository.save(cartEntity);
         stockService.changeStockAmount(stockItemId, cartItemEntity.getAmount(), StockOperationEnum.INCREASE);
     }
 
     /**
-     * Deletes a cart.
+     * Deletes all items with ID from all carts.
      *
-     * @param cartId the ID of the cart.
+     * @param stockId the ID of the item to delete.
      */
     @Override
     @Transactional
-    public void deleteCart(final UUID cartId) {
-        log.info("Deleting a cart with id {}", cartId);
-        validationCartService.validateCartForDelete(cartId);
-        cartRepository.deleteById(cartId);
+    public void deleteCartItemsByStockId(final UUID stockId) {
+        log.info("Deleting cart items with stock id {}", stockId);
+        validationCartService.validateCartItemsForDeleting(stockId);
+        cartItemRepository.deleteByStockId(stockId);
     }
 }

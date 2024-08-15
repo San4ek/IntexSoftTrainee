@@ -1,5 +1,6 @@
 package org.example.services.impl;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dtos.BrandRequest;
@@ -10,6 +11,7 @@ import org.example.services.BrandService;
 import org.example.validation.ValidationBrandService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.UUID;
 
@@ -18,6 +20,7 @@ import java.util.UUID;
  */
 @Slf4j
 @Service
+@Validated
 @RequiredArgsConstructor
 public class BrandServiceImpl implements BrandService {
 
@@ -45,8 +48,8 @@ public class BrandServiceImpl implements BrandService {
      */
     @Override
     @Transactional
-    public BrandEntity createBrand(final BrandRequest brandRequest) {
-        log.info("Creating brand: {}", brandRequest);
+    public BrandEntity createBrand(@Valid final BrandRequest brandRequest) {
+        log.info("Creating brand with name: {}", brandRequest.getName());
         validationBrandService.validateBrandRequestForCreate(brandRequest);
         return brandRepository.save(brandMapper.toEntity(brandRequest));
     }
@@ -60,7 +63,7 @@ public class BrandServiceImpl implements BrandService {
      */
     @Override
     @Transactional
-    public BrandEntity updateBrand(final UUID brandId, final BrandRequest brandRequest) {
+    public BrandEntity updateBrand(final UUID brandId, @Valid final BrandRequest brandRequest) {
         log.info("Updating brand with id: {}", brandId);
         validationBrandService.validateBrandRequestForUpdate(brandId, brandRequest);
         BrandEntity existingBrandEntity = brandRepository.getById(brandId);

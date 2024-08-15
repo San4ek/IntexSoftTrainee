@@ -1,5 +1,6 @@
 package org.example.mappers;
 
+import org.example.dtos.PagedStockItemsResponse;
 import org.example.dtos.StockItemRequest;
 import org.example.dtos.StockItemResponse;
 import org.example.entities.ProductEntity;
@@ -10,6 +11,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.UUID;
@@ -39,5 +41,10 @@ public abstract class StockItemMapper {
     @Named("mapProduct")
     public ProductEntity mapProduct(final UUID productId) {
         return productRepository.getById(productId);
+    }
+
+    public PagedStockItemsResponse toDto(final Page<StockEntity> stockItems) {
+        Page<StockItemResponse> stockItemResponses = stockItems.map(this::toDto);
+        return new PagedStockItemsResponse(stockItemResponses);
     }
 }

@@ -23,12 +23,12 @@ public class ProductModeratorController implements ProductModeratorOperations {
     /**
      * Finds a product by its id.
      *
-     * @param id The id of the product to find.
+     * @param productId The id of the product to find.
      * @return ProductResponse containing the found product.
      */
     @Override
-    public ProductResponse getProductById(final UUID id) {
-        return productMapper.toDto(productService.getProductById(id));
+    public ProductResponse getProductById(final UUID productId) {
+        return productMapper.toDto(productService.getProductById(productId));
     }
 
     /**

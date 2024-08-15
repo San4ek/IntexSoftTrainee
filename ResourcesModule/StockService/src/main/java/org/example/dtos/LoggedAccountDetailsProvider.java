@@ -1,7 +1,8 @@
-package org.example.utils.security;
+package org.example.dtos;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.enums.RoleEnum;
 
 import java.util.UUID;
 

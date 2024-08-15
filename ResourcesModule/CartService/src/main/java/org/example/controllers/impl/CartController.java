@@ -8,6 +8,7 @@ import org.example.mappers.CartItemMapper;
 import org.example.mappers.CartMapper;
 import org.example.mappers.CartWithItemsMapper;
 import org.example.services.CartService;
+import org.example.validation.ValidationCartService;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
@@ -23,6 +24,7 @@ public class CartController implements CartOperationsController {
     private final CartWithItemsMapper cartWithItemsMapper;
     private final CartItemMapper cartItemMapper;
     private final CartService cartService;
+    private final ValidationCartService validationCartService;
 
     /**
      * Retrieve the details of a specific cart by its id.
@@ -78,5 +80,16 @@ public class CartController implements CartOperationsController {
     @Override
     public void deleteItemFromCart(final UUID cartId, final UUID stockItemId) {
         cartService.deleteItemFromCart(cartId, stockItemId);
+    }
+
+    /**
+     * Delete items from all carts by stock id.
+     *
+     * @param stockId id of stock item to delete from carts.
+     */
+    @Override
+    public void deleteCartItemsWithStockId(final UUID stockId, final String apiKey) {
+        validationCartService.validateApiKey(apiKey);
+        cartService.deleteCartItemsByStockId(stockId);
     }
 }
