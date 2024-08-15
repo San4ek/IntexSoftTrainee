@@ -1,6 +1,7 @@
 package me.inqu1sitor.rabbit.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.inqu1sitor.dto.SendMailRequestDto;
 import me.inqu1sitor.rabbit.SendMailReceiver;
 import me.inqu1sitor.services.MailSendingService;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Alexander Sankevich
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class SendMailReceiverImpl implements SendMailReceiver {
@@ -29,6 +31,10 @@ public class SendMailReceiverImpl implements SendMailReceiver {
      */
     @RabbitListener(queues = "#{autoDeleteQueue.name}")
     public void sendMail(final SendMailRequestDto dto) {
-        mailSendingService.sendMail(dto);
+        try {
+            mailSendingService.sendMail(dto);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
     }
 }
