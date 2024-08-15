@@ -1,5 +1,6 @@
 package org.example.services;
 
+import jakarta.validation.Valid;
 import org.example.dtos.StockItemRequest;
 import org.example.entities.StockEntity;
 
@@ -12,9 +13,9 @@ public interface StockModeratorService {
 
     StockEntity findById(UUID stockItemId);
 
-    StockEntity createStockItem(StockItemRequest stockItemRequest);
+    StockEntity createStockItem(@Valid StockItemRequest stockItemRequest);
 
-    StockEntity updateStockItem(UUID stockItemId, StockItemRequest stockItemRequest);
+    StockEntity updateStockItem(UUID stockItemId, @Valid StockItemRequest stockItemRequest);
 
     void removeStockItems(UUID stockItemId);
 

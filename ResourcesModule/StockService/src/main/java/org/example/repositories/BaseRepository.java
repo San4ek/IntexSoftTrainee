@@ -11,12 +11,12 @@ public interface BaseRepository<T, UUID> extends
         QuerydslPredicateExecutor<T> {
 
     @Override
-    default <S extends T> S save(S entity) {
+    default <S extends T> S save(final S entity) {
         return saveAndFlush(entity);
     }
 
     @Override
-    default T getById(UUID uuid) {
+    default T getById(final UUID uuid) {
         return findById(uuid).orElseThrow(() -> new ObjectNotFoundException("Object not found with id " + uuid));
     }
 }

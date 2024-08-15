@@ -3,7 +3,7 @@ package org.example.mappers;
 import org.example.dtos.CartRequest;
 import org.example.dtos.CartResponse;
 import org.example.entities.CartEntity;
-import org.example.utils.security.LoggedAccountDetailsProvider;
+import org.example.dtos.LoggedAccountDetailsProvider;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

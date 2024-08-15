@@ -1,4 +1,4 @@
-package org.example.utils.security;
+package org.example.enums;
 
 public enum RoleEnum {
     USER,

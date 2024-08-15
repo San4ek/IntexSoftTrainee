@@ -5,6 +5,7 @@ import org.example.dtos.StockItemRequest;
 import org.example.entities.ProductEntity;
 import org.example.repositories.ProductRepository;
 import org.example.repositories.StockRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,9 @@ public class ValidationStockService {
 
     private final ProductRepository productRepository;
     private final StockRepository stockRepository;
+
+    @Value("${stock.apiKey}")
+    private String correctKey;
 
     /**
      * Validates a stock item creation request.
@@ -55,5 +59,14 @@ public class ValidationStockService {
     @Transactional(readOnly = true)
     public void validateStockItemForDelete(final UUID stockItemId) {
         checkTrue(stockRepository.existsByIdAndAmountEquals(stockItemId, 0L), "Stock item must exist and amount must be 0");
+    }
+
+    /**
+     * Method for validating key used between microservices.
+     *
+     * @param apiKey key for checking where did request come from.
+     */
+    public void validateApiKey(final String apiKey) {
+        checkTrue(correctKey.equals(apiKey), "Access denied.");
     }
 }

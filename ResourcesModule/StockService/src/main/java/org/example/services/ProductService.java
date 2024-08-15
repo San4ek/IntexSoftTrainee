@@ -1,5 +1,6 @@
 package org.example.services;
 
+import jakarta.validation.Valid;
 import org.example.dtos.ProductRequest;
 import org.example.entities.ProductEntity;
 
@@ -12,9 +13,9 @@ public interface ProductService {
 
     ProductEntity getProductById(UUID id);
 
-    ProductEntity createProduct(ProductRequest productRequest);
+    ProductEntity createProduct(@Valid ProductRequest productRequest);
 
-    ProductEntity updateProduct(UUID productId, ProductRequest productRequest);
+    ProductEntity updateProduct(UUID productId, @Valid ProductRequest productRequest);
 
     void deleteProduct(UUID productId);
 }

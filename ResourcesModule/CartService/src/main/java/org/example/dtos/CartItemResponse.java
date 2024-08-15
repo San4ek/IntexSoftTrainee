@@ -14,8 +14,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class CartItemResponse {
 
-    private UUID id;
-
     private CartResponse cart;
 
     private UUID stockId;

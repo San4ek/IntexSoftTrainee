@@ -1,5 +1,6 @@
 package org.example.services.impl;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dtos.AddressRequest;
@@ -9,6 +10,8 @@ import org.example.repositories.AddressRepository;
 import org.example.services.AddressService;
 import org.example.validation.ValidationAddressService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +21,7 @@ import java.util.UUID;
  */
 @Slf4j
 @Service
+@Validated
 @RequiredArgsConstructor
 public class AddressServiceImpl implements AddressService {
 
@@ -31,6 +35,7 @@ public class AddressServiceImpl implements AddressService {
      * @return a list of all addresses.
      */
     @Override
+    @Transactional(readOnly = true)
     public List<AddressEntity> getAddresses() {
         return addressRepository.findAll();
     }
@@ -42,7 +47,8 @@ public class AddressServiceImpl implements AddressService {
      * @return the created AddressEntity.
      */
     @Override
-    public AddressEntity createAddress(final AddressRequest addressRequest) {
+    @Transactional
+    public AddressEntity createAddress(@Valid final AddressRequest addressRequest) {
         log.info("Creating new address");
         validationAddressService.validateAddressForCreate(addressRequest);
         return addressRepository.save(addressMapper.toEntity(addressRequest));
@@ -56,7 +62,8 @@ public class AddressServiceImpl implements AddressService {
      * @return the updated AddressEntity.
      */
     @Override
-    public AddressEntity updateAddress(final UUID addressId, final AddressRequest addressRequest) {
+    @Transactional
+    public AddressEntity updateAddress(final UUID addressId, @Valid final AddressRequest addressRequest) {
         log.info("Updating address with id {}", addressId);
         validationAddressService.validateAddressForUpdate(addressId, addressRequest);
         AddressEntity addressEntity = addressRepository.getById(addressId);
@@ -70,6 +77,7 @@ public class AddressServiceImpl implements AddressService {
      * @param addressId the ID of the address to delete.
      */
     @Override
+    @Transactional
     public void deleteAddress(final UUID addressId) {
         log.info("Deleting address {}", addressId);
         validationAddressService.validateAddressForDelete(addressId);

@@ -1,11 +1,13 @@
 package org.example.controllers.impl;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.controllers.BrandModeratorOperations;
 import org.example.dtos.BrandRequest;
 import org.example.dtos.BrandResponse;
 import org.example.mappers.BrandMapper;
 import org.example.services.impl.BrandServiceImpl;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
@@ -14,6 +16,7 @@ import java.util.UUID;
  * Controller with methods for moderator to work with brand
  */
 @RestController
+@Validated
 @RequiredArgsConstructor
 public class BrandModeratorController implements BrandModeratorOperations {
 
@@ -38,7 +41,7 @@ public class BrandModeratorController implements BrandModeratorOperations {
      * @return BrandResponse containing the newly created brand.
      */
     @Override
-    public BrandResponse createBrand(final BrandRequest brandRequest) {
+    public BrandResponse createBrand(@Valid final BrandRequest brandRequest) {
         return brandMapper.toDto(brandService.createBrand(brandRequest));
     }
 
@@ -50,7 +53,7 @@ public class BrandModeratorController implements BrandModeratorOperations {
      * @return BrandResponse containing the updated brand.
      */
     @Override
-    public BrandResponse updateBrand(final UUID brandId, final BrandRequest brandRequest) {
+    public BrandResponse updateBrand(final UUID brandId, @Valid final BrandRequest brandRequest) {
         return brandMapper.toDto(brandService.updateBrand(brandId, brandRequest));
     }
 

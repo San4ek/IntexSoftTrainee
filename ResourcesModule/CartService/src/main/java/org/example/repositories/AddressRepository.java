@@ -8,5 +8,5 @@ import java.util.UUID;
 @Repository
 public interface AddressRepository extends BaseRepository<AddressEntity, UUID> {
 
-    boolean existsByAddress(String address);
+    Boolean existsByAddress(final String address);
 }
