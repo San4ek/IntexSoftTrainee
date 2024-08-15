@@ -12,7 +12,7 @@ public enum EndpointsUrls {
     CART_DELETE_BY_STOCK_ID("/api/carts/items/"),
     ORDERS_GET_DELETE("/api/orders/"),
     ORDERS_POST("/api/orders"),
-    ORDERS_DELETE_BY_ADDRESS("/api/orders/address");
+    ORDERS_DELETE_BY_ADDRESS("/api/orders/address/");
 
     private final String path;
 

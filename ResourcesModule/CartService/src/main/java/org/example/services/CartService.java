@@ -24,7 +24,5 @@ public interface CartService {
 
     void deleteItemFromCart(UUID cartId, UUID stockItemId);
 
-    void deleteCart(UUID cartId);
-
     void deleteCartItemsByStockId(UUID stockId);
 }

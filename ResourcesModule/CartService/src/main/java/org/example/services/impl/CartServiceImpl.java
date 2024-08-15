@@ -120,19 +120,6 @@ public class CartServiceImpl implements CartService {
     }
 
     /**
-     * Deletes a cart.
-     *
-     * @param cartId the ID of the cart.
-     */
-    @Override
-    @Transactional
-    public void deleteCart(final UUID cartId) {
-        log.info("Deleting a cart with id {}", cartId);
-        validationCartService.validateCartForDelete(cartId);
-        cartRepository.deleteById(cartId);
-    }
-
-    /**
      * Deletes all items with ID from all carts.
      *
      * @param stockId the ID of the item to delete.

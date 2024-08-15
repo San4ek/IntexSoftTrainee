@@ -20,7 +20,6 @@ import static org.mockito.Mockito.*;
 
 @Slf4j
 @SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Testcontainers
 @EnableCaching
 public class CurrencyConversionServiceTest {

@@ -156,7 +156,7 @@ public class StockModeratorControllerTest {
     void removeStockItems_200Expected() throws Exception {
         final UUID stockItemId = stockEntity.getId();
         doNothing().when(stockModeratorService).removeStockItems(stockItemId);
-        mockMvc.perform(put(EndpointsUrls.STOCK_MODER_GET_PUT_DELETE.getPath() + stockItemId + EndpointsUrls.STOCK_MODER_UTILIZATION))
+        mockMvc.perform(put(EndpointsUrls.STOCK_MODER_GET_PUT_DELETE.getPath() + stockItemId + EndpointsUrls.STOCK_MODER_UTILIZATION.getPath()))
                 .andExpect(status().isOk());
         verify(stockModeratorService, times(1)).removeStockItems(stockItemId);
     }

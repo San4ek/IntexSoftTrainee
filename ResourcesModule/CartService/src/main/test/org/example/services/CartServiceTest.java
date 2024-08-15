@@ -113,14 +113,6 @@ public class CartServiceTest {
 
     @Test
     @WithJwt("resources/jwt/user.json")
-    @DisplayName("Should delete a cart")
-    void shouldDeleteCart() {
-        cartService.deleteCart(cart.getId());
-        assertThrows(ObjectNotFoundException.class, () -> cartRepository.getById(cart.getId()));
-    }
-
-    @Test
-    @WithJwt("resources/jwt/user.json")
     @DisplayName("Should delete all items with the specified stock ID from all carts")
     void shouldDeleteCartItemsByStockId() {
         cartService.deleteCartItemsByStockId(cartItem.getStockId());
@@ -155,12 +147,5 @@ public class CartServiceTest {
     @DisplayName("Should throw exception when deleting item from non-existing cart")
     void shouldThrowExceptionWhenDeletingItemFromNonExistingCart() {
         assertThrows(InvalidObjectException.class, () -> cartService.deleteItemFromCart(UUID.randomUUID(), cartItem.getStockId()));
-    }
-
-    @Test
-    @WithJwt("resources/jwt/user.json")
-    @DisplayName("Should throw exception when deleting a non-existing cart")
-    void shouldThrowExceptionWhenDeletingNonExistingCart() {
-        assertThrows(InvalidObjectException.class, () -> cartService.deleteCart(UUID.randomUUID()));
     }
 }

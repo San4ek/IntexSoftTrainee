@@ -20,7 +20,12 @@ public class RabbitConfig {
 
     @Bean
     public Queue accountDeletedQueue() {
-        return new Queue("account.deleted");
+        return new AnonymousQueue();
+    }
+
+    @Bean
+    public Binding binding(FanoutExchange accountDeletedFanoutExchange, Queue accountDeletedQueue) {
+        return BindingBuilder.bind(accountDeletedQueue).to(accountDeletedFanoutExchange);
     }
 
     @Bean

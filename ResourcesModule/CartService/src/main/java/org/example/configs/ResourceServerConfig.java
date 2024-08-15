@@ -51,7 +51,7 @@ public class ResourceServerConfig {
                         .requestMatchers(HttpMethod.PUT, "/api/carts/*").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/carts/item").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/carts/item").authenticated()
-                        .requestMatchers(HttpMethod.DELETE, "/api/carts/items/*").hasAuthority("ROLE_MODER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/carts/items/*").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/orders/*").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/orders").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/orders/address/*").hasAuthority("ROLE_MODER")
