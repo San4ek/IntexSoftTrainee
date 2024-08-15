@@ -6,6 +6,7 @@ import me.inqu1sitor.clients.UserServiceClient;
 import me.inqu1sitor.dto.SendMailRequestDto;
 import me.inqu1sitor.services.MailSendingService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
@@ -39,6 +40,10 @@ public class MailSendingServiceImpl implements MailSendingService {
         message.setTo(email);
         message.setSubject(dto.subject());
         message.setText(dto.body());
-        emailSender.send(message);
+        try {
+            emailSender.send(message);
+        } catch (MailException e) {
+            log.error(e.getMessage(), e);
+        }
     }
 }
