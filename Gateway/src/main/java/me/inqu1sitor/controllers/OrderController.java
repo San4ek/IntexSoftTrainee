@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface OrderController {
 
     @GetMapping("/{orderId}")
-    default ResponseEntity<Object> getOrder(@PathVariable UUID orderId) throws EndpointNotImplementedException {
+    default ResponseEntity<Object> getOrder(@PathVariable("orderId") UUID orderId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
@@ -21,12 +21,12 @@ public interface OrderController {
     }
 
     @DeleteMapping("/{orderId}")
-    default ResponseEntity<Object> deleteOrder(@PathVariable UUID orderId) throws EndpointNotImplementedException {
+    default ResponseEntity<Object> deleteOrder(@PathVariable("orderId") UUID orderId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
     @DeleteMapping("/address/{addressId}")
-    default ResponseEntity<Object> deleteOrdersWithAddress(@PathVariable UUID addressId) throws EndpointNotImplementedException {
+    default ResponseEntity<Object> deleteOrdersWithAddress(@PathVariable("addressId") UUID addressId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 }

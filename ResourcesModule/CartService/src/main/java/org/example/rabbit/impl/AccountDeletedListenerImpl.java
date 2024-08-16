@@ -14,11 +14,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AccountDeletedListenerImpl implements AccountDeletedListener {
 
-    private final CartRepository cartRepository;
+    private final CartServiceImpl cartService;
 
     @Override
     @RabbitListener(queues = "#{accountDeletedQueue.name}")
     public void handleAccountDeletedMessage(final UUID accountId) {
-        cartRepository.deleteByUserId(accountId);
+        cartService.deleteByUserId(accountId);
     }
 }

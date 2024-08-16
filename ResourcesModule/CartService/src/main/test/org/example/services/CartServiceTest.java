@@ -148,4 +148,12 @@ public class CartServiceTest {
     void shouldThrowExceptionWhenDeletingItemFromNonExistingCart() {
         assertThrows(InvalidObjectException.class, () -> cartService.deleteItemFromCart(UUID.randomUUID(), cartItem.getStockId()));
     }
+
+    @Test
+    @WithJwt("resources/jwt/user.json")
+    @DisplayName("Should delete cart by user id")
+    void shouldDeleteCartByUserId() {
+        cartService.deleteByUserId(cart.getUserId());
+        assertThrows(ObjectNotFoundException.class, () -> cartRepository.getById(cart.getId()));
+    }
 }
