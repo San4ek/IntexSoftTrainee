@@ -2,7 +2,6 @@ package org.example.services;
 
 import jakarta.validation.Valid;
 import org.example.dtos.CartItemRequest;
-import org.example.dtos.CartItemResponse;
 import org.example.dtos.CartRequest;
 import org.example.entities.CartEntity;
 import org.example.entities.CartItemEntity;
@@ -25,4 +24,6 @@ public interface CartService {
     void deleteItemFromCart(UUID cartId, UUID stockItemId);
 
     void deleteCartItemsByStockId(UUID stockId);
+
+    void deleteByUserId(UUID userId);
 }

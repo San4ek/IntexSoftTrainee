@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.dtos.CartItemRequest;
 import org.example.dtos.CartRequest;
-import org.example.dtos.StockItemAmount;
 import org.example.entities.CartEntity;
 import org.example.entities.CartItemEntity;
 import org.example.enums.StockOperationEnum;
@@ -13,6 +12,7 @@ import org.example.mappers.CartItemMapper;
 import org.example.mappers.CartMapper;
 import org.example.repositories.CartItemRepository;
 import org.example.repositories.CartRepository;
+import org.example.repositories.OrderRepository;
 import org.example.services.CartService;
 import org.example.validation.ValidationCartService;
 import org.springframework.stereotype.Service;
@@ -20,8 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.UUID;
-
-import static org.example.utils.validation.ValidatorUtils.checkTrue;
 
 /**
  * Service implementation for shopping carts.
@@ -34,6 +32,7 @@ public class CartServiceImpl implements CartService {
 
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
+    private final OrderRepository orderRepository;
     private final CartItemMapper cartItemMapper;
     private final CartMapper cartMapper;
     private final StockServiceImpl stockService;
@@ -130,5 +129,15 @@ public class CartServiceImpl implements CartService {
         log.info("Deleting cart items with stock id {}", stockId);
         validationCartService.validateCartItemsForDeleting(stockId);
         cartItemRepository.deleteByStockId(stockId);
+    }
+
+    @Override
+    @Transactional
+    public void deleteByUserId(final UUID userId) {
+        log.info("Deleting cart with user id {}", userId);
+        validationCartService.validateCartForDelete(userId);
+        final CartEntity cartEntity = cartRepository.findByUserId(userId);
+        cartRepository.deleteByUserId(userId);
+        orderRepository.deleteByCartId(cartEntity.getId());
     }
 }

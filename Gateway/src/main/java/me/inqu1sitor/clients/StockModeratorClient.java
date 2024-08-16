@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@FeignClient(name = "stock-moderator-client", url = "https://stock-service:8083/api/stock")
+@FeignClient(name = "stock-moderator-client", url = "http://stock-service:8083/api/stock")
 public interface StockModeratorClient {
 
     @GetMapping("/{stockItemId}")

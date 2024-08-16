@@ -21,12 +21,12 @@ public interface AddressController {
     }
 
     @PutMapping("/{addressId}")
-    default ResponseEntity<Object> updateAddress(@PathVariable UUID addressId, @RequestBody AddressRequest addressRequest) throws EndpointNotImplementedException {
+    default ResponseEntity<Object> updateAddress(@PathVariable("addressId") UUID addressId, @RequestBody AddressRequest addressRequest) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
     @DeleteMapping("/{addressId}")
-    default ResponseEntity<Object> deleteAddress(@PathVariable UUID addressId) throws EndpointNotImplementedException {
+    default ResponseEntity<Object> deleteAddress(@PathVariable("addressId") UUID addressId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 }
