@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@FeignClient(name = "product-client", url = "https://stock-service:8083/api/products")
+@FeignClient(name = "product-client", url = "http://stock-service:8083/api/products")
 public interface ProductClient {
 
     @GetMapping("/{productId}")

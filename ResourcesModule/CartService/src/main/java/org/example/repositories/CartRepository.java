@@ -9,4 +9,8 @@ import java.util.UUID;
 public interface CartRepository extends BaseRepository<CartEntity, UUID> {
 
     void deleteByUserId(UUID accountId);
+
+    Boolean existsByUserId(UUID accountId);
+
+    CartEntity findByUserId(UUID accountId);
 }

@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface CartController {
 
     @GetMapping("/{cartId}")
-    default ResponseEntity<Object> getCart(@PathVariable UUID cartId) throws EndpointNotImplementedException {
+    default ResponseEntity<Object> getCart(@PathVariable("cartId") UUID cartId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
@@ -22,7 +22,7 @@ public interface CartController {
     }
 
     @PutMapping("/{cartId}")
-    default ResponseEntity<Object> updateCart(@PathVariable UUID cartId, @RequestBody CartRequest cartRequest) throws EndpointNotImplementedException {
+    default ResponseEntity<Object> updateCart(@PathVariable("cartId") UUID cartId, @RequestBody CartRequest cartRequest) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
@@ -32,7 +32,7 @@ public interface CartController {
     }
 
     @DeleteMapping("/item")
-    default ResponseEntity<Object> deleteItemFromCart(@RequestParam UUID cartId, @RequestParam UUID stockItemId) throws EndpointNotImplementedException {
+    default ResponseEntity<Object> deleteItemFromCart(@RequestParam("cartId") UUID cartId, @RequestParam("stockItemId") UUID stockItemId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 }

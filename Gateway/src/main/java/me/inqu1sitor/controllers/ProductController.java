@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface ProductController {
 
     @GetMapping("/{productId}")
-    default ResponseEntity<Object> getProductById(@PathVariable UUID productId) throws EndpointNotImplementedException {
+    default ResponseEntity<Object> getProductById(@PathVariable("productId") UUID productId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
@@ -21,12 +21,12 @@ public interface ProductController {
     }
 
     @PutMapping("/{productId}")
-    default ResponseEntity<Object> updateProduct(@PathVariable UUID productId, @RequestBody ProductRequest productRequest) throws EndpointNotImplementedException {
+    default ResponseEntity<Object> updateProduct(@PathVariable("productId") UUID productId, @RequestBody ProductRequest productRequest) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
     @DeleteMapping("/{productId}")
-    default ResponseEntity<Object> deleteProduct(@PathVariable UUID productId) throws EndpointNotImplementedException {
+    default ResponseEntity<Object> deleteProduct(@PathVariable("productId") UUID productId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 }

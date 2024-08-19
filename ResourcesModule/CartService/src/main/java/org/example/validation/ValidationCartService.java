@@ -64,7 +64,7 @@ public class ValidationCartService {
      * @param cartId the ID of the cart to validate.
      */
     public void validateCartForDelete(final UUID cartId) {
-        checkTrue(cartRepository.existsById(cartId), "Cart is not exist");
+        checkTrue(cartRepository.existsByUserId(cartId), "Cart is not exist");
     }
 
     /**

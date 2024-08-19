@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface BrandController {
 
     @GetMapping("/{brandId}")
-    default ResponseEntity<Object> getBrandById(@PathVariable UUID brandId) throws EndpointNotImplementedException {
+    default ResponseEntity<Object> getBrandById(@PathVariable("brandId") UUID brandId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
@@ -21,12 +21,12 @@ public interface BrandController {
     }
 
     @PutMapping("/{brandId}")
-    default ResponseEntity<Object> updateBrand(@PathVariable UUID brandId, @RequestBody BrandRequest brandRequest) throws EndpointNotImplementedException {
+    default ResponseEntity<Object> updateBrand(@PathVariable("brandId") UUID brandId, @RequestBody BrandRequest brandRequest) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
     @DeleteMapping("/{brandId}")
-    default ResponseEntity<Object> deleteBrand(@PathVariable UUID brandId) throws EndpointNotImplementedException {
+    default ResponseEntity<Object> deleteBrand(@PathVariable("brandId") UUID brandId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 }

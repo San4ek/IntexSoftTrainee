@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface StockModeratorController {
 
     @GetMapping("/{stockItemId}")
-    default ResponseEntity<Object> getStockItemById(@PathVariable UUID stockItemId) throws EndpointNotImplementedException {
+    default ResponseEntity<Object> getStockItemById(@PathVariable("stockItemId") UUID stockItemId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
@@ -21,17 +21,17 @@ public interface StockModeratorController {
     }
 
     @PutMapping("/{stockItemId}")
-    default ResponseEntity<Object> updateStockItem(@PathVariable UUID stockItemId, @RequestBody StockItemRequest stockItemDto) throws EndpointNotImplementedException {
+    default ResponseEntity<Object> updateStockItem(@PathVariable("stockItemId") UUID stockItemId, @RequestBody StockItemRequest stockItemDto) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
     @PutMapping("/{stockItemId}/utilization")
-    default ResponseEntity<Object> removeStockItems(@PathVariable UUID stockItemId) throws EndpointNotImplementedException {
+    default ResponseEntity<Object> removeStockItems(@PathVariable("stockItemId") UUID stockItemId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 
     @DeleteMapping("/{stockItemId}")
-    default ResponseEntity<Object> deleteStockItem(@PathVariable UUID stockItemId) throws EndpointNotImplementedException {
+    default ResponseEntity<Object> deleteStockItem(@PathVariable("stockItemId") UUID stockItemId) throws EndpointNotImplementedException {
         throw new EndpointNotImplementedException();
     }
 }
