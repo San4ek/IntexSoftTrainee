@@ -20,8 +20,6 @@ import org.springframework.validation.annotation.Validated;
 
 import java.util.UUID;
 
-import static org.example.utils.validation.ValidatorUtils.checkFalse;
-
 /**
  * Service implementation for orders.
  */
@@ -34,6 +32,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final CartRepository cartRepository;
+    private final CurrencyConversionServiceImpl currencyConversionService;
     private final ValidationOrderService validationOrderService;
     private final RabbitTemplate rabbitTemplate;
 
@@ -61,8 +60,12 @@ public class OrderServiceImpl implements OrderService {
         log.info("Create order from cart {} ", orderRequest.getCartId());
         validationOrderService.validateOrderForCreating(orderRequest);
         CartEntity cartEntity = cartRepository.getById(orderRequest.getCartId());
-        OrderResponse orderResponse = orderMapper.toDto(orderRepository.save(orderMapper.toEntity(orderRequest)));
+        OrderEntity orderEntity = orderMapper.toEntity(orderRequest);
+        orderMapper.mapOrderItems(orderEntity, cartEntity.getId());
+        orderEntity.setTotalCost(currencyConversionService.convertCurrency("BYN", cartEntity.getCurrency().toString(), orderEntity.getTotalCost()));
+        OrderResponse orderResponse = orderMapper.toDto(orderRepository.save(orderEntity));
         cartEntity.removeAllItems();
+        cartEntity.addOrder(orderEntity);
         cartRepository.save(cartEntity);
         log.info("Order created with id {}", orderResponse.getId());
         SendMailRequest sendMailRequest = new SendMailRequest(cartEntity.getUserId(), "Order Created", "Your order has been created");

@@ -5,22 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
 import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OrderResponse {
+public class OrderItemResponse {
 
-    private UUID id;
+    private UUID stockId;
 
-    private CartResponse cart;
+    private Long amount;
 
-    private AddressResponse address;
-
-    private List<OrderItemResponse> orderItems;
-
-    private Double totalCost;
+    private Double price;
 }

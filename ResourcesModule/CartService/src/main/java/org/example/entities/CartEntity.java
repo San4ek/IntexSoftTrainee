@@ -31,11 +31,18 @@ public class CartEntity {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItemEntity> cartItems;
 
-    public void addItems(CartItemEntity cartItem) {
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderEntity> orders;
+
+    public void addItems(final CartItemEntity cartItem) {
         this.cartItems.add(cartItem);
     }
 
-    public void removeItems(CartItemEntity cartItem) {
+    public void addOrder(final OrderEntity order) {
+        this.orders.add(order);
+    }
+
+    public void removeItems(final CartItemEntity cartItem) {
         this.cartItems.remove(cartItem);
     }
 
