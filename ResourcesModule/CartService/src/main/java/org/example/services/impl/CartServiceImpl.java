@@ -137,6 +137,9 @@ public class CartServiceImpl implements CartService {
         validationCartService.validateCartForDelete(userId);
         final CartEntity cartEntity = cartRepository.findByUserId(userId);
         cartRepository.deleteByUserId(userId);
+        for (CartItemEntity cartItem : cartEntity.getCartItems()) {
+            stockService.changeStockAmount(cartItem.getStockId(), cartItem.getAmount(), StockOperationEnum.INCREASE);
+        }
         orderRepository.deleteByCartId(cartEntity.getId());
     }
 }
