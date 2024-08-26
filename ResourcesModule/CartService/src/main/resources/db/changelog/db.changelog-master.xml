@@ -9,4 +9,6 @@
     <include file="db/changelog/v.1.0.0/create-table-orders.xml"/>
     <include file="db/changelog/v.1.0.0/create-table-address.xml"/>
     <include file="/db/changelog/v.1.0.0/add-foreign-keys.xml"/>
+    <include file="/db/changelog/v.1.0.0/create-table-order-items.xml"/>
+    <include file="/db/changelog/v.1.0.0/add-fields-cost-and-items-in-orders-table.xml"/>
 </databaseChangeLog>
