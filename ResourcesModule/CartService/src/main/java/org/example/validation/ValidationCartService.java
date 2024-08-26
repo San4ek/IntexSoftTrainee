@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+import static org.example.utils.validation.ValidatorUtils.checkFalse;
 import static org.example.utils.validation.ValidatorUtils.checkTrue;
 
 /**
@@ -43,6 +44,7 @@ public class ValidationCartService {
      */
     public void validateCartForAddItem(final CartItemRequest cartItemRequest) {
         checkTrue(cartRepository.existsById(cartItemRequest.getCartId()), "Cart is not exist");
+        checkFalse(cartItemRepository.existsByCartIdAndStockId(cartItemRequest.getCartId(), cartItemRequest.getStockId()), "Cart items are already in cart");
         final StockItemAmount stockItemAmount = stockService.getStockItemById(cartItemRequest.getStockId());
         checkTrue(stockItemAmount.getAmount() >= cartItemRequest.getAmount(), "Not enough items in stock");
     }
@@ -65,15 +67,6 @@ public class ValidationCartService {
      */
     public void validateCartForDelete(final UUID cartId) {
         checkTrue(cartRepository.existsByUserId(cartId), "Cart is not exist");
-    }
-
-    /**
-     * Validates cart items for deleting by stock id.
-     *
-     * @param stockId stock id of cart items to delete.
-     */
-    public void validateCartItemsForDeleting(final UUID stockId) {
-        checkTrue(cartItemRepository.existsByStockId(stockId), "No items items with such id");
     }
 
     /**

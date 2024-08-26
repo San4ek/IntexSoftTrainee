@@ -127,7 +127,6 @@ public class CartServiceImpl implements CartService {
     @Transactional
     public void deleteCartItemsByStockId(final UUID stockId) {
         log.info("Deleting cart items with stock id {}", stockId);
-        validationCartService.validateCartItemsForDeleting(stockId);
         cartItemRepository.deleteByStockId(stockId);
     }
 
@@ -138,6 +137,9 @@ public class CartServiceImpl implements CartService {
         validationCartService.validateCartForDelete(userId);
         final CartEntity cartEntity = cartRepository.findByUserId(userId);
         cartRepository.deleteByUserId(userId);
+        for (CartItemEntity cartItem : cartEntity.getCartItems()) {
+            stockService.changeStockAmount(cartItem.getStockId(), cartItem.getAmount(), StockOperationEnum.INCREASE);
+        }
         orderRepository.deleteByCartId(cartEntity.getId());
     }
 }
